@@ -13,7 +13,7 @@ import pandas as pd
 import numpy as np
 import lightgbm as lgb
 from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_auc_score, log_loss
 
 TARGET = "liquidity_stress_next_30d"
 ID_COL = "ID"
@@ -95,8 +95,11 @@ X, y, X_test = train[features], train[TARGET], test[features]
 print("Toplam ozellik sayisi:", len(features))
 
 # ---- LightGBM 5-fold CV --------------------------------------------
+# Metrik = Log Loss (%60) + ROC-AUC (%40). Log Loss baskin oldugu icin
+# ONCE binary_logloss'a gore erken durdurma yapiyoruz (first_metric_only).
 params = {
-    "objective": "binary", "metric": "auc",
+    "objective": "binary",
+    "metric": ["binary_logloss", "auc"],   # ilk metrik = logloss -> erken durdurma buna gore
     "learning_rate": 0.02, "num_leaves": 64,
     "feature_fraction": 0.7, "bagging_fraction": 0.8, "bagging_freq": 1,
     "min_child_samples": 60, "lambda_l1": 1.0, "lambda_l2": 1.0,
@@ -111,15 +114,19 @@ for fold, (tr, va) in enumerate(skf.split(X, y)):
     model = lgb.train(
         params,
         lgb.Dataset(X.iloc[tr], y.iloc[tr]),
-        num_boost_round=3000,
+        num_boost_round=5000,
         valid_sets=[lgb.Dataset(X.iloc[va], y.iloc[va])],
-        callbacks=[lgb.early_stopping(150), lgb.log_evaluation(0)],
+        callbacks=[lgb.early_stopping(200, first_metric_only=True),  # logloss'a gore dur
+                   lgb.log_evaluation(0)],
     )
     oof[va]     = model.predict(X.iloc[va])
     test_preds += model.predict(X_test) / skf.n_splits
-    print(f"Fold {fold+1} AUC: {roc_auc_score(y.iloc[va], oof[va]):.5f}")
+    print(f"Fold {fold+1} | LogLoss: {log_loss(y.iloc[va], oof[va]):.5f} "
+          f"| AUC: {roc_auc_score(y.iloc[va], oof[va]):.5f}")
 
-print(f"\n>>> Genel CV AUC: {roc_auc_score(y, oof):.5f}")
+cv_ll  = log_loss(y, oof)
+cv_auc = roc_auc_score(y, oof)
+print(f"\n>>> Genel CV  |  LogLoss: {cv_ll:.5f}  (dusuk=iyi)  |  AUC: {cv_auc:.5f}  (yuksek=iyi)")
 
 # ---- Onemli ozellikler (bilgi amacli) ------------------------------
 imp = pd.Series(model.feature_importance(), index=features).sort_values(ascending=False)
