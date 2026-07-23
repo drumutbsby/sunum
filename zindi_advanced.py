@@ -21,7 +21,13 @@ ID_COL = "ID"
 train = pd.read_csv("Train.csv")
 test  = pd.read_csv("Test.csv")
 sample = pd.read_csv("SampleSubmission.csv")
-print("Train:", train.shape, "| Test:", test.shape)
+print("Train (ham):", train.shape, "| Test:", test.shape)
+
+# --- Hedefi bos (NaN) olan satirlari egitimden cikar ---
+n_before = len(train)
+train = train.dropna(subset=[TARGET]).reset_index(drop=True)
+train[TARGET] = train[TARGET].astype(int)
+print(f"Hedefi bos {n_before - len(train)} satir atildi -> egitim: {len(train)} satir")
 print("Hedef dagilimi:\n", train[TARGET].value_counts(normalize=True).round(4))
 
 # ---- Feature engineering -------------------------------------------
