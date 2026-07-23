@@ -37,47 +37,47 @@ COUNT_SUFFIX = {
 MONTHS = [1, 2, 3, 4, 5, 6]
 
 def add_features(df):
-    df = df.copy()
+    # Yeni ozellikleri bir dict'te topla, sonunda TEK seferde ekle
+    # (boylece "DataFrame is highly fragmented" uyarisi ve yavaslama olmaz)
+    feats = {}
 
     # Her islem tipi + metrik icin 6 ay boyunca ozet istatistikler
     for tx in TX_TYPES:
         for metric in ["volume", "total_value", "highest_amount", COUNT_SUFFIX[tx]]:
-            cols = [f"m{m}_{tx}_{metric}" for m in MONTHS]
-            cols = [c for c in cols if c in df.columns]
+            cols = [f"m{m}_{tx}_{metric}" for m in MONTHS if f"m{m}_{tx}_{metric}" in df.columns]
             if not cols:
                 continue
             vals = df[cols]
-            df[f"{tx}_{metric}_sum"]   = vals.sum(axis=1)
-            df[f"{tx}_{metric}_mean"]  = vals.mean(axis=1)
-            df[f"{tx}_{metric}_std"]   = vals.std(axis=1)
-            df[f"{tx}_{metric}_max"]   = vals.max(axis=1)
-            # trend: en yeni ay (m1) - en eski ay (m6)
-            df[f"{tx}_{metric}_trend"] = df[cols[0]] - df[cols[-1]]
-            # aktif ay sayisi (sifir olmayan)
-            df[f"{tx}_{metric}_active_months"] = (vals > 0).sum(axis=1)
+            feats[f"{tx}_{metric}_sum"]           = vals.sum(axis=1)
+            feats[f"{tx}_{metric}_mean"]          = vals.mean(axis=1)
+            feats[f"{tx}_{metric}_std"]           = vals.std(axis=1)
+            feats[f"{tx}_{metric}_max"]           = vals.max(axis=1)
+            feats[f"{tx}_{metric}_trend"]         = df[cols[0]] - df[cols[-1]]  # m1(yeni)-m6(eski)
+            feats[f"{tx}_{metric}_active_months"] = (vals > 0).sum(axis=1)
 
     # ---- Bakiye ozellikleri (daily_avg_bal) ----
     bal_cols = [f"m{m}_daily_avg_bal" for m in MONTHS if f"m{m}_daily_avg_bal" in df.columns]
     if bal_cols:
         bal = df[bal_cols]
-        df["bal_mean"]  = bal.mean(axis=1)
-        df["bal_std"]   = bal.std(axis=1)          # volatilite = stres sinyali
-        df["bal_min"]   = bal.min(axis=1)
-        df["bal_max"]   = bal.max(axis=1)
-        df["bal_trend"] = df[bal_cols[0]] - df[bal_cols[-1]]  # dususte mi?
-        df["bal_low_months"] = (bal < bal.mean(axis=1).values[:, None]).sum(axis=1)
+        feats["bal_mean"]       = bal.mean(axis=1)
+        feats["bal_std"]        = bal.std(axis=1)          # volatilite = stres sinyali
+        feats["bal_min"]        = bal.min(axis=1)
+        feats["bal_max"]        = bal.max(axis=1)
+        feats["bal_trend"]      = df[bal_cols[0]] - df[bal_cols[-1]]  # dususte mi?
+        feats["bal_low_months"] = (bal.lt(bal.mean(axis=1), axis=0)).sum(axis=1)
 
     # ---- Net nakit akisi (para giris - cikis) ----
-    inflow  = df.get("received_total_value_sum", 0) + df.get("deposit_total_value_sum", 0) \
-              + df.get("transfer_from_bank_total_value_sum", 0)
-    outflow = df.get("mm_send_total_value_sum", 0) + df.get("withdraw_total_value_sum", 0) \
-              + df.get("paybill_total_value_sum", 0) + df.get("merchantpay_total_value_sum", 0)
-    df["total_inflow"]  = inflow
-    df["total_outflow"] = outflow
-    df["net_flow"]      = inflow - outflow
-    df["outflow_ratio"] = outflow / (inflow + 1)   # 1'e yakin/ustu = stres
+    inflow  = feats.get("received_total_value_sum", 0) + feats.get("deposit_total_value_sum", 0) \
+              + feats.get("transfer_from_bank_total_value_sum", 0)
+    outflow = feats.get("mm_send_total_value_sum", 0) + feats.get("withdraw_total_value_sum", 0) \
+              + feats.get("paybill_total_value_sum", 0) + feats.get("merchantpay_total_value_sum", 0)
+    feats["total_inflow"]  = inflow
+    feats["total_outflow"] = outflow
+    feats["net_flow"]      = inflow - outflow
+    feats["outflow_ratio"] = outflow / (inflow + 1)   # 1'e yakin/ustu = stres
 
-    return df
+    # Tek seferde birlestir
+    return pd.concat([df, pd.DataFrame(feats, index=df.index)], axis=1)
 
 train = add_features(train)
 test  = add_features(test)
