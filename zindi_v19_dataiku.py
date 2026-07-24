@@ -13,11 +13,10 @@
 # Sure (40 vCPU): ~90 dk — arka planda yurut
 # =====================================================================
 
-import dataiku
-import dataiku
-import dataiku
-import dataiku
-import dataiku
+try:
+    import dataiku
+except Exception:
+    dataiku = None
 import os
 from joblib import Parallel, delayed
 
@@ -43,14 +42,25 @@ DS_TRAIN = "Train_1"          # <- DSS dataset adlarin farkliysa burayi degistir
 DS_TEST  = "Test"
 DS_SAMPLE = "SampleSubmission"   # yoksa sorun degil, otomatik olusturulur
 
-train = dataiku.Dataset(DS_TRAIN).get_dataframe()
-test  = dataiku.Dataset(DS_TEST).get_dataframe()
+try:                                   # Dataiku ortami
+    train = dataiku.Dataset(DS_TRAIN).get_dataframe()
+    test  = dataiku.Dataset(DS_TEST).get_dataframe()
+    print("Veri Dataiku dataset'lerinden okundu")
+except Exception:                       # Colab / yerel CSV ortami
+    train = pd.read_csv("Train.csv")
+    test  = pd.read_csv("Test.csv")
+    print("Veri CSV dosyalarindan okundu")
+
 try:
     sample = dataiku.Dataset(DS_SAMPLE).get_dataframe()
     print(f"SampleSubmission dataset'inden okundu: {len(sample)} satir")
 except Exception:
-    sample = pd.DataFrame({"ID": test["ID"].values, "Target": 0.5})
-    print(f"SampleSubmission dataset'i yok -> test ID'lerinden olusturuldu ({len(sample)} satir)")
+    try:
+        sample = pd.read_csv("SampleSubmission.csv")
+        print(f"SampleSubmission.csv okundu: {len(sample)} satir")
+    except Exception:
+        sample = pd.DataFrame({"ID": test["ID"].values, "Target": 0.5})
+        print(f"SampleSubmission yok -> test ID'lerinden olusturuldu ({len(sample)} satir)")
 
 # --- DSS tip guvenligi: CSV'den yuklenen datasetlerde kolonlar string
 # kalabilir; kategorik/ID disindaki her seyi sayiya zorla ---------------
@@ -572,14 +582,46 @@ print("XTREES...");    oof_x,tp_x = cv_mode_seeds("xtrees")
 for name,o in [("LGB",oof_l),("CAT",oof_c),("DART",oof_d),("GOSS",oof_g),("XTR",oof_x)]:
     print(f"  {name:4s} | LogLoss {log_loss(y,o):.5f} | AUC {roc_auc_score(y,o):.5f} | LB {lb_score(y,o):.5f}")
 
-best=(-9,None)
-for wl in np.arange(0,1.0001,0.05):
-    sc_=lb_score(y, wl*oof_l+(1-wl)*oof_c)
-    if sc_>best[0]: best=(sc_,round(wl,2))
-wl = best[1]; wc = round(1-wl,2)
-oof_b = wl*oof_l+wc*oof_c
-tp_b  = wl*tp_l +wc*tp_c
-print(f"\nEn iyi blend -> LGB:{wl} CAT:{wc}")
+# 5 SESLI agirlik aramasi: 0.1 adimli tam simpleks taramasi (1001 nokta),
+# ardindan en iyinin cevresinde 0.025 adimli yerel rafinasyon. Tamamen
+# deterministik; 40k satirda ~4100 nokta -> ~2 dakika (kosunun %2'si).
+from itertools import product
+VOICES = [("LGB",oof_l,tp_l), ("CAT",oof_c,tp_c), ("DART",oof_d,tp_d),
+          ("GOSS",oof_g,tp_g), ("XTR",oof_x,tp_x)]
+OOFS = np.column_stack([v[1] for v in VOICES])
+TPS  = np.column_stack([v[2] for v in VOICES])
+
+def _best_weights(step, center=None, span=None):
+    n = OOFS.shape[1]
+    if center is None:                      # tam simpleks taramasi
+        k = int(round(1/step))
+        grids = [np.arange(0, k+1) for _ in range(n-1)]
+        best = (-9, None)
+        for combo in product(*grids):
+            if sum(combo) > k: continue
+            w = np.array(list(combo) + [k-sum(combo)], dtype=float)/k
+            sc_ = lb_score(y, OOFS @ w)
+            if sc_ > best[0]: best = (sc_, w)
+        return best
+    lo = np.clip(center-span, 0, 1); hi = np.clip(center+span, 0, 1)
+    grids = [np.arange(lo[i], hi[i]+1e-9, step) for i in range(n)]
+    best = (-9, None)
+    for combo in product(*grids):
+        w = np.array(combo, dtype=float)
+        tot = w.sum()
+        if tot <= 0: continue
+        w = w/tot                            # simplekse normalize et
+        sc_ = lb_score(y, OOFS @ w)
+        if sc_ > best[0]: best = (sc_, w)
+    return best
+
+_, w_coarse = _best_weights(0.10)
+_, w_fine   = _best_weights(0.025, center=w_coarse, span=0.05)
+W = w_fine if lb_score(y, OOFS @ w_fine) >= lb_score(y, OOFS @ w_coarse) else w_coarse
+oof_b = OOFS @ W
+tp_b  = TPS  @ W
+print("\nEn iyi 5-sesli blend -> " + "  ".join(
+      f"{VOICES[i][0]}:{W[i]:.3f}" for i in range(len(VOICES))))
 print(f"Ham blend    | LogLoss: {log_loss(y,oof_b):.5f} | AUC: {roc_auc_score(y,oof_b):.5f} | LB: {lb_score(y,oof_b):.5f}")
 
 # ---------------- 7) CV-guvenli isotonic kalibrasyon -----------------
