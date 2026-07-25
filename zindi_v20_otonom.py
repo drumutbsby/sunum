@@ -31,6 +31,7 @@ from catboost import CatBoostClassifier
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import roc_auc_score, log_loss
 from sklearn.isotonic import IsotonicRegression
+from sklearn.linear_model import LogisticRegression
 from scipy.stats import norm
 from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPClassifier
