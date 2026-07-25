@@ -510,42 +510,49 @@ def _lab_fit(tr, va, seed):
     return va, m.predict(Xd.iloc[va])
 
 def eval_cv(Xd, tag, n_folds=5, seeds=(42,), groups=None, quiet=False):
+    """Tum (seed, fold) isleri TEK Parallel cagrisinda toplanir; boylece
+    5-fold'da bile 10 iscinin hepsi dolar (onceden yarisi bostaydi)."""
     global _LAB_X
     _LAB_X = Xd
-    oof = np.zeros(len(Xd))
+    jobs = []
     for sd in seeds:
         if groups is None:
-            splits = list(StratifiedKFold(n_folds, shuffle=True, random_state=sd).split(Xd, y))
+            splits = StratifiedKFold(n_folds, shuffle=True, random_state=sd).split(Xd, y)
         else:
-            splits = list(GroupKFold(n_splits=n_folds).split(Xd, y, groups))
-        res = Parallel(n_jobs=N_WORKERS, verbose=0)(
-            delayed(_lab_fit)(tr, va, sd) for tr, va in splits)
-        for va, pv in res:
-            oof[va] += pv/len(seeds)
+            splits = GroupKFold(n_splits=n_folds).split(Xd, y, groups)
+        jobs += [(tr, va, sd) for tr, va in splits]
+    res = Parallel(n_jobs=N_WORKERS, verbose=0)(delayed(_lab_fit)(a,b,c) for a,b,c in jobs)
+    oof = np.zeros(len(Xd))
+    for va, pv in res:
+        oof[va] += pv/len(seeds)
     lb = lb_score(y, oof)
     if not quiet:
         print(f"{tag:26s} | LogLoss {log_loss(y,oof):.5f} | AUC {roc_auc_score(y,oof):.5f} | LB {lb:.5f}")
     return lb, oof
 
+# Eleme 2 seed ile: 5 fold x 2 seed = 10 is -> 10 iscinin hepsi dolar,
+# duvar saati ayni kalir ama eleme gurultusu ~yariya iner.
+SCREEN = dict(n_folds=5, seeds=(42, 2024))
+
 DEAD = [c for c in X.columns if c.startswith("grp_") or c.startswith("cust_te")]
 print(f"\nOlu aday ozellikler: {len(DEAD)} adet (grp_* ve cust_te_*)")
 
 print("\n" + "="*70)
-print("ASAMA 1: ELEME (5-fold x 1 seed) — hizli, sadece siralama icin")
+print("ASAMA 1: ELEME (5-fold x 2 seed) — 10 isci tam dolu, dusuk gurultu")
 print("="*70)
-lb0, _ = eval_cv(X, "E0 v19 seti")
+lb0, _ = eval_cv(X, "E0 v19 seti", **SCREEN)
 
 X_r1 = add_reconcile(X);                      X_r1t = add_reconcile(X_test)
-lb1, _ = eval_cv(X_r1, "R1 +mutabakat");      print(f"   delta: {lb1-lb0:+.5f}")
+lb1, _ = eval_cv(X_r1, "R1 +mutabakat", **SCREEN);      print(f"   delta: {lb1-lb0:+.5f}")
 
 X_r2 = add_cross_family(X_r1);                X_r2t = add_cross_family(X_r1t)
-lb2, _ = eval_cv(X_r2, "R2 +toplam seriler"); print(f"   delta: {lb2-lb0:+.5f}")
+lb2, _ = eval_cv(X_r2, "R2 +toplam seriler", **SCREEN); print(f"   delta: {lb2-lb0:+.5f}")
 
 X_r3 = X_r2.drop(columns=DEAD);               X_r3t = X_r2t.drop(columns=DEAD)
-lb3, _ = eval_cv(X_r3, "R3 +olu budama");     print(f"   delta: {lb3-lb0:+.5f}")
+lb3, _ = eval_cv(X_r3, "R3 +olu budama", **SCREEN);     print(f"   delta: {lb3-lb0:+.5f}")
 
 X_p = X.drop(columns=DEAD)
-lbp, _ = eval_cv(X_p, "P  sadece budama");    print(f"   delta: {lbp-lb0:+.5f}")
+lbp, _ = eval_cv(X_p, "P  sadece budama", **SCREEN);    print(f"   delta: {lbp-lb0:+.5f}")
 
 cands = {"R1":(lb1,X_r1,X_r1t), "R2":(lb2,X_r2,X_r2t), "R3":(lb3,X_r3,X_r3t), "P":(lbp,X_p,X.drop(columns=DEAD))}
 best_tag = max(cands, key=lambda k: cands[k][0])
