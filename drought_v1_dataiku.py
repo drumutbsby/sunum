@@ -44,7 +44,8 @@ except Exception:
     te = pd.read_csv("Test_drought.csv")
     print("Veri CSV'den okundu")
 
-tcols = [c for c in tr.columns if c not in te.columns]
+tcols = [c for c in tr.columns if c not in te.columns
+         and not c.lower().endswith("id") and tr[c].dtype.kind in "fc"]
 assert len(tcols) == 1, f"hedef sutun belirsiz: {tcols}"
 TARGET = tcols[0]
 print(f"train {tr.shape} | test {te.shape} | hedef: {TARGET}")
