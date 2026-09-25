@@ -2,3 +2,4 @@ Bu dosyaya yapılan her commit "Jev vs Laya karşılaştırması" iş akışın�
 Bir satır ekleyip commit'lemek yeter.
 
 2026-09-25 07:58 UTC — ilk koşu (laya,jev)
+2026-09-25 08:01 UTC — ikinci koşu (pip cache seçeneği kaldırıldı)
