@@ -183,6 +183,7 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; border-to
         <li><b>Güçlü yerler:</b> spam 0,993 ve phishing 0,993 (eğitimde görülmüş), AG News 0,95, jailbreak 0,71–0,76 (görülmemiş).</li>
         <li><b>Zayıf yerler:</b> moderation 0,53 (şans düzeyi), 77 etiketli banking77 0,425 (mimari token bütçesi), score sıralı soruları (SST-5 0,37), Çince iş yeri diagnostiğinde 20/64 vs Jev 64/64.</li>
         <li><b>Kalibrasyon ham hâlde kötü.</b> ECE 0,47 (laya) / 0,31 (multilingual); sıcaklık yeniden fit'i ile 0,08 / 0,11. Çok dilli checkpoint fit edilmiş sıcaklıkla gelmiyor.</li>
+        <li><b>Bu oturumdaki simülasyon:</b> 54 senaryo, 7 dil, gerçek checkpoint'ler, zero-shot. Karar doğruluğu 63 %, tümü doğru senaryo 6/54; <code>urgency</code> skoru 27 %, Türkçe güvenlik sorularında noul etiket hatası. Ayrıntı <a href="#simulasyon">Simülasyon</a> sekmesinde.</li>
         <li><b>Depo bakımı örnek düzeyde.</b> Dürüst "limits" bölümleri, 50 Python test dosyası, CI 4 Python sürümü + Windows, gitleaks / pip-audit / CodeQL / pickle yasağı, Docker, Nix, MCP, LangChain, TypeScript/ONNX portu.</li>
       </ul>
     </div>
@@ -419,6 +420,15 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; border-to
     <div class="card">
       <h3>Okuma notları</h3>
       <ul class="tight" id="simNotes"></ul>
+      <h3 style="margin-top:14px">Gözlemler (elle)</h3>
+      <ul class="tight">
+        <li><b>Karar düzeyinde 63 %, senaryo düzeyinde 6/54.</b> Beş sorunun hepsini doğru cevaplamak nadir; Jev'in yerine tek çağrıyla "tüm kararları" almak için zero-shot yeterli değil.</li>
+        <li><b><code>urgency</code> (score) çöktü: 27 %.</b> Çok dilli checkpoint neredeyse her zaman orta seviyeyi seçiyor; "işimiz durdu, bugün teslim" gibi metinlerde bile 2. seviye olasılığı 0,25–0,42'de kalıyor. README'deki #131 pozisyon önyargısı burada da görülüyor.</li>
+        <li><b>Türkçe güvenlik senaryolarında noul etiket takibi:</b> sıradan "faturamı nereden indiririm" sorusuna <code>is_jailbreak</code> için 1,000, <code>is_phishing</code> için 0,985 verdi. Aynı soru İngilizce checkpoint'te doğru. README'deki #156 hatasının Türkçe hâli.</li>
+        <li><b>İyi çalışan sorular:</b> <code>refund_requested</code> 90 %, <code>churn_risk</code> 85 %, <code>department</code> 73 %; fatura sorusu ve plan yükseltme ailelerinde 15/15. Olumsuzlama ("iptal etmek istemiyorum") 12/15 ile beklenenden iyi.</li>
+        <li><b>Yönlendirme yine kazandırıyor:</b> Router 63,4 %, zorla İngilizce 61,5 %, zorla çok dilli 59,1 %; İngilizce senaryolarda Router 75 %, Hintçe'de İngilizce checkpoint 30 %'a düşüyor.</li>
+        <li><b>Güven kapısı:</b> answer_confidence ≥ 0,8 ile kararların 67 %'si otomatikleşir ama bunların doğruluğu yalnızca 73 %; yanlış kararlarda ortalama güven 0,78. Sıcaklık fit'i olmadan eşik güvenilir değil.</li>
+      </ul>
     </div>
   </div>
 </section>
