@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laya Değerlendirme Paneli</title>
+<meta name="description" content="NandhaKishorM/laya deposunun genel değerlendirmesi: benchmark çıktıları, hız, kalibrasyon, 51 dil ve bu oturumda koşulan testler.">
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --axis: #c3c2b7; --border: rgba(11,11,11,0.10);
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
+  --good: #0ca30c; --warn: #fab219; --serious: #ec835a; --critical: #d03b3b; --good-text: #006300;
+  --ref: #898781;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10);
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --good-text: #0ca30c;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+  --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10);
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --good-text: #0ca30c;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--page); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+a { color: var(--s1); }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+header.top { padding: 28px 0 12px; }
+header.top h1 { font-size: 26px; margin: 0 0 4px; letter-spacing: -0.01em; }
+header.top p { margin: 0; color: var(--ink-2); }
+.meta-line { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 10px; font-size: 13px; color: var(--ink-2); }
+.meta-line code { font: 12.5px ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--surface); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--ink); }
+.toolbar { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+button, select { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+button:hover { border-color: var(--axis); }
+nav.tabs { position: sticky; top: 0; z-index: 5; background: var(--page); border-bottom: 1px solid var(--grid); }
+nav.tabs .wrap { display: flex; gap: 2px; overflow-x: auto; padding-top: 6px; }
+nav.tabs a { white-space: nowrap; padding: 10px 12px; color: var(--ink-2); text-decoration: none; border-bottom: 2px solid transparent; font-size: 14px; }
+nav.tabs a.on { color: var(--ink); border-bottom-color: var(--s1); font-weight: 600; }
+section.panel { display: none; padding: 22px 0 40px; }
+section.panel.on { display: block; }
+h2 { font-size: 20px; margin: 0 0 6px; }
+h3 { font-size: 16px; margin: 0 0 4px; }
+.lead { color: var(--ink-2); margin: 0 0 18px; max-width: 900px; }
+.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); }
+.grid > * { min-width: 0; }
+.grid.two { grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); }
+@media (max-width: 480px) { .grid.two, .grid { grid-template-columns: minmax(0, 1fr); } }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; min-width: 0; }
+.card.span { grid-column: 1 / -1; }
+.card-head { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.card-head .t { flex: 1 1 220px; min-width: 0; }
+.card-head .sub { color: var(--ink-2); font-size: 13px; margin-top: 2px; }
+.tiles { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); margin-bottom: 16px; }
+.tile { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.tile .l { font-size: 13px; color: var(--ink-2); }
+.tile .v { font-size: 28px; font-weight: 600; margin-top: 2px; letter-spacing: -0.01em; }
+.tile .d { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+.hero { display: grid; grid-template-columns: minmax(220px, 1fr) 2fr; gap: 20px; align-items: stretch; margin-bottom: 16px; }
+@media (max-width: 760px) { .hero { grid-template-columns: 1fr; } }
+.hero .big { font-size: 56px; font-weight: 600; line-height: 1; letter-spacing: -0.02em; }
+.hero .big small { font-size: 18px; color: var(--ink-2); font-weight: 500; margin-left: 6px; }
+.grade { display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--border); font-size: 13px; margin: 3px 6px 3px 0; }
+.grade b { font-size: 15px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink-2); margin: 6px 0 4px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.legend i.line { height: 3px; border-radius: 2px; width: 18px; }
+.legend i.ref { width: 18px; height: 0; border-top: 1.5px dashed var(--ref); }
+.chart { width: 100%; overflow: visible; }
+.chart svg { display: block; width: 100%; height: auto; }
+.chart text { font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink-2); }
+.chart text.lab { fill: var(--ink); }
+.chart text.val { fill: var(--ink-2); font-variant-numeric: tabular-nums; }
+.chart .grid-line { stroke: var(--grid); stroke-width: 1; }
+.chart .axis { stroke: var(--axis); stroke-width: 1; }
+.chart .ref { stroke: var(--ref); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.chart .hit { fill: transparent; cursor: default; }
+.chart .hit:hover + .mark, .chart .mark.hov { filter: brightness(1.12); }
+.tbl { display: none; margin-top: 8px; overflow-x: auto; }
+.tbl.on { display: block; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+th { color: var(--ink-2); font-weight: 600; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.badge { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; border: 1px solid var(--border); }
+.badge.ok { color: var(--good-text); }
+.badge.fail { color: var(--critical); }
+.badge.skip { color: var(--ink-2); }
+.badge.train { color: var(--ink-2); }
+.note { font-size: 13px; color: var(--ink-2); margin-top: 8px; }
+.note b { color: var(--ink); }
+ul.tight { margin: 6px 0 0; padding-left: 20px; }
+ul.tight li { margin: 4px 0; }
+ul.tight li b { color: var(--ink); }
+.verdict { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.verdict .card h3 { display: flex; align-items: center; gap: 8px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+#tip { position: fixed; pointer-events: none; z-index: 20; background: var(--surface); color: var(--ink); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 12.5px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); display: none; max-width: 300px; }
+#tip .k { color: var(--ink-2); }
+pre { background: var(--page); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font: 12.5px ui-monospace, SFMono-Regular, Menlo, monospace; overflow-x: auto; margin: 6px 0 0; }
+.scroll { overflow-x: auto; max-width: 100%; }
+code { overflow-wrap: anywhere; }
+footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--grid); }
+</style>
+</head>
+<body>
+<div id="tip"></div>
+
+<header class="top"><div class="wrap">
+  <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start">
+    <div>
+      <h1>Laya değerlendirme paneli</h1>
+      <p>NandhaKishorM/laya — çok dilli, otoregresif olmayan "System 1" karar motoru. Depodaki ölçüm dosyalarından üretilmiş sayılar ve bu oturumda koşulan testler.</p>
+    </div>
+    <div class="toolbar"><button id="themeBtn" type="button">Tema</button></div>
+  </div>
+  <div class="meta-line" id="metaLine"></div>
+</div></header>
+
+<nav class="tabs"><div class="wrap" id="tabs">
+  <a href="#ozet" class="on">Özet</a>
+  <a href="#diller">51 dil</a>
+  <a href="#uygulamalar">Uygulamalar</a>
+  <a href="#typed">typed-decisions</a>
+  <a href="#hiz">Hız</a>
+  <a href="#kalibrasyon">Kalibrasyon & sağlamlık</a>
+  <a href="#uzun">Uzun bağlam</a>
+  <a href="#feishu">Çince diagnostik</a>
+  <a href="#testler">Bu oturumdaki testler</a>
+  <a href="#repo">Repo yapısı</a>
+  <a href="#degerlendirme">Genel değerlendirme</a>
+</div></nav>
+
+<main class="wrap">
+
+<!-- ============ ÖZET ============ -->
+<section class="panel on" id="ozet">
+  <h2>Özet</h2>
+  <p class="lead">Laya, ModernBERT-large (İngilizce) ve mmBERT-base (100+ dil) kodlayıcıları üzerine kurulu bir karar başlığı ile <code>choice</code> / <code>score</code> / <code>noul</code> tipli soruları tek ileri geçişte cevaplar; metin üretmez. TypeSafe Jev API'sine açık kaynak (Apache 2.0) bir alternatif olarak konumlanıyor.</p>
+
+  <div class="hero">
+    <div class="card">
+      <div class="tile" style="border:0;padding:0">
+        <div class="l">Genel not</div>
+        <div class="big">B+</div>
+        <div class="d" style="margin-top:8px">Mühendislik ve şeffaflık güçlü; sıfır-atış doğruluk sınırlı; proje çok genç (ilk yayın 18 Eylül 2026).</div>
+      </div>
+      <div style="margin-top:12px">
+        <span class="grade"><i class="dot" style="background:var(--good)"></i> Mühendislik <b>A</b></span>
+        <span class="grade"><i class="dot" style="background:var(--good)"></i> Şeffaflık <b>A</b></span>
+        <span class="grade"><i class="dot" style="background:var(--good)"></i> Belgeler <b>A−</b></span>
+        <span class="grade"><i class="dot" style="background:var(--warn)"></i> Olgunluk <b>B−</b></span>
+        <span class="grade"><i class="dot" style="background:var(--serious)"></i> Sıfır-atış doğruluk <b>C</b></span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Tek bakışta</h3>
+      <ul class="tight">
+        <li><b>Hız gerçek.</b> T4 GPU'da tek soru 33–40 ms, 10 soru toplu 7 ms/soru; CPU'da (4 çekirdek) 193–580 ms. Jev'in üçüncü taraf ölçümü 236–276 ms.</li>
+        <li><b>Yönlendirme (Router) işe yarıyor.</b> 51 dilde İngilizce checkpoint 23 dilde, çok dilli checkpoint 45 dilde rastgelenin 3 katını geçiyor. İngilizce model Khmer'de %0 doğrulukla %95 güven bildiriyor; bu yüzden yönlendirme ileri geçişten <em>önce</em> yapılıyor.</li>
+        <li><b>Sıfır-atış mutlak doğruluk düşük.</b> 20 seçenekli MASSIVE'de makro 0,37; typed-decisions'ta taban modeller şansa yakın (0,36 / 0,35; çoğunluk sınıfı 0,46). 0,766 yalnızca o benchmark'ın eğitim bölümünde ince ayarlanmış checkpoint'e ait.</li>
+        <li><b>Güçlü yerler:</b> spam 0,993 ve phishing 0,993 (eğitimde görülmüş), AG News 0,95, jailbreak 0,71–0,76 (görülmemiş).</li>
+        <li><b>Zayıf yerler:</b> moderation 0,53 (şans düzeyi), 77 etiketli banking77 0,425 (mimari token bütçesi), score sıralı soruları (SST-5 0,37), Çince iş yeri diagnostiğinde 20/64 vs Jev 64/64.</li>
+        <li><b>Kalibrasyon ham hâlde kötü.</b> ECE 0,47 (laya) / 0,31 (multilingual); sıcaklık yeniden fit'i ile 0,08 / 0,11. Çok dilli checkpoint fit edilmiş sıcaklıkla gelmiyor.</li>
+        <li><b>Depo bakımı örnek düzeyde.</b> Dürüst "limits" bölümleri, 50 Python test dosyası, CI 4 Python sürümü + Windows, gitleaks / pip-audit / CodeQL / pickle yasağı, Docker, Nix, MCP, LangChain, TypeScript/ONNX portu.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tiles" id="tiles"></div>
+
+  <div class="grid two">
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Nerede güçlü, nerede zayıf</h3><div class="sub">Uygulama temaları, 400 vaka/tema, CPU, laya 0.2.1; en iyi checkpoint'in doğruluğu</div></div><button type="button" data-tbl="c_ozet_apps">Tablo</button></div>
+      <div id="c_ozet_apps"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Yönlendirmenin kazandırdığı</h3><div class="sub">T4, 14 dil (MASSIVE intent) ve 15 dil (XNLI); İngilizce ile diğer dillerin ortalaması</div></div><button type="button" data-tbl="c_ozet_route">Tablo</button></div>
+      <div id="c_ozet_route"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 51 DİL ============ -->
+<section class="panel" id="diller">
+  <h2>51 dilde MASSIVE intent (20 seçenek, rastgele = 0,05)</h2>
+  <p class="lead">CPU sweep, dil başına 100 vaka, seed 13, laya 0.2.0. İki checkpoint aynı soruları cevapladı. Kesikli çizgi rastgelenin 3 katı (0,15): projenin "kullanılabilir dil" eşiği.</p>
+  <div class="tiles" id="langTiles"></div>
+  <div class="card">
+    <div class="card-head">
+      <div class="t"><h3>Dil başına doğruluk</h3><div class="sub">Çubuklar kısa görünür çünkü görev 20 seçenekli; ölçek 0–1 sabit tutuldu.</div></div>
+      <select id="langSort">
+        <option value="gain">Sırala: yönlendirme kazancı</option>
+        <option value="ml">Sırala: çok dilli doğruluk</option>
+        <option value="en">Sırala: İngilizce doğruluk</option>
+        <option value="alpha">Sırala: alfabetik</option>
+      </select>
+      <button type="button" data-tbl="c_langs">Tablo</button>
+    </div>
+    <div id="c_langs"></div>
+    <p class="note"><b>Türkçe (tr):</b> İngilizce checkpoint 0,14, çok dilli 0,37, çok dilli ECE 0,42. Türkçe sıfır-atış kullanımda çok dilli checkpoint'e yönlendirme şart, yine de 20 seçenekli görevde doğruluk düşük; kendi verinizle ince ayar gerekir.</p>
+  </div>
+  <div class="grid two" style="margin-top:14px">
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Güven ile doğruluk arasındaki uçurum (İngilizce checkpoint)</h3><div class="sub">Her nokta bir dil: x = ortalama güven, y = doğruluk. Sağ altta yığılma "kendinden emin ve yanlış" demek.</div></div><button type="button" data-tbl="c_conf">Tablo</button></div>
+      <div id="c_conf"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Sıcaklık kısıtlaması yeniden koşusu (#208)</h3><div class="sub">Aynı 5.100 vaka, laya 0.3.6; doğruluk birebir, ECE düşüyor.</div></div></div>
+      <div id="clampTbl"></div>
+      <p class="note">Bağımsız harness (research/eval) İngilizce checkpoint'te 51/51 dilde doğruluğu birebir yeniden üretti. <b>Çok dilli checkpoint'te ise 45/51 dil farklı çıktı</b> (makro 0,366 → 0,401); neden bulunamadı ve açıkça "uzlaştırılmadı" olarak işaretlendi. Bu, tekrarlanabilirlik açısından takip edilmesi gereken açık bir nokta.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ UYGULAMALAR ============ -->
+<section class="panel" id="uygulamalar">
+  <h2>Uygulama temaları ve Jev'in yayımlanmış sayıları</h2>
+  <p class="lead">Her tema gerçek etiketli veri, 400 vaka, üç checkpoint, CPU, seed 13 (2026-09-19, laya 0.2.1). "Eğitimde" işareti kaynağın Laya'nın eğitim karışımında olduğunu gösterir; o satırlar genelleme değil hatırlama ölçer. Jev sayıları üçüncü taraf yayınlarından, burada ölçülmedi.</p>
+  <div class="card">
+    <div class="card-head"><div class="t"><h3>Doğruluk, tema başına</h3><div class="sub">Elmas: Jev'in yayımlanmış değeri (yalnızca üç veri kümesinde mevcut)</div></div><button type="button" data-tbl="c_apps">Tablo</button></div>
+    <div id="c_apps"></div>
+  </div>
+  <div class="grid two" style="margin-top:14px">
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Kalibrasyon hatası (ECE), tema başına</h3><div class="sub">Düşük iyi. Spam/phishing'de ~0,01; moderation ve banking77'de 0,3–0,5.</div></div><button type="button" data-tbl="c_apps_ece">Tablo</button></div>
+      <div id="c_apps_ece"></div>
+    </div>
+    <div class="card">
+      <h3>Okuma notları</h3>
+      <ul class="tight">
+        <li><b>banking77 (77 etiket) mimari bir kayıp.</b> Seçenekler sabit bir <code>head_max_len</code> bütçesini paylaşır (192/256 token); 77 etikete 3–4 token düşer. İki taban checkpoint'in tam olarak aynı 0,425'i alması tavanın bütçe olduğunu gösteriyor. Proje 20 seçenek altında kalmayı öneriyor; <code>predict_shortlist</code> ile ön eleme mümkün.</li>
+        <li><b>Moderation 0,53 / makro-F1 0,40.</b> Dengeli bölünmede şans düzeyi. Demo Space'teki Moderation sekmesi seçilmiş örneklerle çalışıyor; gerçek trafikte değil. Proje bunu kendisi yazıyor.</li>
+        <li><b>Model yönlendirme (domain) temasında çok dilli checkpoint 0,12:</b> Router bu temayı otomatik olarak İngilizce checkpoint'e gönderdiğinde 0,64 alınıyor; yanlış checkpoint seçiminin bedeli bu.</li>
+        <li><b>Jev DAIR Emotion'da örneklerin %16'sında doğru etikete sıfır olasılık vermiş</b> (AbdelStark). Güvene dallanan bir sistem için sert bir hata; Laya'nın bu veri kümesinde 0,60'a karşı Jev'in 0,48'i.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TYPED DECISIONS ============ -->
+<section class="panel" id="typed">
+  <h2>typed-decisions: 400 vaka, 2.000 karar, dört iş akışı</h2>
+  <p class="lead">Projenin Jev ile ana karşılaştırma zemini. Taban checkpoint'ler eğitimde bu veriyi görmedi; <code>laya-typed-decisions</code> ise bu benchmark'ın kendi eğitim bölümünde ince ayarlandı. Referans çizgileri: rastgele 0,318, çoğunluk sınıfı 0,461, öğretmen kendiyle uyum tavanı 0,735.</p>
+  <div class="grid two">
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Doğruluk</h3><div class="sub">BENCHMARKS.md tablosu; Jev satırı yayımlanmış değer</div></div><button type="button" data-tbl="c_typed">Tablo</button></div>
+      <div id="c_typed"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>İngilizce taban checkpoint, iş akışı ve soru tipine göre (CPU)</h3><div class="sub">Sıfır-atış; noul en iyi, choice en kötü</div></div><button type="button" data-tbl="c_typed_wf">Tablo</button></div>
+      <div id="c_typed_wf"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h3>Yorum</h3>
+    <ul class="tight">
+      <li>İnce ayarlı checkpoint <b>argmax doğrulukta</b> Jev'i geçiyor (0,766 vs 0,727) ve öğretmen tavanının üstünde; Brier 2,4× ve score MAE 1,6× daha iyi.</li>
+      <li>Ama <b>soft accuracy</b> (öğretmenin tam dağılımıyla uyum) 0,471 vs 0,580 ve <b>ECE</b> 0,213 vs 0,144 ile Jev önde. Yani "hangi seçenek" sorusunda daha iyi, "ne kadar emin" sorusunda daha kötü.</li>
+      <li>En önemli çıkarım projenin kendi cümlesi: <b>"Laya özelleştirilecek hızlı bir taban, sıfır-atış bir karar motoru değil."</b> Taban modeller çoğunluk sınıfının altında.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ HIZ ============ -->
+<section class="panel" id="hiz">
+  <h2>Hız</h2>
+  <p class="lead">Tek ileri geçiş; çağrı başına soru sayısı arttıkça soru başı maliyet düşer. GPU'da toplu çağrı büyük kazanç, CPU'da neredeyse doğrusal.</p>
+  <div class="tiles" id="speedTiles"></div>
+  <div class="grid two">
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Tesla T4, p50 gecikme (ms)</h3><div class="sub">Colab, torch 2.11, transformers 5.17, 2026-09-19</div></div><button type="button" data-tbl="c_lat_t4">Tablo</button></div>
+      <div id="c_lat_t4"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>AWS m7a.xlarge (4 çekirdek CPU), p50 gecikme (ms)</h3><div class="sub">laya 0.3.20, fp32, OMP 4 iş parçacığı, 2026-09-24</div></div><button type="button" data-tbl="c_lat_cpu">Tablo</button></div>
+      <div id="c_lat_cpu"></div>
+    </div>
+  </div>
+  <div class="grid two" style="margin-top:14px">
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Uzunluğa göre gruplama (CPU, Ryzen 9 5950X)</h3><div class="sub"><code>predict_batch(sort_by_length=True)</code> hızlanma katsayısı; 10.000 girdide 1.776 s → 825 s</div></div><button type="button" data-tbl="c_lb">Tablo</button></div>
+      <div id="c_lb"></div>
+    </div>
+    <div class="card">
+      <h3>Notlar</h3>
+      <ul class="tight">
+        <li><b>Dil algılama maliyeti ihmal edilebilir:</b> saf Python, 0,01–1,6 ms (kısa İngilizce → büyük JSON).</li>
+        <li><b>Soğuk yükleme</b> CPU'da 4,4 s (İngilizce), 2,5 s (çok dilli); <code>max_loaded=1</code> ile her dil değişiminde 4,5 s medyan yeniden yükleme. Sunucuda <code>preload=True</code> şart.</li>
+        <li><b>TileLang hızlı yol (isteğe bağlı, CUDA):</b> RTX 4070 Ti SUPER'de tek soru 3,8–5,1× hızlanma; fp32'ye göre en fazla 0,046 olasılık sapması.</li>
+        <li><b>Çok dilli checkpoint her yerde 2–3× daha hızlı</b> (322M vs 421M parametre) ama İngilizce'de daha az isabetli.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KALİBRASYON ============ -->
+<section class="panel" id="kalibrasyon">
+  <h2>Kalibrasyon ve sağlamlık</h2>
+  <p class="lead">Projenin ana iddiası "kalibre olasılıklar" (RLCD, uygun skorlama kuralları). Ölçümler bunun <em>ham hâlde</em> doğru olmadığını, sıcaklık fit'i ile düzeldiğini gösteriyor.</p>
+  <div class="grid two">
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Ortalama ECE: gönderildiği gibi vs yeniden fit</h3><div class="sub">T4, 49 paket üzerinden ortalama; (soru tipi, seçenek sayısı) başına bir sıcaklık, ayrılmış veride</div></div><button type="button" data-tbl="c_cal">Tablo</button></div>
+      <div id="c_cal"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Seçenek sırası değişince cevabın değişme oranı</h3><div class="sub">Düşük iyi. Jev'in bağımsız ölçümü 0,13.</div></div><button type="button" data-tbl="c_flip">Tablo</button></div>
+      <div id="c_flip"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h3>Bilinen davranış hataları (proje tarafından belgelenmiş)</h3>
+    <ul class="tight">
+      <li><b>score pozisyon önyargısı (#131):</b> çok dilli checkpoint ilk sıradaki seviyeyi neredeyse hiç seçmiyor. Sunum kontrolü: özdeş seçeneklerde slot-0 logit farkı −0,49 (İngilizce +0,66); permütasyonlu ilk-slot oranı 0,017 (tarafsız model 0,333). Sonuç: <b>FAIL</b>.</li>
+      <li><b>noul etiket takibi (#156):</b> İngilizce checkpoint <code>false:</code>/<code>true:</code> etiketlerine kapılıp açıkça olumlu girdiye kendinden emin "hayır" diyebiliyor. Geçici çözüm <code>labels</code> ile A/B etiketi.</li>
+      <li><b>Olumsuzlama (#377):</b> "iptal etme" gibi olumsuz isteklerde İngilizce checkpoint 4/4, çok dilli 2/4 vakada yine <code>cancel_account</code> seçti; biri 0,9998 olasılıkla.</li>
+      <li><b><code>act_probability</code> sinyal taşımıyor (#185):</b> neredeyse her girdide 1,0; AUROC 0,30. Bunun yerine <code>confidence</code> (AUROC 0,77).</li>
+      <li><b>Yön göreve göre değişiyor:</b> 180 istekli bir yönlendirme görevinde modeller <em>az</em> güvenli çıktı (−0,18). Yani tek bir global düzeltme yok; kendi verinizde sıcaklık fit'i gerekiyor.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ UZUN BAĞLAM ============ -->
+<section class="panel" id="uzun">
+  <h2>Uzun belgeler: <code>max_len=8192</code></h2>
+  <p class="lead">laya-multilingual, 8 dilde 20 destek isteği; her istek 0–7.000 token ilgisiz metnin arkasına konuldu. Apple GPU (MPS), laya 0.3.18. Varsayılan 1.024 token sınırı belgeyi keser; 8.192 ile ~4.000 tokene kadar 16–18/20 doğru.</p>
+  <div class="grid two">
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Doğruluk, öndeki dolgu token sayısına göre</h3><div class="sub">n = 20 istek/satır; 4.000 tokenden sonra dalgalı (8–17/20)</div></div><button type="button" data-tbl="c_lc_acc">Tablo</button></div>
+      <div id="c_lc_acc"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Medyan gecikme (s), aynı koşu</h3><div class="sub">Hız girdinin gerçek uzunluğunu izler; kısa girdiler değişmez</div></div><button type="button" data-tbl="c_lc_lat">Tablo</button></div>
+      <div id="c_lc_lat"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEISHU ============ -->
+<section class="panel" id="feishu">
+  <h2>Çince iş yeri kararları (Feishu tarzı) — topluluk diagnostiği</h2>
+  <p class="lead">64 sentetik Çince senaryo, 8 aile, 4 dengeli etiket (urgent / todo / valuable / noise). Laya multilingual (M4, MPS) ve Jev 1.13.0 (API) için kaydedilmiş gerçek yanıtlar, 3 tekrar. Sonuçlar 2026-09-21 arşivi; hash'ler bu oturumda <code>audit.py</code> ile doğrulandı.</p>
+  <div class="grid two">
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Doğruluk, mod başına</h3><div class="sub">choice: tek 4 seçenekli soru; four_noul: dört bağımsız evet/hayır</div></div><button type="button" data-tbl="c_fs">Tablo</button></div>
+      <div id="c_fs"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Aileye göre doğruluk (choice modu)</h3><div class="sub">Laya'nın hangi senaryo tiplerinde çöktüğü</div></div><button type="button" data-tbl="c_fs_fam">Tablo</button></div>
+      <div id="c_fs_fam"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h3>Yorum</h3>
+    <ul class="tight">
+      <li>Bu, projenin en sert sonucu: <b>20/64 vs 64/64</b>. Laya choice modunda 22 yanlış eylem ve 6 kaçırılmış eylem üretti; four_noul modunda 30 yanlış eylem.</li>
+      <li>Ölçüm çok dilli <em>taban</em> checkpoint'te, ince ayar ve eşik fit'i olmadan. Yine de Çince iş akışı kararlarında sıfır-atış kullanım için açık bir uyarı.</li>
+      <li>Depo bunu saklamak yerine README'nin en üstünde "community diagnostic" olarak bağlıyor ve CI'da hash denetimi koşturuyor. Bu tutum projenin en güçlü yanlarından.</li>
+      <li>Hız: Laya choice p50 151 ms (yerel MPS), Jev 253 ms (ağ dahil). Aynı donanımda ölçülmedi.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ TESTLER ============ -->
+<section class="panel" id="testler">
+  <h2>Bu oturumda koşulan testler</h2>
+  <p class="lead">Depo klonlandı, CPU torch ile kuruldu ve CI'ın çalıştırdığı paketler ağ ve ağırlık indirmeden koşuldu. Checkpoint indirilmedi; gerçek çıkarım gerektiren testler bu yüzden burada yok.</p>
+  <div class="tiles" id="testTiles"></div>
+  <div class="grid two">
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Python paketleri (laya 0.3.20, torch 2.14 CPU, Python 3.11)</h3><div class="sub">CI listesindeki betikler + pytest paketi + research/eval testleri</div></div></div>
+      <div id="pyTests"></div>
+    </div>
+    <div>
+      <div class="card">
+        <h3>TypeScript (laya-ts, vitest)</h3>
+        <div id="tsTests"></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h3>Çince diagnostik denetimi (model yok, API yok)</h3>
+        <pre id="feishuAudit"></pre>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h3>Notlar</h3>
+        <ul class="tight" id="sessionNotes"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REPO ============ -->
+<section class="panel" id="repo">
+  <h2>Repo yapısı ve süreçler</h2>
+  <p class="lead">Kaynak, test ve araştırma kodunun oranı tek başına çok şey anlatıyor: test satırı kaynak satırının 1,7 katı.</p>
+  <div class="tiles" id="repoTiles"></div>
+  <div class="grid two">
+    <div class="card">
+      <h3>Dizinler</h3>
+      <div class="scroll"><table>
+        <tr><th>Dizin</th><th>İçerik</th></tr>
+        <tr><td><code>laya/</code></td><td>Paket: <code>agent.py</code> (çıkarım), <code>router.py</code> (checkpoint seçimi, LRU, batch), <code>lang.py</code> (bağımlılıksız yazı/dil algılama), <code>common.py</code> (model, ödül, ECE), <code>hooks.py</code>, <code>structured.py</code> (JSON şema/pydantic), <code>serve.py</code> (FastAPI, Jev uyumlu <code>/v1/systemone</code>), <code>mcp/</code>, <code>integrations/langchain.py</code>, <code>onnx_agent.py</code>, <code>fast.py</code> + <code>tl_kernels.py</code> (TileLang)</td></tr>
+        <tr><td><code>tests/</code></td><td>50 dosya; çoğu bağımsız betik, birkaçı pytest. Ağırlık gerektirenler atlanır.</td></tr>
+        <tr><td><code>laya-ts/</code></td><td>ONNX tabanlı TypeScript portu (Node + tarayıcı, WebGPU→WASM), 16 test dosyası, 253 test</td></tr>
+        <tr><td><code>research/</code></td><td>Benchmark betikleri, ham sonuç JSON'ları, bağımsız değerlendirme harness'ı (<code>eval/</code>), Çince diagnostik</td></tr>
+        <tr><td><code>benchmarks/</code></td><td>TileLang hızlı yol parite ve hız ölçümleri (RTX 4070)</td></tr>
+        <tr><td><code>docs/</code></td><td>Zensical ile GitHub Pages'e yayımlanan belgeler + docstring'lerden API referansı</td></tr>
+        <tr><td><code>notebooks/</code>, <code>examples/</code>, <code>docker/</code>, <code>nix/</code></td><td>Kaggle 2×T4 ince ayar defteri; hook/sunucu/LangChain örnekleri; Docker (CPU/CUDA/DGX Spark) ve NixOS modülü</td></tr>
+      </table></div>
+    </div>
+    <div class="card">
+      <h3>Süreç sinyalleri</h3>
+      <ul class="tight">
+        <li><b>CI:</b> Python 3.10–3.13 + Windows, Node 20/22, ruff, byte-compile, paket derleme + twine, Çince benchmark denetimi.</li>
+        <li><b>Güvenlik:</b> gitleaks (diff + çalışma ağacı), pip-audit, CodeQL, "pickle/torch.load yasak", "subprocess/eval yasak" grep kapıları. Bir PyPI token'ının transkript dosyasında sızmış olması bu kapıların gerekçesi olarak yazılmış.</li>
+        <li><b>Sürüm temposu:</b> PyPI'da 18–24 Eylül arasında 28 sürüm. Hızlı düzeltme döngüsü ama API kararlılığı için erken; pin'leyerek kullanın.</li>
+        <li><b>Topluluk:</b> Hugging Face'te 3.462 beğeni (laya), 253 (multilingual); issue numaraları 377'yi geçmiş; README'de 5 topluluk aracı (Ascend NPU, Apple MLX, ADK, oh-my-pi, stuntd) ve dış katkılı ölçümler (GB10, Ryzen, m7a).</li>
+        <li><b>AGENTS.md / CONTRIBUTING.md:</b> hosted API bağımlılığı yasak, sayı değiştiren PR'larda önce/sonra ölçüm zorunlu, conventional commit.</li>
+        <li><b>Eksikler:</b> CHANGELOG dosyası yok (README "What's new" bölümü var); <code>pyproject</code> bağımlılıkları geniş aralıkta (<code>torch&gt;=2.0</code>, <code>transformers&gt;=4.48</code>) ama README 3.10 tabanını transformers 5.x'e bağlıyor; GitHub API'ye erişim olmadığı için yıldız/açık issue sayısı bu panelde yok.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEĞERLENDİRME ============ -->
+<section class="panel" id="degerlendirme">
+  <h2>Genel değerlendirme</h2>
+  <p class="lead">Aşağıdaki yargılar yukarıdaki ölçümlere ve depo incelemesine dayanır; hiçbir çıkarım bu oturumda gerçek checkpoint ile koşulmadı.</p>
+  <div class="verdict">
+    <div class="card">
+      <h3><i class="dot" style="background:var(--good)"></i> Güçlü yönler</h3>
+      <ul class="tight">
+        <li><b>Dürüst raporlama.</b> Zayıf sonuçlar (moderation, banking77, Çince diagnostik, taban modelin şans düzeyi) saklanmıyor; "Honest limits" bölümü ve her sayının yanında kaynak JSON var.</li>
+        <li><b>Tekrarlanabilirlik altyapısı.</b> Sabit seed, byte-özdeş sorular, per-case JSON, bağımsız ikinci harness, hash denetimli arşiv.</li>
+        <li><b>Dağıtım yüzeyi geniş.</b> CLI, FastAPI (Jev uyumlu), MCP, LangChain/LangGraph, Docker, NixOS modülü, ONNX/TS, TileLang.</li>
+        <li><b>Hız/maliyet.</b> Yerel, ücretsiz, GPU'da 33 ms; hosted Jev'e göre 6–7× hızlı ve $0.</li>
+        <li><b>Yönlendirme tasarımı doğru.</b> Güven sinyaline değil yazı/dil algılamaya dayanması, ölçümle gerekçelendirilmiş.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><i class="dot" style="background:var(--serious)"></i> Zayıf yönler ve riskler</h3>
+      <ul class="tight">
+        <li><b>Sıfır-atış doğruluk üretim için yetersiz.</b> 20 seçenekte makro 0,37; typed-decisions'ta çoğunluk sınıfının altı; moderation şans.</li>
+        <li><b>Kalibrasyon ham hâlde güvenilmez.</b> Çok dilli checkpoint sıcaklıksız gelir; İngilizce model yanlışken %95 güven bildirebilir.</li>
+        <li><b>Davranışsal kırılganlıklar:</b> seçenek sırası (0,15–0,23 flip), score pozisyon önyargısı, noul etiket takibi, olumsuzlama.</li>
+        <li><b>Tekrarlanabilirlik açığı:</b> çok dilli 51-dil sonuçları 0.2.0 → 0.3.6 arasında değişti (45/51 dil), nedeni bulunamadı.</li>
+        <li><b>Proje 1 haftalık.</b> 28 sürüm/7 gün; API kırılmaları olası; tek ana bakımcı görünümü (Convai Innovations).</li>
+        <li><b>Jev karşılaştırması kontrollü değil.</b> Jev hiç ölçülmedi; farklı örneklem ve prompt.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><i class="dot" style="background:var(--s1)"></i> Kime uygun, nasıl kullanılmalı</h3>
+      <ul class="tight">
+        <li><b>Uygun:</b> kendi etiketli verisiyle ince ayar yapabilecek ekipler; düşük gecikmeli, yerel, ucuz ön-eleme/yönlendirme/guardrail; İngilizce ağırlıklı spam/phishing/intent görevleri.</li>
+        <li><b>Uygun değil (henüz):</b> yüksek riskli otomasyon (moderation, güvenlik kararları) sıfır-atış; 20+ seçenekli sınıflandırma; Çince/Türkçe gibi dillerde ince ayarsız kullanım.</li>
+        <li><b>Kullanım reçetesi:</b> (1) <code>Router(preload=True)</code>; (2) kendi verinizde sıcaklık fit'i; (3) <code>answer_confidence</code> ile eşik + insan devri; (4) seçenek sayısını 20 altında tutun; (5) sürümü pin'leyin; (6) score/noul sorularını kendi verinizde doğrulayın.</li>
+        <li><b>Türkçe için:</b> çok dilli checkpoint zorunlu (<code>default="multilingual"</code>), sıfır-atış 20-seçenek doğruluğu 0,37; ince ayar defteri (Kaggle 2×T4, 4–5 saat) ile domain verisi eklemek gerekir.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h3>Sonuç</h3>
+    <p style="margin:6px 0 0">Laya, "kalibre, çok dilli, sıfır-atış karar motoru" iddiasını <b>henüz</b> ölçümleriyle karşılamıyor; ama bunu ilk söyleyen projenin kendisi. Karşıladığı şey, <b>hızlı ve iyi bakımlı bir ince ayar tabanı</b> olmak: ince ayarlı checkpoint kendi alanında Jev'i geçiyor, altyapı (test, CI, güvenlik, dağıtım) çoğu olgun projeden iyi, ve her sayının arkasında yeniden üretilebilir bir dosya var. Bir haftalık bir proje için olağanüstü bir mühendislik disiplini; üretimde kullanmadan önce kendi verinizle ölçmeniz gereken bir model.</p>
+  </div>
+</section>
+
+</main>
+
+<footer><div class="wrap" id="foot"></div></footer>
+
+<script src="data.js"></script>
+<script>
+(function () {
+  const D = window.LAYA_DATA;
+  const $ = (id) => document.getElementById(id);
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const C = () => ({ s1: css('--s1'), s2: css('--s2'), s3: css('--s3'), s4: css('--s4'), surface: css('--surface') });
+  const f2 = (v) => (v == null || isNaN(v)) ? '—' : v.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 3 });
+  const f3 = (v) => (v == null || isNaN(v)) ? '—' : v.toLocaleString('tr-TR', { maximumFractionDigits: 3 });
+  const fi = (v) => (v == null) ? '—' : Math.round(v).toLocaleString('tr-TR');
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  // ---------- tema ----------
+  const root = document.documentElement;
+  const saved = (() => { try { return localStorage.getItem('laya-theme'); } catch (e) { return null; } })();
+  if (saved) root.setAttribute('data-theme', saved);
+  $('themeBtn').addEventListener('click', () => {
+    const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+    const cur = root.getAttribute('data-theme') || (dark ? 'dark' : 'light');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('laya-theme', next); } catch (e) {}
+    renderAll();
+  });
+
+  // ---------- sekmeler ----------
+  const tabs = [...document.querySelectorAll('#tabs a')];
+  function showTab(hash) {
+    const id = (hash || '#ozet').slice(1);
+    if (!$(id)) return;
+    tabs.forEach((a) => a.classList.toggle('on', a.getAttribute('href') === '#' + id));
+    document.querySelectorAll('section.panel').forEach((s) => s.classList.toggle('on', s.id === id));
+    renderAll();
+  }
+  tabs.forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); history.replaceState(null, '', a.getAttribute('href')); showTab(a.getAttribute('href')); window.scrollTo({ top: 0 }); }));
+  window.addEventListener('hashchange', () => showTab(location.hash));
+
+  // ---------- tooltip ----------
+  const tip = $('tip');
+  function showTip(html, ev) {
+    tip.innerHTML = html; tip.style.display = 'block';
+    const x = Math.min(ev.clientX + 14, innerWidth - tip.offsetWidth - 8);
+    const y = Math.min(ev.clientY + 14, innerHeight - tip.offsetHeight - 8);
+    tip.style.left = x + 'px'; tip.style.top = y + 'px';
+  }
+  function hideTip() { tip.style.display = 'none'; }
+  document.addEventListener('mousemove', (e) => {
+    const h = e.target.closest && e.target.closest('[data-tip]');
+    if (h) showTip(h.getAttribute('data-tip'), e); else hideTip();
+  });
+  document.addEventListener('scroll', hideTip, true);
+
+  // ---------- tablo düğmeleri ----------
+  document.querySelectorAll('button[data-tbl]').forEach((b) => b.addEventListener('click', () => {
+    const t = $(b.getAttribute('data-tbl') + '_tbl'); if (!t) return;
+    t.classList.toggle('on'); b.textContent = t.classList.contains('on') ? 'Grafik' : 'Tablo';
+  }));
+
+  // ---------- yardımcılar ----------
+  function legend(series, refs) {
+    let h = '<div class="legend">';
+    series.forEach((s) => { h += `<span><i class="${s.kind === 'line' ? 'line' : ''}" style="background:${s.color}"></i>${esc(s.name)}</span>`; });
+    (refs || []).forEach((r) => { h += `<span><i class="ref"></i>${esc(r.label)}</span>`; });
+    return h + '</div>';
+  }
+  function barPath(x, y, w, h) {
+    const r = Math.min(4, w, h / 2);
+    if (w <= r) return `M${x},${y} h${w} v${h} h${-w} z`;
+    return `M${x},${y} h${w - r} a${r},${r} 0 0 1 ${r},${r} v${h - 2 * r} a${r},${r} 0 0 1 ${-r},${r} h${-(w - r)} z`;
+  }
+  function colPath(x, y, w, h) {
+    const r = Math.min(4, h, w / 2);
+    if (h <= r) return `M${x},${y} h${w} v${h} h${-w} z`;
+    return `M${x},${y + r} a${r},${r} 0 0 1 ${r},${-r} h${w - 2 * r} a${r},${r} 0 0 1 ${r},${r} v${h - r} h${-w} z`;
+  }
+  function tableHtml(cols, rows) {
+    let h = '<table><thead><tr>' + cols.map((c, i) => `<th class="${i ? 'num' : ''}">${esc(c)}</th>`).join('') + '</tr></thead><tbody>';
+    rows.forEach((r) => { h += '<tr>' + r.map((v, i) => `<td class="${i ? 'num' : ''}">${v == null ? '—' : esc(v)}</td>`).join('') + '</tr>'; });
+    return h + '</tbody></table>';
+  }
+  function mount(id, chartHtml, tblHtml) {
+    const el = $(id); if (!el) return;
+    el.innerHTML = `<div class="chart">${chartHtml}</div><div class="tbl" id="${id}_tbl">${tblHtml}</div>`;
+    const b = document.querySelector(`button[data-tbl="${id}"]`); const t = $(id + '_tbl');
+    if (b && t && b.textContent === 'Grafik') t.classList.add('on');
+  }
+
+  // Yatay gruplu çubuk grafiği. rows: [{label, sub?, values:[..], marker?:number}], series:[{name,color}]
+  function hbar(id, opt) {
+    const el = $(id); if (!el) return;
+    const W = Math.max(320, el.clientWidth || 600);
+    const labelW = opt.labelW || Math.min(170, Math.round(W * 0.3));
+    const right = 44, plotW = W - labelW - right;
+    const n = opt.series.length, barH = opt.barH || (n > 2 ? 9 : 11), gap = 2, pad = 9;
+    const rowH = n * barH + (n - 1) * gap + pad * 2;
+    const top = 6, H = top + opt.rows.length * rowH + 22;
+    const max = opt.max || 1;
+    const x = (v) => labelW + Math.max(0, Math.min(1, v / max)) * plotW;
+    let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(opt.aria || '')}">`;
+    let ticks = opt.ticks || [0, 0.25, 0.5, 0.75, 1];
+    if (plotW < 240) ticks = ticks.filter((t, i) => i % 2 === 0 || i === ticks.length - 1);
+    ticks.forEach((t) => { s += `<line class="grid-line" x1="${x(t)}" x2="${x(t)}" y1="${top}" y2="${H - 22}"/><text x="${x(t)}" y="${H - 6}" text-anchor="middle">${opt.tickFmt ? opt.tickFmt(t) : t}</text>`; });
+    s += `<line class="axis" x1="${labelW}" x2="${labelW}" y1="${top}" y2="${H - 22}"/>`;
+    (opt.refs || []).forEach((r) => { s += `<line class="ref" x1="${x(r.v)}" x2="${x(r.v)}" y1="${top}" y2="${H - 22}"/>`; });
+    opt.rows.forEach((r, ri) => {
+      const y0 = top + ri * rowH + pad;
+      const ly = y0 + (n * barH + (n - 1) * gap) / 2 + 4;
+      s += `<text class="lab" x="${labelW - 8}" y="${ly}" text-anchor="end">${esc(r.label)}</text>`;
+      if (r.sub) s += `<text x="${labelW - 8}" y="${ly + 13}" text-anchor="end" style="font-size:10.5px">${esc(r.sub)}</text>`;
+      r.values.forEach((v, si) => {
+        const y = y0 + si * (barH + gap);
+        if (v == null) return;
+        const w = x(v) - labelW;
+        const t = `<b>${esc(r.label)}</b><br><span class="k">${esc(opt.series[si].name)}:</span> ${opt.fmt ? opt.fmt(v) : f3(v)}${r.tips && r.tips[si] ? '<br>' + r.tips[si] : ''}`;
+        s += `<path class="mark" d="${barPath(labelW, y, w, barH)}" fill="${opt.series[si].color}"/>`;
+        s += `<rect class="hit" x="${labelW}" y="${y - 1}" width="${plotW}" height="${barH + 2}" data-tip="${esc(t)}"/>`;
+        if (opt.labels) s += `<text class="val" x="${labelW + w + 5}" y="${y + barH - 1}" style="font-size:11px">${opt.fmt ? opt.fmt(v) : f3(v)}</text>`;
+      });
+      if (r.marker != null) {
+        const mx = x(r.marker), my = y0 + (n * barH + (n - 1) * gap) / 2;
+        s += `<path class="mark" d="M${mx},${my - 6} l6,6 l-6,6 l-6,-6 z" fill="${opt.markerColor}" stroke="${C().surface}" stroke-width="2"/>`;
+        s += `<rect class="hit" x="${mx - 12}" y="${my - 12}" width="24" height="24" data-tip="${esc('<b>' + r.label + '</b><br><span class=k>' + (opt.markerName || 'referans') + ':</span> ' + f3(r.marker))}"/>`;
+      }
+    });
+    s += '</svg>';
+    const cols = [opt.rowTitle || '', ...opt.series.map((q) => q.name)]; if (opt.markerName) cols.push(opt.markerName);
+    const rows = opt.rows.map((r) => [r.label + (r.sub ? ' (' + r.sub + ')' : ''), ...r.values.map((v) => v == null ? null : (opt.fmt ? opt.fmt(v) : f3(v))), ...(opt.markerName ? [r.marker == null ? null : f3(r.marker)] : [])]);
+    const lg = legend([...opt.series, ...(opt.markerName ? [{ name: opt.markerName + ' (elmas)', color: opt.markerColor }] : [])], opt.refs);
+    mount(id, lg + s, tableHtml(cols, rows));
+  }
+
+  // Dikey sütun grafiği (gruplu). cats: [..], series: [{name,color,values}]
+  function cols(id, opt) {
+    const el = $(id); if (!el) return;
+    const W = Math.max(320, el.clientWidth || 600), H = opt.height || 240;
+    const left = 44, bottom = 30, top = 10, plotW = W - left - 10, plotH = H - top - bottom;
+    const n = opt.series.length, k = opt.cats.length, slot = plotW / k, colW = Math.min(24, (slot - 12) / n - 2);
+    const max = opt.max || 1;
+    const y = (v) => top + plotH - Math.max(0, Math.min(1, v / max)) * plotH;
+    let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img">`;
+    (opt.ticks || [0, 0.25, 0.5, 0.75, 1]).forEach((t) => { s += `<line class="grid-line" x1="${left}" x2="${W - 10}" y1="${y(t)}" y2="${y(t)}"/><text x="${left - 6}" y="${y(t) + 4}" text-anchor="end">${opt.tickFmt ? opt.tickFmt(t) : t}</text>`; });
+    s += `<line class="axis" x1="${left}" x2="${W - 10}" y1="${y(0)}" y2="${y(0)}"/>`;
+    opt.cats.forEach((c, ci) => {
+      const cx = left + ci * slot + slot / 2;
+      const gw = n * colW + (n - 1) * 2;
+      s += `<text x="${cx}" y="${H - 10}" text-anchor="middle" class="lab">${esc(c)}</text>`;
+      opt.series.forEach((sr, si) => {
+        const v = sr.values[ci]; if (v == null) return;
+        const x0 = cx - gw / 2 + si * (colW + 2), yy = y(v), h = y(0) - yy;
+        s += `<path class="mark" d="${colPath(x0, yy, colW, h)}" fill="${sr.color}"/>`;
+        s += `<rect class="hit" x="${x0 - 2}" y="${top}" width="${colW + 4}" height="${plotH}" data-tip="${esc('<b>' + c + '</b><br><span class=k>' + sr.name + ':</span> ' + (opt.fmt ? opt.fmt(v) : f3(v)))}"/>`;
+        if (opt.labels) s += `<text class="val" x="${x0 + colW / 2}" y="${yy - 4}" text-anchor="middle" style="font-size:11px">${opt.fmt ? opt.fmt(v) : f3(v)}</text>`;
+      });
+    });
+    s += '</svg>';
+    const rows = opt.cats.map((c, ci) => [c, ...opt.series.map((sr) => sr.values[ci] == null ? null : (opt.fmt ? opt.fmt(sr.values[ci]) : f3(sr.values[ci])))]);
+    mount(id, legend(opt.series) + s, tableHtml([opt.catTitle || '', ...opt.series.map((q) => q.name)], rows));
+  }
+
+  // Çizgi grafiği. xs: [..], series: [{name,color,values}]
+  function line(id, opt) {
+    const el = $(id); if (!el) return;
+    const W = Math.max(320, el.clientWidth || 600), H = opt.height || 240;
+    const left = 48, bottom = 30, top = 12, right = opt.endLabels ? 64 : 16, plotW = W - left - right, plotH = H - top - bottom;
+    const xs = opt.xs, k = xs.length;
+    const max = opt.max || Math.max(...opt.series.flatMap((s) => s.values.filter((v) => v != null))) * 1.1;
+    const xp = (i) => left + (k === 1 ? plotW / 2 : i * plotW / (k - 1));
+    const yp = (v) => top + plotH - Math.max(0, Math.min(1, v / max)) * plotH;
+    let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img">`;
+    const ticks = opt.ticks || [0, max / 4, max / 2, 3 * max / 4, max];
+    ticks.forEach((t) => { s += `<line class="grid-line" x1="${left}" x2="${W - right}" y1="${yp(t)}" y2="${yp(t)}"/><text x="${left - 6}" y="${yp(t) + 4}" text-anchor="end">${opt.tickFmt ? opt.tickFmt(t) : f3(t)}</text>`; });
+    s += `<line class="axis" x1="${left}" x2="${W - right}" y1="${yp(0)}" y2="${yp(0)}"/>`;
+    const step = Math.max(1, Math.ceil(k * 56 / plotW));
+    xs.forEach((x, i) => { if (i % step === 0 || i === k - 1) s += `<text x="${xp(i)}" y="${H - 10}" text-anchor="${i === 0 ? 'start' : i === k - 1 ? 'end' : 'middle'}">${esc(opt.xFmt ? opt.xFmt(x) : x)}</text>`; });
+    opt.series.forEach((sr) => {
+      const pts = sr.values.map((v, i) => v == null ? null : [xp(i), yp(v)]).filter(Boolean);
+      s += `<path d="${pts.map((p, i) => (i ? 'L' : 'M') + p[0] + ',' + p[1]).join(' ')}" fill="none" stroke="${sr.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+      sr.values.forEach((v, i) => { if (v != null) s += `<circle cx="${xp(i)}" cy="${yp(v)}" r="4" fill="${sr.color}" stroke="${C().surface}" stroke-width="2"/>`; });
+      const last = sr.values.length - 1;
+      if (opt.endLabels && sr.values[last] != null) s += `<text class="val" x="${xp(last) + 6}" y="${yp(sr.values[last]) + 4}" style="font-size:11px">${opt.fmt ? opt.fmt(sr.values[last]) : f3(sr.values[last])}</text>`;
+    });
+    // crosshair hit alanları
+    xs.forEach((x, i) => {
+      const t = `<b>${esc(opt.xFmt ? opt.xFmt(x) : x)}</b>` + opt.series.map((sr) => `<br><span class="k">${esc(sr.name)}:</span> ${sr.values[i] == null ? '—' : (opt.fmt ? opt.fmt(sr.values[i]) : f3(sr.values[i]))}`).join('');
+      const x0 = i === 0 ? left : (xp(i - 1) + xp(i)) / 2, x1 = i === k - 1 ? W - right : (xp(i) + xp(i + 1)) / 2;
+      s += `<rect class="hit" x="${x0}" y="${top}" width="${x1 - x0}" height="${plotH}" data-tip="${esc(t)}"/>`;
+    });
+    s += '</svg>';
+    const rows = xs.map((x, i) => [opt.xFmt ? opt.xFmt(x) : x, ...opt.series.map((sr) => sr.values[i] == null ? null : (opt.fmt ? opt.fmt(sr.values[i]) : f3(sr.values[i])))]);
+    mount(id, legend(opt.series.map((q) => ({ ...q, kind: 'line' }))) + s, tableHtml([opt.xTitle || '', ...opt.series.map((q) => q.name)], rows));
+  }
+
+  // Dağılım grafiği (tek seri). pts: [{x,y,label}]
+  function scatter(id, opt) {
+    const el = $(id); if (!el) return;
+    const W = Math.max(320, el.clientWidth || 600), H = opt.height || 280;
+    const left = 44, bottom = 34, top = 10, right = 14, plotW = W - left - right, plotH = H - top - bottom;
+    const xp = (v) => left + (v - opt.xmin) / (opt.xmax - opt.xmin) * plotW, yp = (v) => top + plotH - v * plotH;
+    let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img">`;
+    [0, 0.25, 0.5, 0.75, 1].forEach((t) => { s += `<line class="grid-line" x1="${left}" x2="${W - right}" y1="${yp(t)}" y2="${yp(t)}"/><text x="${left - 6}" y="${yp(t) + 4}" text-anchor="end">${t}</text>`; });
+    const xt = []; for (let v = opt.xmin; v <= opt.xmax + 1e-9; v += (opt.xmax - opt.xmin) / 4) xt.push(+v.toFixed(2));
+    xt.forEach((t) => { s += `<text x="${xp(t)}" y="${H - 12}" text-anchor="middle">${t}</text>`; });
+    s += `<line class="axis" x1="${left}" x2="${W - right}" y1="${yp(0)}" y2="${yp(0)}"/><line class="axis" x1="${left}" x2="${left}" y1="${top}" y2="${yp(0)}"/>`;
+    s += `<path class="ref" d="M${xp(Math.max(opt.xmin, 0))},${yp(Math.max(opt.xmin, 0))} L${xp(1)},${yp(1)}" fill="none"/>`;
+    s += `<text x="${W / 2}" y="${H - 1}" text-anchor="middle">ortalama güven →</text>`;
+    opt.pts.forEach((p) => {
+      s += `<circle class="mark" cx="${xp(p.x)}" cy="${yp(p.y)}" r="4.5" fill="${opt.color}" stroke="${C().surface}" stroke-width="2"/>`;
+      s += `<circle class="hit" cx="${xp(p.x)}" cy="${yp(p.y)}" r="12" data-tip="${esc('<b>' + p.label + '</b><br><span class=k>güven:</span> ' + f3(p.x) + '<br><span class=k>doğruluk:</span> ' + f3(p.y))}"/>`;
+      if (p.tag) s += `<text class="val" x="${xp(p.x) + 7}" y="${yp(p.y) + 4}" style="font-size:11px">${esc(p.label)}</text>`;
+    });
+    s += '</svg>';
+    mount(id, legend([{ name: opt.name, color: opt.color }], [{ label: 'mükemmel kalibrasyon (güven = doğruluk)' }]) + s,
+      tableHtml(['dil', 'ortalama güven', 'doğruluk', 'ECE'], opt.pts.map((p) => [p.label, f3(p.x), f3(p.y), f3(p.ece)])));
+  }
+
+  function tile(l, v, d) { return `<div class="tile"><div class="l">${l}</div><div class="v">${v}</div>${d ? `<div class="d">${d}</div>` : ''}</div>`; }
+
+  // ---------- render ----------
+  const S = D.session, M = D.meta;
+  const pyOk = S.python_suites.filter((t) => t.rc === 0).length, pyAll = S.python_suites.length;
+
+  $('metaLine').innerHTML = `<span>Sürüm <code>${M.version}</code></span><span>Commit <code>${M.commit_short}</code> · ${M.commit_date.slice(0, 10)}</span><span>Lisans ${M.license}</span><span>Python ${M.python_requires}</span><span>Panel üretimi: ${M.generated_at}</span><span><a href="${M.url}">${M.repo}</a></span>`;
+  $('foot').innerHTML = `Bütün sayılar laya deposundaki <code>research/results/*.json</code> ve <code>research/benchmarks/feishu_zh/results/v1/summary.json</code> dosyalarından <code>docs/tools/build_panel_data.py</code> ile üretildi; <code>laya-typed-decisions</code> satırı BENCHMARKS.md tablosundan taşındı. Jev sayıları üçüncü taraf yayınları. Grafik renkleri CVD (renk körlüğü) denetiminden geçirildi; her grafiğin tablo görünümü var.`;
+
+  function renderAll() {
+    const c = C();
+    const SER = { en: { name: 'laya (İngilizce)', color: c.s1 }, ml: { name: 'laya-multilingual', color: c.s2 }, td: { name: 'laya-typed-decisions', color: c.s3 } };
+
+    // ---- özet ----
+    $('tiles').innerHTML =
+      tile('Kullanılabilir dil (yönlendirme ile)', `${D.sweep_summary.multilingual.languages_above_random} / 51`, `İngilizce checkpoint tek başına ${D.sweep_summary.english.languages_above_random} / 51`) +
+      tile('Tek soru, T4 GPU', `${f3(D.t4.latency['laya-multilingual']['1_questions'].p50_ms)} ms`, `İngilizce ${f3(D.t4.latency.laya['1_questions'].p50_ms)} ms; CPU 193–580 ms`) +
+      tile('typed-decisions (ince ayarlı)', '0,766', 'Jev 0,727 · taban modeller 0,36 / 0,35') +
+      tile('Ortalama ECE, yeniden fit', `${f2(D.t4.calibration.laya.refit)}`, `gönderildiği gibi ${f2(D.t4.calibration.laya.shipped)} (laya)`) +
+      tile('Bu oturumda geçen test paketi', `${pyOk} / ${pyAll}`, `Python; ayrıca TS ${S.vitest ? S.vitest.tests_passed + '/' + S.vitest.tests_total : '—'}`) +
+      tile('PyPI sürümü, 7 günde', `${M.external.pypi_releases}`, `${M.external.pypi_first_release} → ${M.external.pypi_latest_date}`) +
+      tile('Hugging Face beğeni', fi(M.external.hf_likes_laya), `laya-multilingual ${fi(M.external.hf_likes_multilingual)}`);
+
+    const appName = { 'app.email_spam': 'E-posta spam', 'app.phishing': 'Phishing', 'jev.ag_news': 'AG News (4 etiket)', 'app.guardrails_jailbreak': 'LLM guardrail (jailbreak)', 'app.rag_relevance': 'RAG geçiş ilgililiği', 'app.model_routing_domain': 'Model yönlendirme (alan)', 'jev.emotion': 'DAIR Emotion (6 etiket)', 'app.moderation_toxicity': 'Moderation (toksisite)', 'app.support_triage': 'Destek triyajı (10 kuyruk)', 'jev.banking77_full': 'banking77 (77 etiket)' };
+    const appRows = D.apps.rows.map((r) => ({ key: r.suite, label: appName[r.suite] || r.suite, r })).sort((a, b) => Math.max(b.r.english.accuracy, b.r.multilingual.accuracy, b.r['typed-decisions'].accuracy) - Math.max(a.r.english.accuracy, a.r.multilingual.accuracy, a.r['typed-decisions'].accuracy));
+    hbar('c_ozet_apps', {
+      series: [{ name: 'en iyi checkpoint doğruluğu', color: c.s1 }], labels: true, labelW: 190, rowTitle: 'tema',
+      rows: appRows.map((a) => { const best = Math.max(a.r.english.accuracy, a.r.multilingual.accuracy, a.r['typed-decisions'].accuracy); return { label: a.label, sub: a.r.in_training ? 'eğitimde' : 'görülmemiş', values: [best] }; }),
+      refs: [{ v: 0.5, label: 'ikili görevde şans (0,5)' }],
+    });
+    const sm = D.t4.summary;
+    hbar('c_ozet_route', {
+      series: [SER.en, SER.ml], labels: true, labelW: 190, rowTitle: 'görev',
+      rows: [
+        { label: 'MASSIVE intent, İngilizce', values: [sm.massive_intent_english_vs_rest.english.laya, sm.massive_intent_english_vs_rest.english['laya-multilingual']] },
+        { label: 'MASSIVE intent, 13 diğer dil', values: [sm.massive_intent_english_vs_rest.non_english.laya, sm.massive_intent_english_vs_rest.non_english['laya-multilingual']] },
+        { label: 'XNLI, İngilizce', values: [sm.xnli_english_vs_rest.english.laya, sm.xnli_english_vs_rest.english['laya-multilingual']] },
+        { label: 'XNLI, 14 diğer dil', values: [sm.xnli_english_vs_rest.non_english.laya, sm.xnli_english_vs_rest.non_english['laya-multilingual']] },
+      ],
+    });
+
+    // ---- 51 dil ----
+    const L = D.langs51;
+    $('langTiles').innerHTML =
+      tile('Makro doğruluk, İngilizce', f3(D.sweep_summary.english.macro_accuracy), `makro ECE ${f3(D.sweep_summary.english.macro_ece)} · kısıtlama sonrası ${f3(D.sweep_summary.clamped_rerun.macro_ece)}`) +
+      tile('Makro doğruluk, çok dilli', f3(D.sweep_summary.multilingual.macro_accuracy), `makro ECE ${f3(D.sweep_summary.multilingual.macro_ece)}`) +
+      tile('En kötü dil (İngilizce ckpt)', 'km 0,00', `güven ${f3(L.find((l) => l.lang === 'km').english_conf)}`) +
+      tile('En iyi dil (çok dilli ckpt)', 'en 0,68', 'sonra zh-CN 0,63, ja 0,64');
+    const sortMode = $('langSort').value;
+    const sorted = [...L].sort((a, b) => sortMode === 'gain' ? (b.multilingual_acc - b.english_acc) - (a.multilingual_acc - a.english_acc) : sortMode === 'ml' ? b.multilingual_acc - a.multilingual_acc : sortMode === 'en' ? b.english_acc - a.english_acc : a.lang.localeCompare(b.lang));
+    hbar('c_langs', {
+      series: [SER.en, SER.ml], labelW: 70, rowTitle: 'dil', barH: 9,
+      rows: sorted.map((l) => ({ label: l.lang, values: [l.english_acc, l.multilingual_acc], tips: [`ECE ${f3(l.english_ece)} · güven ${f3(l.english_conf)}`, `ECE ${f3(l.multilingual_ece)} · güven ${f3(l.multilingual_conf)}`] })),
+      refs: [{ v: 0.15, label: '3× rastgele (0,15)' }, { v: 0.05, label: 'rastgele (0,05)' }],
+    });
+    scatter('c_conf', { name: 'laya (İngilizce), dil başına', color: c.s1, xmin: 0.85, xmax: 1, pts: L.map((l) => ({ x: l.english_conf, y: l.english_acc, label: l.lang, ece: l.english_ece, tag: ['en', 'km', 'fr', 'zh-CN', 'tr', 'ja'].includes(l.lang) })) });
+    const cr = D.sweep_summary;
+    $('clampTbl').innerHTML = '<div class="scroll">' + tableHtml(['', 'depodaki koşu (0.2.0)', 'yeniden koşu, sınırlı sıcaklık (0.3.6)'], [
+      ['makro doğruluk', f3(cr.english.macro_accuracy), f3(cr.clamped_rerun.macro_accuracy)],
+      ['makro ECE', f3(cr.english.macro_ece), f3(cr.clamped_rerun.macro_ece)],
+      ['makro F1', '0,2053', f3(cr.clamped_rerun.macro_f1)],
+      ['dil sayısı', 51, cr.clamped_rerun.languages],
+    ]) + '</div>';
+    $('langSort').onchange = renderAll;
+
+    // ---- uygulamalar ----
+    hbar('c_apps', {
+      series: [SER.en, SER.ml, SER.td], labelW: 190, rowTitle: 'tema', markerName: 'Jev (yayımlanmış)', markerColor: c.s4,
+      rows: appRows.map((a) => ({ label: a.label, sub: a.r.in_training ? 'eğitimde' : 'görülmemiş', values: [a.r.english.accuracy, a.r.multilingual.accuracy, a.r['typed-decisions'].accuracy], marker: a.key === 'jev.ag_news' ? D.apps.jev_published.ag_news.accuracy : a.key === 'jev.emotion' ? D.apps.jev_published.emotion.accuracy : a.key === 'jev.banking77_full' ? D.apps.jev_published.banking77.accuracy : null })),
+      refs: [{ v: 0.5, label: 'ikili görevde şans' }],
+    });
+    hbar('c_apps_ece', {
+      series: [SER.en, SER.ml, SER.td], labelW: 190, rowTitle: 'tema', max: 0.6, ticks: [0, 0.15, 0.3, 0.45, 0.6],
+      rows: appRows.map((a) => ({ label: a.label, values: [a.r.english.ece, a.r.multilingual.ece, a.r['typed-decisions'].ece] })),
+    });
+
+    // ---- typed ----
+    const T = D.typed;
+    hbar('c_typed', {
+      series: [{ name: 'doğruluk', color: c.s1 }], labels: true, labelW: 190, rowTitle: 'model',
+      rows: T.readme_table.rows.map((r) => ({ label: r.model, values: [r.accuracy], tips: [`soft acc ${f3(r.soft_acc)} · Brier ${f3(r.brier)} · ECE ${f3(r.ece)} · score MAE ${f3(r.score_mae)}`] })),
+      refs: [{ v: T.reference.random_guess.accuracy, label: 'rastgele 0,318' }, { v: T.reference.per_question_majority_class.accuracy, label: 'çoğunluk 0,461' }, { v: T.reference.teacher_self_agreement_ceiling.accuracy, label: 'öğretmen tavanı 0,735' }],
+    });
+    const wf = T.english_by_workflow, qt = T.english_by_qtype, wfn = { agent_trace_observability: 'ajan izi gözlemi', customer_service: 'müşteri hizmetleri', invoice_processing: 'fatura işleme', security_incidents: 'güvenlik olayları' };
+    hbar('c_typed_wf', {
+      series: [SER.en, SER.td], labels: true, labelW: 170, rowTitle: 'kesit',
+      rows: [...Object.keys(wf).map((k) => ({ label: wfn[k], sub: 'iş akışı', values: [wf[k].accuracy, T.readme_table.by_workflow_typed[k]] })), ...Object.keys(qt).map((k) => ({ label: k, sub: 'soru tipi', values: [qt[k].accuracy, null] }))],
+      refs: [{ v: T.reference.per_question_majority_class.accuracy, label: 'çoğunluk 0,461' }],
+    });
+
+    // ---- hız ----
+    const lt = D.t4.latency, lc = D.latency_cpu;
+    $('speedTiles').innerHTML =
+      tile('T4, 10 soru toplu', `${f3(lt['laya-multilingual']['10_questions'].ms_per_question)} ms`, `soru başına; İngilizce ${f3(lt.laya['10_questions'].ms_per_question)} ms`) +
+      tile('CPU, 1 soru (çok dilli)', `${Math.round(lc.raw.multilingual['1_questions'].p50_ms)} ms`, `İngilizce ${Math.round(lc.raw.english['1_questions'].p50_ms)} ms · m7a.xlarge`) +
+      tile('Dil algılama', `${f3(lc.detection.hindi.p50_ms)} ms`, 'Hintçe; büyük JSON 1,6 ms') +
+      tile('Soğuk yükleme (CPU)', `${f3(Math.round(lc.cold_load_ms.english / 100) / 10)} s`, `çok dilli ${f3(Math.round(lc.cold_load_ms.multilingual / 100) / 10)} s · dil değişimi ${f3(Math.round(lc.cold_swap_median_ms / 100) / 10)} s`) +
+      tile('Tepe RSS (5 checkpoint)', `${f3(lc.meta.peak_rss_gib)} GiB`, 'ölçüm betiği toplamı');
+    const qs = ['1_questions', '5_questions', '10_questions', '50_questions'], qn = [1, 5, 10, 50];
+    line('c_lat_t4', { xs: qn, xTitle: 'soru/çağrı', xFmt: (x) => x + ' soru', fmt: (v) => fi(v) + ' ms', endLabels: true, max: 900, ticks: [0, 200, 400, 600, 800], tickFmt: (v) => fi(v),
+      series: [{ name: SER.en.name, color: c.s1, values: qs.map((q) => lt.laya[q].p50_ms) }, { name: SER.ml.name, color: c.s2, values: qs.map((q) => lt['laya-multilingual'][q].p50_ms) }] });
+    line('c_lat_cpu', { xs: qn, xTitle: 'soru/çağrı', xFmt: (x) => x + ' soru', fmt: (v) => fi(v) + ' ms', endLabels: true, max: 40000, ticks: [0, 10000, 20000, 30000, 40000], tickFmt: (v) => fi(v / 1000) + ' s',
+      series: [{ name: SER.en.name, color: c.s1, values: qs.map((q) => lc.raw.english[q].p50_ms) }, { name: SER.ml.name, color: c.s2, values: qs.map((q) => lc.raw.multilingual[q].p50_ms) }, { name: SER.td.name, color: c.s3, values: qs.map((q) => lc.raw['typed-decisions'][q].p50_ms) }] });
+    hbar('c_lb', { series: [{ name: 'hızlanma (×)', color: c.s1 }], labels: true, labelW: 200, max: 2.5, ticks: [0, 0.5, 1, 1.5, 2, 2.5], fmt: (v) => f2(v) + '×', rowTitle: 'senaryo',
+      rows: D.length_batching.cases.map((k) => ({ label: ({ 'english, mixed lengths': 'İngilizce, karışık uzunluk', 'english, similar lengths': 'İngilizce, benzer uzunluk', 'multilingual, three question types': 'çok dilli, 3 soru tipi', 'multilingual, 1000 inputs': 'çok dilli, 1.000 girdi', 'multilingual, 10000 inputs': 'çok dilli, 10.000 girdi' })[k.name] || k.name, sub: `${k.states} girdi, batch ${k.batch_size}`, values: [k.speedup] })), refs: [{ v: 1, label: 'değişim yok (1×)' }] });
+
+    // ---- kalibrasyon ----
+    cols('c_cal', { cats: ['laya (İngilizce)', 'laya-multilingual'], catTitle: 'checkpoint', labels: true, max: 0.6, ticks: [0, 0.15, 0.3, 0.45, 0.6], fmt: f3,
+      series: [{ name: 'gönderildiği gibi', color: c.s1, values: [D.t4.calibration.laya.shipped, D.t4.calibration['laya-multilingual'].shipped] }, { name: 'sıcaklık yeniden fit', color: c.s3, values: [D.t4.calibration.laya.refit, D.t4.calibration['laya-multilingual'].refit] }] });
+    const oo = D.t4.option_order;
+    cols('c_flip', { cats: ['MASSIVE intent (20 seç.)', 'Emotion (6 seç.)', 'XNLI (3 seç.)'], catTitle: 'paket', labels: true, max: 0.3, ticks: [0, 0.1, 0.2, 0.3], fmt: f3,
+      series: [{ name: SER.en.name, color: c.s1, values: [oo.laya['massive_intent.en'].flip_rate, oo.laya['en.emotion'].flip_rate, oo.laya['xnli.en'].flip_rate] }, { name: SER.ml.name, color: c.s2, values: [oo['laya-multilingual']['massive_intent.en'].flip_rate, oo['laya-multilingual']['en.emotion'].flip_rate, oo['laya-multilingual']['xnli.en'].flip_rate] }, { name: 'Jev (bağımsız ölçüm)', color: c.s4, values: [0.13, null, null] }] });
+
+    // ---- uzun bağlam ----
+    const R = D.long_context.rows, pads = [...new Set(R.map((r) => r.pad_tokens))];
+    const pick = (lim, key) => pads.map((p) => { const r = R.find((q) => q.pad_tokens === p && q.limit === lim); return r ? r[key] : null; });
+    line('c_lc_acc', { xs: pads, xTitle: 'öndeki dolgu (token)', xFmt: (x) => fi(x), fmt: (v) => f3(v), max: 1, ticks: [0, 0.25, 0.5, 0.75, 1], tickFmt: (v) => v,
+      series: [{ name: 'max_len=1024 (varsayılan)', color: c.s1, values: pick(1024, 'accuracy') }, { name: 'max_len=8192', color: c.s2, values: pick(8192, 'accuracy') }] });
+    line('c_lc_lat', { xs: pads, xTitle: 'öndeki dolgu (token)', xFmt: (x) => fi(x), fmt: (v) => f2(v) + ' s', max: 5, ticks: [0, 1, 2, 3, 4, 5], tickFmt: (v) => v + ' s', endLabels: true,
+      series: [{ name: 'max_len=1024 (varsayılan)', color: c.s1, values: pick(1024, 'median_latency_s') }, { name: 'max_len=8192', color: c.s2, values: pick(8192, 'median_latency_s') }] });
+
+    // ---- feishu ----
+    const F = D.feishu;
+    hbar('c_fs', { series: [{ name: 'laya-multilingual (taban)', color: c.s2 }, { name: 'Jev 1.13.0', color: c.s4 }], labels: true, labelW: 200, rowTitle: 'mod',
+      rows: [{ label: 'choice (4 seçenek)', values: [F.laya.choice.accuracy, F.jev.choice.accuracy], tips: [`${F.laya.choice.correct}/64 · yanlış eylem ${F.laya.choice.false_action_count} · p50 ${fi(F.laya.choice.p50_ms)} ms`, `${F.jev.choice.correct}/64 · p50 ${fi(F.jev.choice.p50_ms)} ms`] },
+             { label: 'four_noul (4 evet/hayır)', values: [F.laya.four_noul.accuracy, F.jev.four_noul.accuracy], tips: [`${F.laya.four_noul.correct}/64 · yanlış eylem ${F.laya.four_noul.false_action_count}`, `${F.jev.four_noul.correct}/64`] }],
+      refs: [{ v: 0.25, label: 'rastgele (0,25)' }] });
+    const famN = { conditional: 'koşullu', cancellation: 'iptal', urgency: 'aciliyet', ownership: 'sahiplik', knowledge: 'bilgi paylaşımı', knowledge_sharing: 'bilgi paylaşımı', lifecycle: 'yaşam döngüsü', thread_context: 'konu bağlamı', cross_chat: 'sohbetler arası', untrusted_content: 'güvenilmeyen içerik', quoted_instruction: 'alıntılanan talimat' };
+    const fams = Object.keys(F.laya.choice.by_family);
+    hbar('c_fs_fam', { series: [{ name: 'laya-multilingual (taban)', color: c.s2 }, { name: 'Jev 1.13.0', color: c.s4 }], labels: true, labelW: 170, rowTitle: 'aile', fmt: (v) => Math.round(v * 8) + '/8',
+      rows: fams.map((k) => ({ label: famN[k] || k, values: [F.laya.choice.by_family[k].accuracy, F.jev.choice.by_family[k].accuracy] })), refs: [{ v: 0.25, label: 'rastgele' }] });
+
+    // ---- testler ----
+    $('testTiles').innerHTML =
+      tile('Python paketleri', `${pyOk} / ${pyAll}`, 'geçen / koşulan') +
+      tile('TypeScript testleri', S.vitest ? `${S.vitest.tests_passed} / ${S.vitest.tests_total}` : '—', S.vitest ? `${S.vitest.files_passed} dosya, ${f3(S.vitest.duration_s)} s` : '') +
+      tile('Lint (ruff, CI kapısı)', 'temiz', 'compileall temiz') +
+      tile('Çince denetim', 'hash OK', '6 unittest OK') +
+      tile('Ortam', S.environment.torch, `Python ${S.environment.python} · Node ${S.environment.node}`);
+    const rowsT = S.python_suites.map((t) => [t.name, t.rc === 0 ? '<span class="badge ok">geçti</span>' : '<span class="badge fail">başarısız (ağırlık gerekir)</span>', f3(Math.round(t.seconds * 10) / 10) + ' s']);
+    $('pyTests').innerHTML = '<div class="scroll"><table><thead><tr><th>paket</th><th>sonuç</th><th class="num">süre</th></tr></thead><tbody>' + rowsT.map((r) => `<tr><td><code>${esc(r[0])}</code></td><td>${r[1]}</td><td class="num">${r[2]}</td></tr>`).join('') + '</tbody></table></div>';
+    $('tsTests').innerHTML = S.vitest ? `<p style="margin:4px 0"><span class="badge ok">geçti</span> ${S.vitest.files_passed}/${S.vitest.files_total} dosya, ${S.vitest.tests_passed}/${S.vitest.tests_total} test, ${S.vitest.duration_s} s (vitest ${S.vitest.vitest}, Node ${S.vitest.node})</p><pre>${esc(S.vitest.command)}</pre>` : '—';
+    $('feishuAudit').textContent = S.feishu_audit.command + '\n' + S.feishu_audit.lines.join('\n') + '\n\n' + S.feishu_audit.unittest;
+    $('sessionNotes').innerHTML = (S.notes || []).map((n) => `<li>${esc(n)}</li>`).join('') + `<li>${esc(S.environment.note)}</li>`;
+
+    // ---- repo ----
+    const K = M.code;
+    $('repoTiles').innerHTML =
+      tile('Paket kaynak satırı', fi(K.laya_py_lines), `${K.laya_py_files} Python dosyası`) +
+      tile('Test satırı (Python)', fi(K.tests_py_lines), `${K.tests_py_files} dosya · oran ${f3(Math.round(K.tests_py_lines / K.laya_py_lines * 10) / 10)}×`) +
+      tile('Araştırma kodu', fi(K.research_py_lines), 'benchmark + eval harness') +
+      tile('TypeScript', fi(K.ts_src_lines), `+ ${fi(K.ts_test_lines)} test satırı, ${K.ts_test_files} dosya`) +
+      tile('Belge sayfası', K.docs_md_files, 'docs/ altında .md') +
+      tile('CI iş akışı', K.workflows.length, K.workflows.map((w) => w.replace('.yml', '')).join(', '));
+  }
+
+  let raf = null;
+  window.addEventListener('resize', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(renderAll); });
+  showTab(location.hash);
+})();
+</script>
+</body>
+</html>
