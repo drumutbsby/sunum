@@ -65,7 +65,7 @@ jobs:
           pip install torch --index-url https://download.pytorch.org/whl/cpu
           pip install laya typesafe-sdk
 
-      - name: Anahtar var mı? (teşhis: yalnızca adlar yazılır, değerler maskeli)
+      - name: "Anahtar var mı? (teşhis - yalnızca adlar yazılır, değerler maskeli)"
         id: key
         env:
           SECRET_NAMES: ${{ toJSON(secrets) }}
