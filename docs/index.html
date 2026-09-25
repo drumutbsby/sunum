@@ -104,6 +104,17 @@ ul.tight li b { color: var(--ink); }
 .verdict { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 .verdict .card h3 { display: flex; align-items: center; gap: 8px; }
 .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+tr.sim-row { cursor: pointer; }
+tr.sim-row:hover td { background: var(--page); }
+tr.sim-detail td { background: var(--page); padding: 12px 10px; }
+.pbar { display: grid; grid-template-columns: 150px 1fr 56px; gap: 8px; align-items: center; font-size: 13px; margin: 3px 0; }
+.pbar .bar { height: 8px; background: var(--grid); border-radius: 4px; overflow: hidden; }
+.pbar .bar i { display: block; height: 100%; background: var(--s1); border-radius: 4px; }
+.pbar.exp .bar i { background: var(--s3); }
+.pbar .v { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.qblock { margin: 8px 0 10px; }
+.qblock .qh { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13.5px; margin-bottom: 4px; }
+.state-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 13.5px; margin-bottom: 8px; white-space: pre-wrap; }
 #tip { position: fixed; pointer-events: none; z-index: 20; background: var(--surface); color: var(--ink); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 12.5px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); display: none; max-width: 300px; }
 #tip .k { color: var(--ink-2); }
 pre { background: var(--page); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font: 12.5px ui-monospace, SFMono-Regular, Menlo, monospace; overflow-x: auto; margin: 6px 0 0; }
@@ -135,6 +146,7 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; border-to
   <a href="#kalibrasyon">Kalibrasyon & sağlamlık</a>
   <a href="#uzun">Uzun bağlam</a>
   <a href="#feishu">Çince diagnostik</a>
+  <a href="#simulasyon">Simülasyon</a>
   <a href="#testler">Bu oturumdaki testler</a>
   <a href="#repo">Repo yapısı</a>
   <a href="#degerlendirme">Genel değerlendirme</a>
@@ -370,6 +382,47 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; border-to
   </div>
 </section>
 
+<!-- ============ SİMÜLASYON ============ -->
+<section class="panel" id="simulasyon">
+  <h2>Senaryo simülasyonu: Laya, Jev gibi karar veriyor</h2>
+  <p class="lead" id="simLead">Gerçek checkpoint'lerle, bu oturumda koşuldu. Her senaryo tek çağrıda tipli sorulara (<code>choice</code> / <code>score</code> / <code>noul</code>) cevaplanıyor; Jev'in <code>/v1/systemone</code> yanıtıyla aynı şema. Her senaryo üç kez cevaplandı: Router'ın seçtiği checkpoint, zorla İngilizce, zorla çok dilli.</p>
+  <div class="tiles" id="simTiles"></div>
+  <div class="grid two">
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Soru başına doğruluk</h3><div class="sub">Beklenen etiketle uyum; noul için eşik 0,5, score için en olası seviye</div></div><button type="button" data-tbl="c_sim_q">Tablo</button></div>
+      <div id="c_sim_q"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Dil başına doğruluk</h3><div class="sub">Yönlendirilmiş, zorla İngilizce ve zorla çok dilli</div></div><button type="button" data-tbl="c_sim_lang">Tablo</button></div>
+      <div id="c_sim_lang"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <div class="card-head"><div class="t"><h3>Senaryo ailesine göre doğruluk (yönlendirilmiş)</h3><div class="sub">Hangi tür isteklerde doğru, hangilerinde yanlış karar veriyor</div></div><button type="button" data-tbl="c_sim_fam">Tablo</button></div>
+    <div id="c_sim_fam"></div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <div class="card-head">
+      <div class="t"><h3>Senaryolar</h3><div class="sub">Satıra tıklayınca durum metni, beklenen ve verilen cevaplar, olasılıklar açılır</div></div>
+      <select id="simLang"><option value="">Dil: hepsi</option></select>
+      <select id="simSet"><option value="">Soru seti: hepsi</option><option value="destek">destek</option><option value="guvenlik">güvenlik</option></select>
+      <select id="simOnly"><option value="">Sonuç: hepsi</option><option value="wrong">yalnızca hatalı</option><option value="ok">yalnızca tam doğru</option></select>
+    </div>
+    <div class="scroll" id="simTable"></div>
+  </div>
+  <div class="grid two" style="margin-top:14px">
+    <div class="card">
+      <h3>Örnek ham yanıt (Jev uyumlu şema)</h3>
+      <div class="sub" id="simRawLabel" style="color:var(--ink-2);font-size:13px"></div>
+      <pre id="simRaw" style="max-height:420px;overflow:auto"></pre>
+    </div>
+    <div class="card">
+      <h3>Okuma notları</h3>
+      <ul class="tight" id="simNotes"></ul>
+    </div>
+  </div>
+</section>
+
 <!-- ============ TESTLER ============ -->
 <section class="panel" id="testler">
   <h2>Bu oturumda koşulan testler</h2>
@@ -477,6 +530,7 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; border-to
 <footer><div class="wrap" id="foot"></div></footer>
 
 <script src="data.js"></script>
+<script src="sim_data.js"></script>
 <script>
 (function () {
   const D = window.LAYA_DATA;
@@ -836,6 +890,9 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; border-to
     $('feishuAudit').textContent = S.feishu_audit.command + '\n' + S.feishu_audit.lines.join('\n') + '\n\n' + S.feishu_audit.unittest;
     $('sessionNotes').innerHTML = (S.notes || []).map((n) => `<li>${esc(n)}</li>`).join('') + `<li>${esc(S.environment.note)}</li>`;
 
+    // ---- simülasyon ----
+    renderSim();
+
     // ---- repo ----
     const K = M.code;
     $('repoTiles').innerHTML =
@@ -845,6 +902,100 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; border-to
       tile('TypeScript', fi(K.ts_src_lines), `+ ${fi(K.ts_test_lines)} test satırı, ${K.ts_test_files} dosya`) +
       tile('Belge sayfası', K.docs_md_files, 'docs/ altında .md') +
       tile('CI iş akışı', K.workflows.length, K.workflows.map((w) => w.replace('.yml', '')).join(', '));
+  }
+
+  // ---------- simülasyon ----------
+  const SIM = window.LAYA_SIM;
+  function simDecisionText(a, qdef) {
+    if (a.type === 'choice') return a.choice;
+    if (a.type === 'noul') return a.noul >= 0.5 ? 'evet' : 'hayır';
+    const probs = a.probabilities; const k = Object.keys(probs).reduce((m, x) => probs[x] > probs[m] ? x : m);
+    return `seviye ${k}`;
+  }
+  function simExpectedText(v, qdef) {
+    if (qdef.type === 'noul') return v ? 'evet' : 'hayır';
+    if (qdef.type === 'score') return `seviye ${v}`;
+    return String(v);
+  }
+  function simDetail(e, mode) {
+    const r = e.runs[mode], qs = SIM.question_sets[e.question_set];
+    let h = `<div class="state-box">${Object.entries(e.state).map(([k, v]) => `<b>${esc(k)}:</b> ${esc(v)}`).join('\n')}</div>`;
+    h += `<div class="note" style="margin:0 0 8px"><b>checkpoint:</b> ${esc(r.model)} · <b>gerekçe:</b> ${esc(e.routing.reason || '')} · <b>süre:</b> ${f3(r.ms)} ms · <b>girdi token:</b> ${r.usage ? r.usage.input_tokens : '—'}</div>`;
+    for (const [qid, qdef] of Object.entries(qs)) {
+      const a = r.answers[qid], ok = r.correct[qid], exp = e.expected[qid];
+      h += `<div class="qblock"><div class="qh"><b>${esc(qid)}</b> <span class="badge ${ok ? 'ok' : 'fail'}">${ok ? 'doğru' : 'yanlış'}</span> <span style="color:var(--ink-2)">${esc(qdef.instructions)}</span></div>`;
+      h += `<div class="pbar"><span>beklenen</span><span></span><span class="v">${esc(simExpectedText(exp, qdef))}</span></div>`;
+      if (a.type === 'noul') {
+        h += `<div class="pbar ${a.noul >= 0.5 === exp ? 'exp' : ''}"><span>P(evet)</span><div class="bar"><i style="width:${(a.noul * 100).toFixed(1)}%"></i></div><span class="v">${f3(a.noul)}</span></div>`;
+      } else {
+        const probs = a.probabilities, best = Object.keys(probs).reduce((m, x) => probs[x] > probs[m] ? x : m);
+        for (const [k, p] of Object.entries(probs)) {
+          const label = a.type === 'score' ? `${k}: ${a.legend[k]}` : k;
+          h += `<div class="pbar ${String(k) === String(exp) ? 'exp' : ''}"><span title="${esc(label)}">${esc(label.length > 22 ? label.slice(0, 21) + '…' : label)}${k === best ? ' ◀' : ''}</span><div class="bar"><i style="width:${(p * 100).toFixed(1)}%"></i></div><span class="v">${f3(p)}</span></div>`;
+        }
+        if (a.type === 'score') h += `<div class="note" style="margin:2px 0 0">beklenen değer (skor): ${f3(a.score)}</div>`;
+      }
+      h += `<div class="note" style="margin:2px 0 0">answer_confidence ${f3(a.answer_confidence)} · confidence ${f3(a.confidence)}</div></div>`;
+    }
+    return h;
+  }
+  function renderSimTable() {
+    if (!SIM) return;
+    const lang = $('simLang').value, set = $('simSet').value, only = $('simOnly').value;
+    const rows = SIM.results.filter((e) => (!lang || e.lang === lang) && (!set || e.question_set === set) && (!only || (only === 'wrong' ? !Object.values(e.runs.routed.correct).every(Boolean) : Object.values(e.runs.routed.correct).every(Boolean))));
+    let h = '<table><thead><tr><th>id</th><th>dil</th><th>aile</th><th>checkpoint</th><th>kararlar</th><th class="num">doğru</th><th class="num">süre</th></tr></thead><tbody>';
+    rows.forEach((e) => {
+      const r = e.runs.routed, qs = SIM.question_sets[e.question_set];
+      const ok = Object.values(r.correct).filter(Boolean).length, n = Object.keys(r.correct).length;
+      const dec = Object.entries(r.decided).map(([q, v]) => `<span class="badge ${r.correct[q] ? 'ok' : 'fail'}" title="${esc(q)}">${esc(q)}: ${esc(simDecisionText(r.answers[q], qs[q]))}</span>`).join(' ');
+      h += `<tr class="sim-row" data-id="${esc(e.id)}"><td><code>${esc(e.id)}</code></td><td>${esc(e.lang)}</td><td>${esc(e.family)}</td><td>${esc(r.model)}</td><td>${dec}</td><td class="num">${ok}/${n}</td><td class="num">${fi(r.ms)} ms</td></tr>`;
+      h += `<tr class="sim-detail" data-for="${esc(e.id)}" style="display:none"><td colspan="7"></td></tr>`;
+    });
+    h += '</tbody></table>';
+    $('simTable').innerHTML = h;
+    $('simTable').querySelectorAll('tr.sim-row').forEach((tr) => tr.addEventListener('click', () => {
+      const d = $('simTable').querySelector(`tr.sim-detail[data-for="${tr.dataset.id}"]`);
+      const open = d.style.display !== 'none';
+      d.style.display = open ? 'none' : '';
+      if (!open && !d.firstElementChild.innerHTML) d.firstElementChild.innerHTML = simDetail(SIM.results.find((e) => e.id === tr.dataset.id), 'routed');
+    }));
+  }
+  function renderSim() {
+    if (!SIM) { const s = $('simulasyon'); if (s) s.querySelector('.lead').textContent = 'Simülasyon verisi (sim_data.js) bulunamadı. docs/tools/simulate.py ile üretin.'; return; }
+    const c = C(), S3 = SIM.summary, M3 = SIM.meta;
+    const modes = [{ key: 'routed', name: 'Router (yönlendirilmiş)', color: c.s1 }, { key: 'english', name: 'zorla laya (İngilizce)', color: c.s2 }, { key: 'multilingual', name: 'zorla laya-multilingual', color: c.s3 }];
+    $('simTiles').innerHTML =
+      tile('Doğru karar (yönlendirilmiş)', `${S3.routed.correct} / ${S3.routed.n_decisions}`, `${f3(S3.routed.accuracy * 100)} % · ${M3.n_scenarios} senaryo`) +
+      tile('Tümü doğru senaryo', `${S3.routed.scenarios_fully_correct} / ${S3.routed.n_scenarios}`, 'her soru doğru olan senaryolar') +
+      tile('Zorla İngilizce / çok dilli', `${f3(S3.english.accuracy * 100)} % / ${f3(S3.multilingual.accuracy * 100)} %`, 'karar doğruluğu') +
+      tile('p50 gecikme (senaryo başı)', `${fi(S3.routed.latency_ms.p50)} ms`, `p95 ${fi(S3.routed.latency_ms.p95)} ms · CPU ${M3.threads} iş parçacığı`) +
+      tile('answer_confidence ≥ 0,8 kapısı', `${f3(S3.routed.gate_0_8.automated_share * 100)} %`, `otomatikleşen pay; bunların doğruluğu ${S3.routed.gate_0_8.accuracy_of_automated == null ? '—' : f3(S3.routed.gate_0_8.accuracy_of_automated * 100) + ' %'}`) +
+      tile('Güven: doğru vs yanlış', `${f3(S3.routed.mean_answer_confidence_when_correct)} / ${f3(S3.routed.mean_answer_confidence_when_wrong)}`, 'ortalama answer_confidence');
+    const qids = Object.keys(S3.routed.by_question);
+    hbar('c_sim_q', { series: modes.map((m) => ({ name: m.name, color: m.color })), labelW: 150, rowTitle: 'soru', labels: false,
+      rows: qids.map((q) => ({ label: q, sub: `${S3.routed.by_question[q].n} karar`, values: modes.map((m) => S3[m.key].by_question[q].accuracy) })), refs: [{ v: 0.5, label: 'ikili şans (0,5)' }] });
+    const langs = Object.keys(S3.routed.by_lang);
+    hbar('c_sim_lang', { series: modes.map((m) => ({ name: m.name, color: m.color })), labelW: 90, rowTitle: 'dil',
+      rows: langs.map((l) => ({ label: l, sub: `${S3.routed.by_lang[l].n} karar`, values: modes.map((m) => S3[m.key].by_lang[l].accuracy) })) });
+    const fams = Object.entries(S3.routed.by_family).sort((a, b) => b[1].accuracy - a[1].accuracy);
+    hbar('c_sim_fam', { series: [{ name: 'Router (yönlendirilmiş)', color: c.s1 }], labelW: 230, labels: true, rowTitle: 'aile',
+      rows: fams.map(([f, v]) => ({ label: f, sub: `${v.correct}/${v.n} karar`, values: [v.accuracy] })) });
+    const sel = $('simLang');
+    if (sel.options.length === 1) { langs.forEach((l) => { const o = document.createElement('option'); o.value = l; o.textContent = 'Dil: ' + l; sel.appendChild(o); }); [sel, $('simSet'), $('simOnly')].forEach((x) => x.addEventListener('change', renderSimTable)); }
+    renderSimTable();
+    const sample = SIM.results.find((e) => e.id === 'tr-01') || SIM.results[0];
+    $('simRawLabel').textContent = `${sample.id} · Router.predict(state, questions) çıktısı`;
+    $('simRaw').textContent = JSON.stringify({ answers: sample.runs.routed.answers, routing: sample.routing, usage: sample.runs.routed.usage }, null, 1);
+    const notes = [];
+    const worstQ = qids.map((q) => [q, S3.routed.by_question[q].accuracy]).sort((a, b) => a[1] - b[1])[0];
+    const bestQ = qids.map((q) => [q, S3.routed.by_question[q].accuracy]).sort((a, b) => b[1] - a[1])[0];
+    notes.push(`<b>En iyi soru:</b> ${esc(bestQ[0])} (${f3(bestQ[1] * 100)} %). <b>En zayıf soru:</b> ${esc(worstQ[0])} (${f3(worstQ[1] * 100)} %).`);
+    const worstF = fams[fams.length - 1], bestF = fams[0];
+    notes.push(`<b>En zayıf aile:</b> ${esc(worstF[0])} (${worstF[1].correct}/${worstF[1].n}); <b>en iyi:</b> ${esc(bestF[0])} (${bestF[1].correct}/${bestF[1].n}).`);
+    notes.push(`<b>Yönlendirme:</b> ${Object.entries(M3.routed_models).map(([m, n]) => `${n} senaryo → ${m}`).join(', ')}. Zorla İngilizce ${f3(S3.english.accuracy * 100)} %, zorla çok dilli ${f3(S3.multilingual.accuracy * 100)} %, Router ${f3(S3.routed.accuracy * 100)} %.`);
+    notes.push(`<b>Güven ayrımı:</b> doğru kararlarda ortalama answer_confidence ${f3(S3.routed.mean_answer_confidence_when_correct)}, yanlışlarda ${f3(S3.routed.mean_answer_confidence_when_wrong)}. Fark ne kadar küçükse güvenle eleme o kadar az işe yarar.`);
+    notes.push(`<b>Sınırlar:</b> ${esc(M3.note)} Senaryo sayısı küçük (${M3.n_scenarios}); yüzdeler yön gösterir, istatistiksel kesinlik taşımaz. Ortam: laya ${esc(M3.laya)}, torch ${esc(M3.torch)}, ${esc(M3.device)}, yükleme ${f3(M3.load_s)} s, ${esc(M3.timestamp)}.`);
+    $('simNotes').innerHTML = notes.map((n) => `<li>${n}</li>`).join('');
   }
 
   let raf = null;
