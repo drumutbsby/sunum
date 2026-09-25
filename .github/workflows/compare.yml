@@ -5,9 +5,14 @@ name: Jev vs Laya karşılaştırması
 #
 # Bir kez: Settings -> Secrets and variables -> Actions -> New repository secret
 #   Name: TYPESAFE_API_KEY   Secret: ts-...
-# Sonra: Actions -> "Jev vs Laya karşılaştırması" -> Run workflow.
+# Sonra: docs/compare/run.txt dosyasını düzenleyip commit'leyin (ya da varsayılan dalda
+# Actions -> "Jev vs Laya karşılaştırması" -> Run workflow).
 
 on:
+  # docs/compare/run.txt dosyasına dokunan her push bu iş akışını çalıştırır (GitHub'da
+  # dosyayı düzenleyip commit'lemek yeter). Sonuç dosyaları filtre dışında, döngü olmaz.
+  push:
+    paths: [docs/compare/run.txt]
   workflow_dispatch:
     inputs:
       backends:

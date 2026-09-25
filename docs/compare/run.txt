@@ -1,0 +1,4 @@
+Bu dosyaya yapılan her commit "Jev vs Laya karşılaştırması" iş akışını başlatır.
+Bir satır ekleyip commit'lemek yeter.
+
+2026-09-25 07:58 UTC — ilk koşu (laya,jev)
