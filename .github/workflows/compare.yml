@@ -1,0 +1,104 @@
+name: Jev vs Laya karşılaştırması
+
+# Aynı senaryoları Jev (TypeSafe API) ve Laya'ya verir, sonuçları docs/compare/ altına yazar
+# ve dala geri commit'ler; Pages iş akışı bunu yayımlar.
+#
+# Bir kez: Settings -> Secrets and variables -> Actions -> New repository secret
+#   Name: TYPESAFE_API_KEY   Secret: ts-...
+# Sonra: Actions -> "Jev vs Laya karşılaştırması" -> Run workflow.
+
+on:
+  workflow_dispatch:
+    inputs:
+      backends:
+        description: "Koşulacak backend'ler (virgülle): laya,jev"
+        default: "laya,jev"
+        type: string
+      jev_model:
+        description: "Jev model kimliği"
+        default: "jev-latest"
+        type: string
+      limit:
+        description: "Yalnızca ilk N senaryo (0 = hepsi)"
+        default: "0"
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: compare-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  USE_TF: "0"
+  TOKENIZERS_PARALLELISM: "false"
+  HF_HUB_DISABLE_PROGRESS_BARS: "1"
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Laya checkpoint önbelleği
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: laya-ckpt-${{ runner.os }}-v1
+
+      - name: Bağımlılıklar (CPU torch, laya, typesafe-sdk)
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install laya typesafe-sdk
+
+      - name: Anahtar var mı?
+        id: key
+        env:
+          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+        run: |
+          if [ -z "$TYPESAFE_API_KEY" ]; then
+            echo "TYPESAFE_API_KEY secret'ı tanımlı değil; yalnızca laya koşulacak" >&2
+            echo "backends=laya" >> "$GITHUB_OUTPUT"
+          else
+            echo "backends=${{ github.event.inputs.backends || 'laya,jev' }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Karşılaştırmayı koş
+        env:
+          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+          OMP_NUM_THREADS: "2"
+        run: |
+          LIMIT="${{ github.event.inputs.limit || '0' }}"
+          python docs/tools/compare_jev_laya.py \
+            --backends "${{ steps.key.outputs.backends }}" \
+            --jev-model "${{ github.event.inputs.jev_model || 'jev-latest' }}" \
+            --threads 2 --merge --limit "$LIMIT"
+
+      - name: Sonuçları dala commit'le
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/compare/results.json docs/compare_data.js
+          if git diff --cached --quiet; then
+            echo "değişiklik yok"
+          else
+            git commit -m "karşılaştırma: Jev vs Laya sonuçları (Actions, run ${{ github.run_number }})"
+            git push
+          fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: compare-results
+          path: |
+            docs/compare/results.json
+            docs/compare_data.js

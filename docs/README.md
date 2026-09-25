@@ -14,3 +14,9 @@ Yayımlamak için depo ayarlarında **Settings → Pages → Source: GitHub Acti
 - `sim/scenarios.json` — 54 senaryo (tr, en, de, es, fr, hi, ar), iki soru seti (`destek`, `guvenlik`), beklenen etiketler
 - `tools/simulate.py` — senaryoları gerçek checkpoint'lerle koşturur; `python docs/tools/simulate.py --threads 4`
 - `sim/results.json` ve `sim_data.js` — ham cevaplar, olasılıklar, gecikme ve özet metrikler (panelin Simülasyon sekmesi)
+
+## Jev karşılaştırması
+
+- `compare/scenarios_kredi.json` — kredi tahsisi onay süreci senaryoları (kullanıcının TypeSafe test betiğinden)
+- `tools/compare_jev_laya.py` — aynı senaryoları Jev (TypeSafe API) ve Laya'ya verir; `TYPESAFE_API_KEY` ortam değişkeni gerekir
+- `.github/workflows/compare.yml` — Actions'ta koşar, sonuçları `compare/results.json` ve `compare_data.js` olarak dala commit'ler

@@ -1,0 +1,115 @@
+{
+  "_about": "Kredi tahsisi onay süreci senaryoları (Şube → Genel Müdürlük → Pazarlama). Kullanıcının TypeSafe test betiğinden alındı; soru seti Jev SDK'daki Noul/Choice/Score tanımlarının JSON hâli. `expected` içindeki liste değerleri 'bunlardan herhangi biri kabul' anlamına gelir; olmayan anahtar puanlanmaz.",
+  "question_set": {
+    "borçlanma_kapasitesi": {
+      "type": "noul",
+      "instructions": "Does the customer have sufficient and stable income to repay the loan based on their employment status, income amount, and debt-to-income ratio? Consider: employment stability (fixed vs. variable), total obligations, and ability to maintain payments.",
+      "criteria": {
+        "true": "The customer has stable or verifiable income with debt-to-income ratio below 0.60, or self-employed with audited financials showing capacity.",
+        "false": "Income is unstable, undocumented, or debt-to-income ratio exceeds 0.65, making repayment problematic."
+      }
+    },
+    "kredi_gecmisi_temiz": {
+      "type": "noul",
+      "instructions": "Has the customer maintained good credit discipline over the past 2 years? Look for: no missed payments, no recent defaults, consistent account management.",
+      "criteria": {
+        "true": "Customer has no late payments in the past 2 years, or late payments are isolated and resolved more than 18 months ago.",
+        "false": "Multiple late payments (3+) or recent defaults (within last 12 months), suggesting payment discipline issues."
+      }
+    },
+    "yeterli_varlik": {
+      "type": "noul",
+      "instructions": "Does the customer have sufficient liquid or fixed assets to provide security or cushion against default? Consider: liquid savings, real estate, business assets.",
+      "criteria": {
+        "true": "Liquid assets > 50,000 TL OR real estate/collateral worth 3x+ of loan amount.",
+        "false": "Minimal liquid assets and no substantial collateral to mitigate risk."
+      }
+    },
+    "belgeler_tam": {
+      "type": "noul",
+      "instructions": "Are all required loan application documents submitted and verified? Check for: income verification, employment letter, tax return, bank statements, ID, residence proof.",
+      "criteria": {
+        "true": "All required documents are present and verified.",
+        "false": "Documents are incomplete, missing, or unverified."
+      }
+    },
+    "kredi_amaci_uygun": {
+      "type": "noul",
+      "instructions": "Is the stated purpose of the loan appropriate and verifiable? Red flags: debt consolidation without clear reason, overly large amounts for vague purposes, signs of credit abuse.",
+      "criteria": {
+        "true": "Purpose is clear and productive (renovation, business, education) or consolidation with documented plan.",
+        "false": "Purpose is vague, suspicious (quick cash-out), or signs of distress (consolidating high debts, multiple recent applications)."
+      }
+    },
+    "onay_seviyesi": {
+      "type": "choice",
+      "instructions": "At what level should this loan application be decided? Consider risk profile, document completeness, and decision authority rules.",
+      "criteria": {
+        "sube_onayi": "Low-risk customer with complete documents, good credit, stable income, low loan amount. Branch manager can decide (< 200K limit).",
+        "genel_mudurluk": "Medium-risk customer: moderate income, some documentation gaps, or credit history issues, but overall viable. Requires GM review.",
+        "pazarlama_onayi": "High-risk or strategic decision needed: complex case, marginal financials, or marketing/business development angle. Needs Marketing/GM approval.",
+        "red_onerisi": "Very high-risk: inadequate documents, unstable income, recent defaults, vague purpose, or insufficient collateral. Recommend rejection."
+      }
+    },
+    "aciliyet": {
+      "type": "score",
+      "instructions": "How time-sensitive is this decision? Does the customer have a compelling reason for urgency, or is it artificial pressure?",
+      "criteria": [
+        "Routine: Normal processing time (5-7 days) is acceptable.",
+        "Moderate: Should be reviewed this week (customer needs clear timeline).",
+        "Urgent: Same-day or next-day decision required (valid business reason needed)."
+      ]
+    },
+    "risk_seviyesi": {
+      "type": "score",
+      "instructions": "Overall risk assessment. Aggregate income stability, credit history, collateral, and document completeness into a single risk score.",
+      "criteria": [
+        "Low: All factors positive, minimal default risk.",
+        "Medium: Mixed signals, manageable with conditions or monitoring.",
+        "High: Significant concerns, high default probability without additional security."
+      ]
+    }
+  },
+  "scenarios": [
+    {
+      "id": "kredi-1", "lang": "tr", "family": "düşük risk", "title": "SENARYO 1: DÜŞÜK RİSK - Onaylanabilir Müşteri",
+      "state": {
+        "tipi": "Yeni müşteri kredi talebim", "kaynak": "Şube",
+        "musteri_profili": {"yas": 35, "calisan_statüsü": "Özel sektörde 10 yıl sabit istihdam", "kredi_geçmişi": "Limitsiz banka kartı kullanıyor, hiç gecikme yok", "gelir": "Aylık 45.000 TL", "istenen_tutar": "100.000 TL", "kredi_taksit_orani": "%18", "amaç": "Ev renovasyonu"},
+        "sube_notu": "Müşteri 15 yıldır hesabımızda. Banka kartında düzenli ödeme yapıyor. Ev sahibi, sosyal çevrede saygılı. Başvuru belgeleri tam ve doğru. Şeffaf bir insan, risk düşük olarak görüyoruz.",
+        "bilanzolar": {"borç_gelir_orani": 0.35, "likit_varlik": 250000, "gayrimenkul_varlik": 800000}
+      },
+      "expected": {"borçlanma_kapasitesi": true, "kredi_gecmisi_temiz": true, "yeterli_varlik": true, "belgeler_tam": true, "kredi_amaci_uygun": true, "onay_seviyesi": "sube_onayi", "aciliyet": 0, "risk_seviyesi": 0}
+    },
+    {
+      "id": "kredi-2", "lang": "tr", "family": "orta risk", "title": "SENARYO 2: ORTA RİSK - Koşullu Onay Gerektiren",
+      "state": {
+        "tipi": "Yaratıcı müşteri kredi talebim", "kaynak": "Şube",
+        "musteri_profili": {"yas": 28, "calisan_statüsü": "Serbest muhasebeci (değişken gelir)", "kredi_geçmişi": "2 yıl öncesinde bir ödeme 15 gün geç kalmış, sonra normal", "gelir": "Aylık ortalama 35.000 TL (değişken)", "istenen_tutar": "150.000 TL", "kredi_taksit_orani": "%20", "amaç": "İş geliştirme (ekipman satın alma)"},
+        "sube_notu": "Potansiyel müşteri, girişimci tipi. Hesabında son 6 ayda yüksek hareket. Öz sermayesi iyi fakat gelirleri dalgalı. İşletme kurumundan referans var. Finansal disiplin gelişmiş fakat belge tam olmayabilir, eğitim gerekebilir.",
+        "bilanzolar": {"borç_gelir_orani": 0.52, "likit_varlik": 80000, "gayrimenkul_varlik": 350000}
+      },
+      "expected": {"borçlanma_kapasitesi": true, "kredi_gecmisi_temiz": true, "yeterli_varlik": true, "belgeler_tam": false, "kredi_amaci_uygun": true, "onay_seviyesi": "genel_mudurluk", "aciliyet": [0, 1], "risk_seviyesi": 1}
+    },
+    {
+      "id": "kredi-3", "lang": "tr", "family": "yüksek risk", "title": "SENARYO 3: YÜKSEK RİSK - GM Kararı Gerekli",
+      "state": {
+        "tipi": "Zorlayıcı müşteri kredi talebim", "kaynak": "Şube",
+        "musteri_profili": {"yas": 42, "calisan_statüsü": "Son 18 ayda iş değiştirdi (kontrata)", "kredi_geçmişi": "Geçmişinde 3 gecikmiş ödeme (30+ gün), 1 yıl önce taşıt kredisi ödendi", "gelir": "Aylık 28.000 TL (kontratla sınırlı)", "istenen_tutar": "120.000 TL", "kredi_taksit_orani": "%22", "amaç": "Borç konsolidasyonu (diğer bankadan borç almak)"},
+        "sube_notu": "Müşteri mali sıkıntı yaşamış olabilir. Kredi talebinin amacı diğer kredileri konsolidasyon etmek (kırmızı bayrak). Mevcut hesabında sık karşılaştırma var. Fakat son 1 yıl disiplini iyi, sabit geliri var. Detaylı araştırmadan sonra pazarlamaya danışmak gerekir.",
+        "bilanzolar": {"borç_gelir_orani": 0.68, "likit_varlik": 15000, "gayrimenkul_varlik": 200000}
+      },
+      "expected": {"borçlanma_kapasitesi": false, "kredi_gecmisi_temiz": false, "yeterli_varlik": false, "kredi_amaci_uygun": false, "onay_seviyesi": ["genel_mudurluk", "pazarlama_onayi"], "aciliyet": [0, 1], "risk_seviyesi": 2}
+    },
+    {
+      "id": "kredi-4", "lang": "tr", "family": "veri eksikliği / red", "title": "SENARYO 4: VERİ EKSİKLİĞİ - Red Önerilmesi",
+      "state": {
+        "tipi": "Şüpheli müşteri kredi talebim", "kaynak": "Şube",
+        "musteri_profili": {"yas": 55, "calisan_statüsü": "Belirtilmemiş / Belirsiz", "kredi_geçmişi": "Kredi geçmişi bulunamadı, yeni müşteri", "gelir": "Beyan edilen 22.000 TL (doğrulanmamış)", "istenen_tutar": "200.000 TL", "kredi_taksit_orani": "%24", "amaç": "Belirsiz (sadece 'ihtiyaç' yazılı)"},
+        "sube_notu": "Başvuru belgeleri eksik (vergi müfettişi belgesi yok, banka ekstresi yok). Müşteri sorulara muğlak cevaplar veriyor. Şube müdürü işlemin acil olduğunu söylüyor ama gerekçe net değil. Arka plan kontrol yapılmamış. GM inceleme gereksiz, red önerilse daha güvenli.",
+        "bilanzolar": {"borç_gelir_orani": null, "likit_varlik": 0, "gayrimenkul_varlik": 0}
+      },
+      "expected": {"borçlanma_kapasitesi": false, "yeterli_varlik": false, "belgeler_tam": false, "kredi_amaci_uygun": false, "onay_seviyesi": "red_onerisi", "aciliyet": [0, 1], "risk_seviyesi": 2}
+    }
+  ]
+}

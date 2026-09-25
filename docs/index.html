@@ -147,6 +147,7 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; border-to
   <a href="#uzun">Uzun bağlam</a>
   <a href="#feishu">Çince diagnostik</a>
   <a href="#simulasyon">Simülasyon</a>
+  <a href="#jev">Jev karşılaştırması</a>
   <a href="#testler">Bu oturumdaki testler</a>
   <a href="#repo">Repo yapısı</a>
   <a href="#degerlendirme">Genel değerlendirme</a>
@@ -433,6 +434,47 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; border-to
   </div>
 </section>
 
+<!-- ============ JEV KARŞILAŞTIRMASI ============ -->
+<section class="panel" id="jev">
+  <h2>Jev (TypeSafe API) ile Laya, aynı senaryolarda</h2>
+  <p class="lead">Aynı durumlar ve aynı sorular iki backend'e verildi: kredi tahsisi onay süreci (4 senaryo, 8 soru) ve destek/güvenlik senaryoları (54 senaryo). Laya yerel CPU'da zero-shot; Jev hosted API üzerinden, gecikmeye ağ dahil. Jev sonuçları GitHub Actions'taki <b>"Jev vs Laya karşılaştırması"</b> iş akışıyla üretilir; anahtar depoda <code>TYPESAFE_API_KEY</code> secret'ı olarak durur.</p>
+  <div id="cmpStatus" class="note" style="margin-bottom:12px"></div>
+  <div class="tiles" id="cmpTiles"></div>
+  <div class="grid two">
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Soru başına doğruluk</h3><div class="sub">Beklenen etiketle uyum; her iki backend aynı sorular</div></div><button type="button" data-tbl="c_cmp_q">Tablo</button></div>
+      <div id="c_cmp_q"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>Soru seti ve dile göre doğruluk</h3><div class="sub">kredi, destek, güvenlik; sonra diller</div></div><button type="button" data-tbl="c_cmp_set">Tablo</button></div>
+      <div id="c_cmp_set"></div>
+    </div>
+  </div>
+  <div class="grid two" style="margin-top:14px">
+    <div class="card">
+      <div class="card-head"><div class="t"><h3>İki backend ne kadar aynı karara varıyor?</h3><div class="sub">Soru başına uyum oranı (aynı etiket / aynı seviye / aynı evet-hayır)</div></div><button type="button" data-tbl="c_cmp_agree">Tablo</button></div>
+      <div id="c_cmp_agree"></div>
+    </div>
+    <div class="card">
+      <h3>Kredi senaryoları: kural setinin ürettiği işlem</h3>
+      <div class="sub" style="color:var(--ink-2);font-size:13px;margin-bottom:6px">Kullanıcının <code>kararlas()</code> kuralları iki backend'in cevaplarına aynen uygulandı</div>
+      <div class="scroll" id="cmpKredi"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <div class="card-head">
+      <div class="t"><h3>Senaryolar, yan yana</h3><div class="sub">Satıra tıklayınca iki backend'in cevapları ve olasılıkları açılır</div></div>
+      <select id="cmpSet"><option value="">Soru seti: hepsi</option><option value="kredi">kredi</option><option value="destek">destek</option><option value="guvenlik">güvenlik</option></select>
+      <select id="cmpOnly"><option value="">Sonuç: hepsi</option><option value="diff">yalnızca farklı karar</option><option value="laya">yalnızca Laya doğru</option><option value="jev">yalnızca Jev doğru</option></select>
+    </div>
+    <div class="scroll" id="cmpTable"></div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h3>Okuma notları</h3>
+    <ul class="tight" id="cmpNotes"></ul>
+  </div>
+</section>
+
 <!-- ============ TESTLER ============ -->
 <section class="panel" id="testler">
   <h2>Bu oturumda koşulan testler</h2>
@@ -541,6 +583,7 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; border-to
 
 <script src="data.js"></script>
 <script src="sim_data.js"></script>
+<script src="compare_data.js"></script>
 <script>
 (function () {
   const D = window.LAYA_DATA;
@@ -902,6 +945,7 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; border-to
 
     // ---- simülasyon ----
     renderSim();
+    renderCmp();
 
     // ---- repo ----
     const K = M.code;
@@ -1006,6 +1050,121 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; border-to
     notes.push(`<b>Güven ayrımı:</b> doğru kararlarda ortalama answer_confidence ${f3(S3.routed.mean_answer_confidence_when_correct)}, yanlışlarda ${f3(S3.routed.mean_answer_confidence_when_wrong)}. Fark ne kadar küçükse güvenle eleme o kadar az işe yarar.`);
     notes.push(`<b>Sınırlar:</b> ${esc(M3.note)} Senaryo sayısı küçük (${M3.n_scenarios}); yüzdeler yön gösterir, istatistiksel kesinlik taşımaz. Ortam: laya ${esc(M3.laya)}, torch ${esc(M3.torch)}, ${esc(M3.device)}, yükleme ${f3(M3.load_s)} s, ${esc(M3.timestamp)}.`);
     $('simNotes').innerHTML = notes.map((n) => `<li>${n}</li>`).join('');
+  }
+
+  // ---------- Jev karşılaştırması ----------
+  const CMP = window.LAYA_COMPARE;
+  function cmpDecText(a) {
+    if (!a) return '—';
+    if (a.type === 'choice') return a.choice;
+    if (a.type === 'noul') return (a.noul >= 0.5 ? 'evet' : 'hayır') + ' (' + f3(a.noul) + ')';
+    const probs = a.probabilities, keys = Object.keys(probs), k = keys.reduce((m, x) => probs[x] > probs[m] ? x : m);
+    return 'seviye ' + (/^\d+$/.test(k) ? k : keys.indexOf(k)) + ' (' + f3(a.score) + ')';
+  }
+  function cmpExpText(v, qdef) {
+    const one = (x) => qdef.type === 'noul' ? (x ? 'evet' : 'hayır') : qdef.type === 'score' ? 'seviye ' + x : String(x);
+    return Array.isArray(v) ? v.map(one).join(' / ') : one(v);
+  }
+  function cmpProbBars(a, exp, qdef) {
+    if (!a) return '<div class="note">cevap yok</div>';
+    let h = '';
+    if (a.type === 'noul') {
+      h += `<div class="pbar ${(a.noul >= 0.5) === exp ? 'exp' : ''}"><span>P(evet)</span><div class="bar"><i style="width:${(a.noul * 100).toFixed(1)}%"></i></div><span class="v">${f3(a.noul)}</span></div>`;
+    } else {
+      const probs = a.probabilities, keys = Object.keys(probs), best = keys.reduce((m, x) => probs[x] > probs[m] ? x : m);
+      keys.forEach((k, i) => {
+        const lvl = /^\d+$/.test(k) ? +k : i;
+        const label = a.type === 'score' ? `${lvl}: ${(a.legend && a.legend[k]) || k}` : k;
+        const isExp = Array.isArray(exp) ? exp.includes(a.type === 'score' ? lvl : k) : (a.type === 'score' ? lvl === exp : k === exp);
+        h += `<div class="pbar ${isExp ? 'exp' : ''}"><span title="${esc(label)}">${esc(label.length > 22 ? label.slice(0, 21) + '…' : label)}${k === best ? ' ◀' : ''}</span><div class="bar"><i style="width:${(probs[k] * 100).toFixed(1)}%"></i></div><span class="v">${f3(probs[k])}</span></div>`;
+      });
+    }
+    return h;
+  }
+  function cmpDetail(e) {
+    const qs = CMP.question_sets[e.question_set], L = e.runs.laya, J = e.runs.jev;
+    let h = `<div class="state-box">${esc(JSON.stringify(e.state, null, 1))}</div>`;
+    h += `<div class="note" style="margin:0 0 8px"><b>Laya:</b> ${L ? (L.error ? 'hata: ' + esc(L.error) : esc(L.model) + ' · ' + f3(L.ms) + ' ms') : 'koşulmadı'} · <b>Jev:</b> ${J ? (J.error ? 'hata: ' + esc(J.error) : esc(J.model) + ' · ' + f3(J.ms) + ' ms' + (J.usage ? ' · ' + J.usage.input_tokens + ' girdi token' : '')) : 'henüz koşulmadı'}</div>`;
+    h += '<div class="grid two" style="gap:10px">';
+    for (const [qid, qdef] of Object.entries(qs)) {
+      const exp = e.expected[qid];
+      h += `<div class="qblock" style="margin:0"><div class="qh"><b>${esc(qid)}</b> <span style="color:var(--ink-2)">${esc(qdef.instructions.slice(0, 90))}${qdef.instructions.length > 90 ? '…' : ''}</span></div>`;
+      if (exp !== undefined) h += `<div class="pbar"><span>beklenen</span><span></span><span class="v">${esc(cmpExpText(exp, qdef))}</span></div>`;
+      for (const [name, r] of [['Laya', L], ['Jev', J]]) {
+        const a = r && r.answers ? r.answers[qid] : null, c = r && r.correct ? r.correct[qid] : undefined;
+        h += `<div style="margin:6px 0 2px;font-size:13px"><b>${name}</b> ${c === undefined ? '' : `<span class="badge ${c ? 'ok' : 'fail'}">${c ? 'doğru' : 'yanlış'}</span>`}</div>` + cmpProbBars(a, exp, qdef);
+      }
+      h += '</div>';
+    }
+    return h + '</div>';
+  }
+  function renderCmpTable() {
+    if (!CMP) return;
+    const set = $('cmpSet').value, only = $('cmpOnly').value;
+    const rows = CMP.results.filter((e) => {
+      if (set && e.question_set !== set) return false;
+      const L = e.runs.laya, J = e.runs.jev;
+      if (only === 'diff') return L && J && Object.keys(L.decided).some((q) => J.decided[q] !== undefined && String(L.decided[q]) !== String(J.decided[q]));
+      if (only === 'laya') return L && J && Object.keys(L.correct).some((q) => L.correct[q] && !J.correct[q]);
+      if (only === 'jev') return L && J && Object.keys(L.correct).some((q) => J.correct[q] && !L.correct[q]);
+      return true;
+    });
+    const score = (r) => r && r.correct ? `${Object.values(r.correct).filter(Boolean).length}/${Object.keys(r.correct).length}` : '—';
+    let h = '<table><thead><tr><th>id</th><th>set</th><th>aile</th><th class="num">Laya doğru</th><th class="num">Jev doğru</th><th class="num">farklı karar</th><th class="num">Laya ms</th><th class="num">Jev ms</th></tr></thead><tbody>';
+    rows.forEach((e) => {
+      const L = e.runs.laya, J = e.runs.jev;
+      const diff = L && J ? Object.keys(L.decided).filter((q) => J.decided[q] !== undefined && String(L.decided[q]) !== String(J.decided[q])).length : null;
+      h += `<tr class="sim-row" data-id="${esc(e.id)}"><td><code>${esc(e.id)}</code></td><td>${esc(e.question_set)}</td><td>${esc(e.family)}</td><td class="num">${score(L)}</td><td class="num">${score(J)}</td><td class="num">${diff == null ? '—' : diff}</td><td class="num">${L && L.ms != null ? fi(L.ms) : '—'}</td><td class="num">${J && J.ms != null ? fi(J.ms) : '—'}</td></tr>`;
+      h += `<tr class="sim-detail" data-for="${esc(e.id)}" style="display:none"><td colspan="8"></td></tr>`;
+    });
+    $('cmpTable').innerHTML = h + '</tbody></table>';
+    $('cmpTable').querySelectorAll('tr.sim-row').forEach((tr) => tr.addEventListener('click', () => {
+      const d = $('cmpTable').querySelector(`tr.sim-detail[data-for="${tr.dataset.id}"]`); const open = d.style.display !== 'none';
+      d.style.display = open ? 'none' : '';
+      if (!open && !d.firstElementChild.innerHTML) d.firstElementChild.innerHTML = cmpDetail(CMP.results.find((e) => e.id === tr.dataset.id));
+    }));
+  }
+  function renderCmp() {
+    const st = $('cmpStatus'); if (!st) return;
+    if (!CMP) { st.innerHTML = '<b>Henüz sonuç yok.</b> Actions sekmesinden "Jev vs Laya karşılaştırması" iş akışını çalıştırın; sonuçlar bu dala commit\'lenir ve sayfa yenilenir.'; return; }
+    const c = C(), S4 = CMP.summary, hasJ = !!S4.jev, hasL = !!S4.laya, A = CMP.agreement;
+    st.innerHTML = hasJ ? `Son koşu: ${esc(CMP.meta.timestamp)} · ${CMP.meta.ci ? 'GitHub Actions' : 'yerel'} · Jev modeli <code>${esc((CMP.meta.info.jev || {}).jev_model || '?')}</code> · Jev hataları: ${S4.jev.errors}` : `<b>Jev sonuçları henüz yok.</b> Laya tarafı ${esc(CMP.meta.timestamp)} tarihinde koşuldu. <code>TYPESAFE_API_KEY</code> secret'ını ekleyip Actions sekmesinden "Jev vs Laya karşılaştırması" iş akışını çalıştırın; sonuçlar bu dala commit'lenir.`;
+    const modes = [{ key: 'laya', name: 'Laya (Router, zero-shot)', color: c.s1 }, { key: 'jev', name: 'Jev (TypeSafe API)', color: c.s4 }].filter((m) => S4[m.key]);
+    const acc = (m) => S4[m] ? f3(S4[m].accuracy * 100) + ' %' : '—';
+    $('cmpTiles').innerHTML =
+      tile('Karar doğruluğu', `${acc('laya')} / ${acc('jev')}`, 'Laya / Jev') +
+      tile('Tümü doğru senaryo', `${hasL ? S4.laya.scenarios_fully_correct : '—'} / ${hasJ ? S4.jev.scenarios_fully_correct : '—'}`, `Laya / Jev, ${CMP.meta.n_scenarios} senaryo`) +
+      tile('p50 gecikme', `${hasL && S4.laya.latency_ms ? fi(S4.laya.latency_ms.p50) : '—'} / ${hasJ && S4.jev.latency_ms ? fi(S4.jev.latency_ms.p50) : '—'} ms`, 'Laya yerel CPU / Jev API (ağ dahil)') +
+      tile('Aynı karar oranı', A && A.rate != null ? f3(A.rate * 100) + ' %' : '—', A ? `${A.n} karar çifti` : 'Jev koşunca dolar') +
+      tile('Yalnız biri doğru', A ? `${A.only_laya_correct} / ${A.only_jev_correct}` : '—', 'yalnız Laya / yalnız Jev doğru') +
+      tile('Güven: doğru vs yanlış (Jev)', hasJ ? `${f3(S4.jev.mean_p_max_when_correct)} / ${f3(S4.jev.mean_p_max_when_wrong)}` : '—', hasL ? `Laya ${f3(S4.laya.mean_p_max_when_correct)} / ${f3(S4.laya.mean_p_max_when_wrong)}` : '');
+    const base = S4.laya || S4.jev;
+    const qids = Object.keys(base.by_question);
+    hbar('c_cmp_q', { series: modes.map((m) => ({ name: m.name, color: m.color })), labelW: 160, rowTitle: 'soru',
+      rows: qids.map((q) => ({ label: q, sub: `${base.by_question[q].n} karar`, values: modes.map((m) => S4[m.key].by_question[q] ? S4[m.key].by_question[q].accuracy : null) })), refs: [{ v: 0.5, label: 'ikili şans (0,5)' }] });
+    const sets = Object.keys(base.by_set), langs = Object.keys(base.by_lang);
+    hbar('c_cmp_set', { series: modes.map((m) => ({ name: m.name, color: m.color })), labelW: 110, rowTitle: 'kesit',
+      rows: [...sets.map((k) => ({ label: k, sub: 'soru seti', values: modes.map((m) => S4[m.key].by_set[k] ? S4[m.key].by_set[k].accuracy : null) })), ...langs.map((k) => ({ label: k, sub: 'dil', values: modes.map((m) => S4[m.key].by_lang[k] ? S4[m.key].by_lang[k].accuracy : null) }))] });
+    if (A && A.by_question) {
+      const aq = Object.keys(A.by_question);
+      hbar('c_cmp_agree', { series: [{ name: 'aynı karar oranı', color: c.s1 }], labelW: 160, labels: true, rowTitle: 'soru', rows: aq.map((q) => ({ label: q, sub: `${A.by_question[q].n} çift`, values: [A.by_question[q].rate] })) });
+    } else { $('c_cmp_agree').innerHTML = '<p class="note">Jev sonuçları gelince dolar.</p>'; }
+    const kredi = CMP.results.filter((e) => e.question_set === 'kredi');
+    let kh = '<table><thead><tr><th>senaryo</th><th>beklenen seviye</th><th>Laya: onay seviyesi</th><th>Laya: işlem (kural)</th><th>Jev: onay seviyesi</th><th>Jev: işlem (kural)</th></tr></thead><tbody>';
+    kredi.forEach((e) => {
+      const L = e.runs.laya, J = e.runs.jev, exp = e.expected.onay_seviyesi;
+      const cell = (r) => r && r.kararlas ? `${esc(r.kararlas.onay_seviyesi)} <span class="badge ${r.correct.onay_seviyesi ? 'ok' : 'fail'}">${r.correct.onay_seviyesi ? 'doğru' : 'yanlış'}</span>` : '—';
+      kh += `<tr><td>${esc(e.title || e.id)}</td><td>${esc(Array.isArray(exp) ? exp.join(' / ') : exp)}</td><td>${cell(L)}</td><td>${L && L.kararlas ? esc(L.kararlas.islem) : '—'}</td><td>${cell(J)}</td><td>${J && J.kararlas ? esc(J.kararlas.islem) : '—'}</td></tr>`;
+    });
+    $('cmpKredi').innerHTML = kh + '</tbody></table>';
+    const sel = $('cmpSet'); if (!sel.dataset.bound) { sel.dataset.bound = '1'; [sel, $('cmpOnly')].forEach((x) => x.addEventListener('change', renderCmpTable)); }
+    renderCmpTable();
+    const notes = [];
+    if (hasL) notes.push(`<b>Laya:</b> ${S4.laya.correct}/${S4.laya.n_decisions} karar doğru (${f3(S4.laya.accuracy * 100)} %), ${S4.laya.scenarios_fully_correct}/${S4.laya.scenarios} senaryoda tüm sorular doğru; p50 ${fi(S4.laya.latency_ms.p50)} ms.`);
+    if (hasJ) notes.push(`<b>Jev:</b> ${S4.jev.correct}/${S4.jev.n_decisions} karar doğru (${f3(S4.jev.accuracy * 100)} %), ${S4.jev.scenarios_fully_correct}/${S4.jev.scenarios} senaryoda tüm sorular doğru; p50 ${fi(S4.jev.latency_ms.p50)} ms, toplam ${fi(S4.jev.input_tokens_total)} girdi token.`);
+    if (A) notes.push(`<b>Uyum:</b> ${f3(A.rate * 100)} % aynı karar. Her ikisi doğru ${A.both_correct}, her ikisi yanlış ${A.both_wrong}, yalnız Laya doğru ${A.only_laya_correct}, yalnız Jev doğru ${A.only_jev_correct}.`);
+    notes.push(`<b>Yöntem sınırları:</b> ${esc(CMP.meta.note)} Gecikmeler aynı koşulda değil: Laya'nınki yerel çıkarım, Jev'inki ağ + sunucu. Jev'in \`confidence\` alanı Laya'nınkinden farklı tanımlı; burada iki tarafta da verilen cevabın olasılığı (p_max) kullanıldı.`);
+    $('cmpNotes').innerHTML = notes.map((n) => `<li>${n}</li>`).join('');
   }
 
   let raf = null;
