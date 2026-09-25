@@ -1,10 +1,12 @@
 {
  "meta": {
-  "timestamp": "2026-09-25 11:08 UTC",
+  "timestamp": "2026-09-25 14:29 UTC",
   "backends_run_now": [
-   "laya"
+   "laya",
+   "jev"
   ],
   "backends": [
+   "jev",
    "laya"
   ],
   "info": {
@@ -13,7 +15,11 @@
     "torch": "2.14.0+cpu",
     "device": "cpu",
     "threads": 2,
-    "load_s": 6.4
+    "load_s": 6.2
+   },
+   "jev": {
+    "typesafe_sdk": "0.7.1",
+    "jev_model": "jev-latest"
    }
   },
   "python": "3.11.16",
@@ -156,6 +162,295 @@
   }
  },
  "summary": {
+  "jev": {
+   "accuracy": 0.9233,
+   "correct": 265,
+   "n_decisions": 287,
+   "scenarios": 58,
+   "errors": 0,
+   "scenarios_fully_correct": 39,
+   "by_question": {
+    "aciliyet": {
+     "correct": 4,
+     "n": 4,
+     "accuracy": 1.0
+    },
+    "action": {
+     "correct": 11,
+     "n": 13,
+     "accuracy": 0.8462
+    },
+    "belgeler_tam": {
+     "correct": 3,
+     "n": 3,
+     "accuracy": 1.0
+    },
+    "borçlanma_kapasitesi": {
+     "correct": 4,
+     "n": 4,
+     "accuracy": 1.0
+    },
+    "churn_risk": {
+     "correct": 41,
+     "n": 41,
+     "accuracy": 1.0
+    },
+    "department": {
+     "correct": 40,
+     "n": 41,
+     "accuracy": 0.9756
+    },
+    "is_jailbreak": {
+     "correct": 13,
+     "n": 13,
+     "accuracy": 1.0
+    },
+    "is_phishing": {
+     "correct": 11,
+     "n": 13,
+     "accuracy": 0.8462
+    },
+    "kredi_amaci_uygun": {
+     "correct": 4,
+     "n": 4,
+     "accuracy": 1.0
+    },
+    "kredi_gecmisi_temiz": {
+     "correct": 3,
+     "n": 3,
+     "accuracy": 1.0
+    },
+    "needs_human": {
+     "correct": 33,
+     "n": 41,
+     "accuracy": 0.8049
+    },
+    "onay_seviyesi": {
+     "correct": 4,
+     "n": 4,
+     "accuracy": 1.0
+    },
+    "refund_requested": {
+     "correct": 41,
+     "n": 41,
+     "accuracy": 1.0
+    },
+    "risk_seviyesi": {
+     "correct": 4,
+     "n": 4,
+     "accuracy": 1.0
+    },
+    "severity": {
+     "correct": 10,
+     "n": 13,
+     "accuracy": 0.7692
+    },
+    "urgency": {
+     "correct": 35,
+     "n": 41,
+     "accuracy": 0.8537
+    },
+    "yeterli_varlik": {
+     "correct": 4,
+     "n": 4,
+     "accuracy": 1.0
+    }
+   },
+   "by_set": {
+    "destek": {
+     "correct": 190,
+     "n": 205,
+     "accuracy": 0.9268
+    },
+    "guvenlik": {
+     "correct": 45,
+     "n": 52,
+     "accuracy": 0.8654
+    },
+    "kredi": {
+     "correct": 30,
+     "n": 30,
+     "accuracy": 1.0
+    }
+   },
+   "by_lang": {
+    "ar": {
+     "correct": 10,
+     "n": 10,
+     "accuracy": 1.0
+    },
+    "de": {
+     "correct": 23,
+     "n": 24,
+     "accuracy": 0.9583
+    },
+    "en": {
+     "correct": 73,
+     "n": 84,
+     "accuracy": 0.869
+    },
+    "es": {
+     "correct": 19,
+     "n": 19,
+     "accuracy": 1.0
+    },
+    "fr": {
+     "correct": 9,
+     "n": 10,
+     "accuracy": 0.9
+    },
+    "hi": {
+     "correct": 10,
+     "n": 10,
+     "accuracy": 1.0
+    },
+    "tr": {
+     "correct": 121,
+     "n": 130,
+     "accuracy": 0.9308
+    }
+   },
+   "by_family": {
+    "demo talebi": {
+     "correct": 5,
+     "n": 5,
+     "accuracy": 1.0
+    },
+    "dolaylı jailbreak": {
+     "correct": 3,
+     "n": 4,
+     "accuracy": 0.75
+    },
+    "düşük risk": {
+     "correct": 8,
+     "n": 8,
+     "accuracy": 1.0
+    },
+    "entegrasyon hatası": {
+     "correct": 4,
+     "n": 5,
+     "accuracy": 0.8
+    },
+    "fatura sorusu": {
+     "correct": 9,
+     "n": 10,
+     "accuracy": 0.9
+    },
+    "fiyat / satış": {
+     "correct": 25,
+     "n": 25,
+     "accuracy": 1.0
+    },
+    "giriş sorunu": {
+     "correct": 8,
+     "n": 10,
+     "accuracy": 0.8
+    },
+    "iade (sakin)": {
+     "correct": 12,
+     "n": 15,
+     "accuracy": 0.8
+    },
+    "iptal tehdidi": {
+     "correct": 7,
+     "n": 10,
+     "accuracy": 0.7
+    },
+    "jailbreak": {
+     "correct": 6,
+     "n": 8,
+     "accuracy": 0.75
+    },
+    "konu dışı": {
+     "correct": 15,
+     "n": 15,
+     "accuracy": 1.0
+    },
+    "küçük teknik sorun": {
+     "correct": 10,
+     "n": 10,
+     "accuracy": 1.0
+    },
+    "meşru güvenlik maili": {
+     "correct": 8,
+     "n": 8,
+     "accuracy": 1.0
+    },
+    "mükerrer ödeme / iade": {
+     "correct": 25,
+     "n": 25,
+     "accuracy": 1.0
+    },
+    "normal soru": {
+     "correct": 12,
+     "n": 12,
+     "accuracy": 1.0
+    },
+    "olumsuzlama (iade istemiyor)": {
+     "correct": 10,
+     "n": 10,
+     "accuracy": 1.0
+    },
+    "olumsuzlama (iptal istemiyor)": {
+     "correct": 12,
+     "n": 15,
+     "accuracy": 0.8
+    },
+    "orta risk": {
+     "correct": 8,
+     "n": 8,
+     "accuracy": 1.0
+    },
+    "phishing": {
+     "correct": 12,
+     "n": 12,
+     "accuracy": 1.0
+    },
+    "plan yükseltme": {
+     "correct": 5,
+     "n": 5,
+     "accuracy": 1.0
+    },
+    "teknik kesinti": {
+     "correct": 30,
+     "n": 30,
+     "accuracy": 1.0
+    },
+    "veri eksikliği / red": {
+     "correct": 7,
+     "n": 7,
+     "accuracy": 1.0
+    },
+    "veri kaybı": {
+     "correct": 5,
+     "n": 5,
+     "accuracy": 1.0
+    },
+    "yüksek risk": {
+     "correct": 7,
+     "n": 7,
+     "accuracy": 1.0
+    },
+    "öfkeli iptal + iade": {
+     "correct": 8,
+     "n": 10,
+     "accuracy": 0.8
+    },
+    "şüpheli ama belirsiz": {
+     "correct": 4,
+     "n": 8,
+     "accuracy": 0.5
+    }
+   },
+   "latency_ms": {
+    "p50": 140.1,
+    "p95": 372.2,
+    "mean": 173.4
+   },
+   "mean_p_max_when_correct": 0.9291,
+   "mean_p_max_when_wrong": 0.6395,
+   "input_tokens_total": 34595
+  },
   "laya": {
    "accuracy": 0.6132,
    "correct": 176,
@@ -437,16 +732,110 @@
     }
    },
    "latency_ms": {
-    "p50": 906.2,
-    "p95": 5852.2,
-    "mean": 1631.5
+    "p50": 897.2,
+    "p95": 5856.1,
+    "mean": 1613.0
    },
    "mean_p_max_when_correct": 0.8852,
    "mean_p_max_when_wrong": 0.7698,
    "input_tokens_total": 35426
   }
  },
- "agreement": null,
+ "agreement": {
+  "rate": 0.6228,
+  "n": 289,
+  "by_question": {
+   "aciliyet": {
+    "same": 0,
+    "n": 4,
+    "rate": 0.0
+   },
+   "action": {
+    "same": 6,
+    "n": 13,
+    "rate": 0.4615
+   },
+   "belgeler_tam": {
+    "same": 1,
+    "n": 4,
+    "rate": 0.25
+   },
+   "borçlanma_kapasitesi": {
+    "same": 2,
+    "n": 4,
+    "rate": 0.5
+   },
+   "churn_risk": {
+    "same": 35,
+    "n": 41,
+    "rate": 0.8537
+   },
+   "department": {
+    "same": 31,
+    "n": 41,
+    "rate": 0.7561
+   },
+   "is_jailbreak": {
+    "same": 7,
+    "n": 13,
+    "rate": 0.5385
+   },
+   "is_phishing": {
+    "same": 8,
+    "n": 13,
+    "rate": 0.6154
+   },
+   "kredi_amaci_uygun": {
+    "same": 2,
+    "n": 4,
+    "rate": 0.5
+   },
+   "kredi_gecmisi_temiz": {
+    "same": 2,
+    "n": 4,
+    "rate": 0.5
+   },
+   "needs_human": {
+    "same": 25,
+    "n": 41,
+    "rate": 0.6098
+   },
+   "onay_seviyesi": {
+    "same": 1,
+    "n": 4,
+    "rate": 0.25
+   },
+   "refund_requested": {
+    "same": 37,
+    "n": 41,
+    "rate": 0.9024
+   },
+   "risk_seviyesi": {
+    "same": 3,
+    "n": 4,
+    "rate": 0.75
+   },
+   "severity": {
+    "same": 5,
+    "n": 13,
+    "rate": 0.3846
+   },
+   "urgency": {
+    "same": 13,
+    "n": 41,
+    "rate": 0.3171
+   },
+   "yeterli_varlik": {
+    "same": 2,
+    "n": 4,
+    "rate": 0.5
+   }
+  },
+  "both_correct": 168,
+  "both_wrong": 14,
+  "only_laya_correct": 8,
+  "only_jev_correct": 97
+ },
  "results": [
   {
    "id": "kredi-1",
@@ -486,9 +875,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 5852.2,
+     "ms": 5856.1,
      "ms_samples": [
-      5852.2
+      5856.1
      ],
      "answers": {
       "borçlanma_kapasitesi": {
@@ -647,6 +1036,116 @@
       "aciliyet": "1",
       "islem": "ŞUBE ONAYI: düşük risk"
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 398.3,
+     "ms_samples": [
+      398.3
+     ],
+     "answers": {
+      "borçlanma_kapasitesi": {
+       "type": "noul",
+       "noul": 0.93
+      },
+      "kredi_gecmisi_temiz": {
+       "type": "noul",
+       "noul": 0.94
+      },
+      "yeterli_varlik": {
+       "type": "noul",
+       "noul": 0.97
+      },
+      "belgeler_tam": {
+       "type": "noul",
+       "noul": 0.72
+      },
+      "kredi_amaci_uygun": {
+       "type": "noul",
+       "noul": 0.9
+      },
+      "onay_seviyesi": {
+       "type": "choice",
+       "choice": "sube_onayi",
+       "confidence": 1.0,
+       "probabilities": {
+        "genel_mudurluk": 0.0,
+        "red_onerisi": 0.0,
+        "sube_onayi": 1.0,
+        "pazarlama_onayi": 0.0
+       }
+      },
+      "aciliyet": {
+       "type": "score",
+       "score": 0.01,
+       "confidence": 0.99,
+       "legend": {
+        "0": "Routine: Normal processing time (5-7 days) is acceptable.",
+        "1": "Moderate: Should be reviewed this week (customer needs clear timeline).",
+        "2": "Urgent: Same-day or next-day decision required (valid business reason needed)."
+       },
+       "probabilities": {
+        "0": 0.99,
+        "1": 0.01,
+        "2": 0.0
+       }
+      },
+      "risk_seviyesi": {
+       "type": "score",
+       "score": 0.07,
+       "confidence": 0.89,
+       "legend": {
+        "0": "Low: All factors positive, minimal default risk.",
+        "1": "Medium: Mixed signals, manageable with conditions or monitoring.",
+        "2": "High: Significant concerns, high default probability without additional security."
+       },
+       "probabilities": {
+        "0": 0.93,
+        "1": 0.06,
+        "2": 0.01
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 1421,
+      "output_tokens": 208
+     },
+     "decided": {
+      "borçlanma_kapasitesi": true,
+      "kredi_gecmisi_temiz": true,
+      "yeterli_varlik": true,
+      "belgeler_tam": true,
+      "kredi_amaci_uygun": true,
+      "onay_seviyesi": "sube_onayi",
+      "aciliyet": 0,
+      "risk_seviyesi": 0
+     },
+     "correct": {
+      "borçlanma_kapasitesi": true,
+      "kredi_gecmisi_temiz": true,
+      "yeterli_varlik": true,
+      "belgeler_tam": true,
+      "kredi_amaci_uygun": true,
+      "onay_seviyesi": true,
+      "aciliyet": true,
+      "risk_seviyesi": true
+     },
+     "p_max": {
+      "borçlanma_kapasitesi": 0.93,
+      "kredi_gecmisi_temiz": 0.94,
+      "yeterli_varlik": 0.97,
+      "belgeler_tam": 0.72,
+      "kredi_amaci_uygun": 0.9,
+      "onay_seviyesi": 1.0,
+      "aciliyet": 0.99,
+      "risk_seviyesi": 0.93
+     },
+     "kararlas": {
+      "onay_seviyesi": "sube_onayi",
+      "risk_seviyesi": 0,
+      "aciliyet": 0,
+      "islem": "GENEL MÜDÜRLÜĞE: orta risk"
+     }
     }
    }
   },
@@ -691,9 +1190,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 6328.5,
+     "ms": 6252.7,
      "ms_samples": [
-      6328.5
+      6252.7
      ],
      "answers": {
       "borçlanma_kapasitesi": {
@@ -852,6 +1351,116 @@
       "aciliyet": "2",
       "islem": "GENEL MÜDÜRLÜĞE: orta risk"
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 383.3,
+     "ms_samples": [
+      383.3
+     ],
+     "answers": {
+      "borçlanma_kapasitesi": {
+       "type": "noul",
+       "noul": 0.5
+      },
+      "kredi_gecmisi_temiz": {
+       "type": "noul",
+       "noul": 0.82
+      },
+      "yeterli_varlik": {
+       "type": "noul",
+       "noul": 0.9
+      },
+      "belgeler_tam": {
+       "type": "noul",
+       "noul": 0.1
+      },
+      "kredi_amaci_uygun": {
+       "type": "noul",
+       "noul": 0.84
+      },
+      "onay_seviyesi": {
+       "type": "choice",
+       "choice": "genel_mudurluk",
+       "confidence": 0.86,
+       "probabilities": {
+        "pazarlama_onayi": 0.09,
+        "sube_onayi": 0.01,
+        "red_onerisi": 0.0,
+        "genel_mudurluk": 0.9
+       }
+      },
+      "aciliyet": {
+       "type": "score",
+       "score": 0.16,
+       "confidence": 0.76,
+       "legend": {
+        "0": "Routine: Normal processing time (5-7 days) is acceptable.",
+        "1": "Moderate: Should be reviewed this week (customer needs clear timeline).",
+        "2": "Urgent: Same-day or next-day decision required (valid business reason needed)."
+       },
+       "probabilities": {
+        "0": 0.84,
+        "1": 0.16,
+        "2": 0.0
+       }
+      },
+      "risk_seviyesi": {
+       "type": "score",
+       "score": 1.01,
+       "confidence": 0.98,
+       "legend": {
+        "0": "Low: All factors positive, minimal default risk.",
+        "1": "Medium: Mixed signals, manageable with conditions or monitoring.",
+        "2": "High: Significant concerns, high default probability without additional security."
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.99,
+        "2": 0.01
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 1448,
+      "output_tokens": 210
+     },
+     "decided": {
+      "borçlanma_kapasitesi": true,
+      "kredi_gecmisi_temiz": true,
+      "yeterli_varlik": true,
+      "belgeler_tam": false,
+      "kredi_amaci_uygun": true,
+      "onay_seviyesi": "genel_mudurluk",
+      "aciliyet": 0,
+      "risk_seviyesi": 1
+     },
+     "correct": {
+      "borçlanma_kapasitesi": true,
+      "kredi_gecmisi_temiz": true,
+      "yeterli_varlik": true,
+      "belgeler_tam": true,
+      "kredi_amaci_uygun": true,
+      "onay_seviyesi": true,
+      "aciliyet": true,
+      "risk_seviyesi": true
+     },
+     "p_max": {
+      "borçlanma_kapasitesi": 0.5,
+      "kredi_gecmisi_temiz": 0.82,
+      "yeterli_varlik": 0.9,
+      "belgeler_tam": 0.9,
+      "kredi_amaci_uygun": 0.84,
+      "onay_seviyesi": 0.9,
+      "aciliyet": 0.84,
+      "risk_seviyesi": 0.99
+     },
+     "kararlas": {
+      "onay_seviyesi": "genel_mudurluk",
+      "risk_seviyesi": 1,
+      "aciliyet": 0,
+      "islem": "RED ÖNERİSİ: belgeler eksik"
+     }
     }
    }
   },
@@ -898,9 +1507,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 6745.8,
+     "ms": 6689.4,
      "ms_samples": [
-      6745.8
+      6689.4
      ],
      "answers": {
       "borçlanma_kapasitesi": {
@@ -1058,6 +1667,115 @@
       "aciliyet": "2",
       "islem": "GENEL MÜDÜRLÜĞE: orta risk"
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 357.5,
+     "ms_samples": [
+      357.5
+     ],
+     "answers": {
+      "borçlanma_kapasitesi": {
+       "type": "noul",
+       "noul": 0.15
+      },
+      "kredi_gecmisi_temiz": {
+       "type": "noul",
+       "noul": 0.16
+      },
+      "yeterli_varlik": {
+       "type": "noul",
+       "noul": 0.2
+      },
+      "belgeler_tam": {
+       "type": "noul",
+       "noul": 0.12
+      },
+      "kredi_amaci_uygun": {
+       "type": "noul",
+       "noul": 0.22
+      },
+      "onay_seviyesi": {
+       "type": "choice",
+       "choice": "pazarlama_onayi",
+       "confidence": 0.95,
+       "probabilities": {
+        "pazarlama_onayi": 0.97,
+        "sube_onayi": 0.0,
+        "red_onerisi": 0.01,
+        "genel_mudurluk": 0.02
+       }
+      },
+      "aciliyet": {
+       "type": "score",
+       "score": 0.32,
+       "confidence": 0.52,
+       "legend": {
+        "0": "Routine: Normal processing time (5-7 days) is acceptable.",
+        "1": "Moderate: Should be reviewed this week (customer needs clear timeline).",
+        "2": "Urgent: Same-day or next-day decision required (valid business reason needed)."
+       },
+       "probabilities": {
+        "0": 0.7,
+        "1": 0.29,
+        "2": 0.01
+       }
+      },
+      "risk_seviyesi": {
+       "type": "score",
+       "score": 1.82,
+       "confidence": 0.72,
+       "legend": {
+        "0": "Low: All factors positive, minimal default risk.",
+        "1": "Medium: Mixed signals, manageable with conditions or monitoring.",
+        "2": "High: Significant concerns, high default probability without additional security."
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.18,
+        "2": 0.82
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 1484,
+      "output_tokens": 210
+     },
+     "decided": {
+      "borçlanma_kapasitesi": false,
+      "kredi_gecmisi_temiz": false,
+      "yeterli_varlik": false,
+      "belgeler_tam": false,
+      "kredi_amaci_uygun": false,
+      "onay_seviyesi": "pazarlama_onayi",
+      "aciliyet": 0,
+      "risk_seviyesi": 2
+     },
+     "correct": {
+      "borçlanma_kapasitesi": true,
+      "kredi_gecmisi_temiz": true,
+      "yeterli_varlik": true,
+      "kredi_amaci_uygun": true,
+      "onay_seviyesi": true,
+      "aciliyet": true,
+      "risk_seviyesi": true
+     },
+     "p_max": {
+      "borçlanma_kapasitesi": 0.85,
+      "kredi_gecmisi_temiz": 0.84,
+      "yeterli_varlik": 0.8,
+      "belgeler_tam": 0.88,
+      "kredi_amaci_uygun": 0.78,
+      "onay_seviyesi": 0.97,
+      "aciliyet": 0.7,
+      "risk_seviyesi": 0.82
+     },
+     "kararlas": {
+      "onay_seviyesi": "pazarlama_onayi",
+      "risk_seviyesi": 2,
+      "aciliyet": 0,
+      "islem": "RED ÖNERİSİ: belgeler eksik"
+     }
     }
    }
   },
@@ -1101,9 +1819,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 6230.6,
+     "ms": 6150.1,
      "ms_samples": [
-      6230.6
+      6150.1
      ],
      "answers": {
       "borçlanma_kapasitesi": {
@@ -1261,6 +1979,115 @@
       "aciliyet": "2",
       "islem": "PAZARLAMA DANIŞMANLIĞI: kredi amacı sorgulanabilir"
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 372.2,
+     "ms_samples": [
+      372.2
+     ],
+     "answers": {
+      "borçlanma_kapasitesi": {
+       "type": "noul",
+       "noul": 0.08
+      },
+      "kredi_gecmisi_temiz": {
+       "type": "noul",
+       "noul": 0.19
+      },
+      "yeterli_varlik": {
+       "type": "noul",
+       "noul": 0.03
+      },
+      "belgeler_tam": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "kredi_amaci_uygun": {
+       "type": "noul",
+       "noul": 0.06
+      },
+      "onay_seviyesi": {
+       "type": "choice",
+       "choice": "red_onerisi",
+       "confidence": 1.0,
+       "probabilities": {
+        "sube_onayi": 0.0,
+        "pazarlama_onayi": 0.0,
+        "red_onerisi": 1.0,
+        "genel_mudurluk": 0.0
+       }
+      },
+      "aciliyet": {
+       "type": "score",
+       "score": 0.55,
+       "confidence": 0.18,
+       "legend": {
+        "0": "Routine: Normal processing time (5-7 days) is acceptable.",
+        "1": "Moderate: Should be reviewed this week (customer needs clear timeline).",
+        "2": "Urgent: Same-day or next-day decision required (valid business reason needed)."
+       },
+       "probabilities": {
+        "0": 0.61,
+        "1": 0.23,
+        "2": 0.16
+       }
+      },
+      "risk_seviyesi": {
+       "type": "score",
+       "score": 2.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "Low: All factors positive, minimal default risk.",
+        "1": "Medium: Mixed signals, manageable with conditions or monitoring.",
+        "2": "High: Significant concerns, high default probability without additional security."
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 1.0
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 1452,
+      "output_tokens": 208
+     },
+     "decided": {
+      "borçlanma_kapasitesi": false,
+      "kredi_gecmisi_temiz": false,
+      "yeterli_varlik": false,
+      "belgeler_tam": false,
+      "kredi_amaci_uygun": false,
+      "onay_seviyesi": "red_onerisi",
+      "aciliyet": 0,
+      "risk_seviyesi": 2
+     },
+     "correct": {
+      "borçlanma_kapasitesi": true,
+      "yeterli_varlik": true,
+      "belgeler_tam": true,
+      "kredi_amaci_uygun": true,
+      "onay_seviyesi": true,
+      "aciliyet": true,
+      "risk_seviyesi": true
+     },
+     "p_max": {
+      "borçlanma_kapasitesi": 0.92,
+      "kredi_gecmisi_temiz": 0.81,
+      "yeterli_varlik": 0.97,
+      "belgeler_tam": 0.98,
+      "kredi_amaci_uygun": 0.94,
+      "onay_seviyesi": 1.0,
+      "aciliyet": 0.61,
+      "risk_seviyesi": 1.0
+     },
+     "kararlas": {
+      "onay_seviyesi": "red_onerisi",
+      "risk_seviyesi": 2,
+      "aciliyet": 0,
+      "islem": "RED ÖNERİSİ: belgeler eksik"
+     }
     }
    }
   },
@@ -1284,9 +2111,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 977.6,
+     "ms": 951.0,
      "ms_samples": [
-      977.6
+      951.0
      ],
      "answers": {
       "department": {
@@ -1393,6 +2220,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 127.1,
+     "ms_samples": [
+      127.1
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "billing",
+       "confidence": 1.0,
+       "probabilities": {
+        "technical": 0.0,
+        "billing": 1.0,
+        "sales": 0.0,
+        "other": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 1.76,
+       "confidence": 0.64,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.23,
+        "2": 0.77
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.97
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.98
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.74
+      }
+     },
+     "usage": {
+      "input_tokens": 559,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "billing",
+      "urgency": 2,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 0.77,
+      "churn_risk": 0.97,
+      "refund_requested": 0.98,
+      "needs_human": 0.74
+     }
     }
    }
   },
@@ -1416,9 +2315,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 900.6,
+     "ms": 866.0,
      "ms_samples": [
-      900.6
+      866.0
      ],
      "answers": {
       "department": {
@@ -1525,6 +2424,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 187.1,
+     "ms_samples": [
+      187.1
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "technical",
+       "confidence": 1.0,
+       "probabilities": {
+        "billing": 0.0,
+        "technical": 1.0,
+        "other": 0.0,
+        "sales": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 2.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 1.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.03
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.93
+      }
+     },
+     "usage": {
+      "input_tokens": 549,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "technical",
+      "urgency": 2,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 1.0,
+      "churn_risk": 0.97,
+      "refund_requested": 0.99,
+      "needs_human": 0.93
+     }
     }
    }
   },
@@ -1548,9 +2519,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 903.4,
+     "ms": 891.2,
      "ms_samples": [
-      903.4
+      891.2
      ],
      "answers": {
       "department": {
@@ -1657,6 +2628,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 134.2,
+     "ms_samples": [
+      134.2
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "sales",
+       "confidence": 1.0,
+       "probabilities": {
+        "sales": 1.0,
+        "technical": 0.0,
+        "billing": 0.0,
+        "other": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.32
+      }
+     },
+     "usage": {
+      "input_tokens": 556,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "sales",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 1.0,
+      "churn_risk": 0.98,
+      "refund_requested": 0.99,
+      "needs_human": 0.68
+     }
     }
    }
   },
@@ -1680,9 +2723,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 893.3,
+     "ms": 886.9,
      "ms_samples": [
-      893.3
+      886.9
      ],
      "answers": {
       "department": {
@@ -1789,6 +2832,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 137.6,
+     "ms_samples": [
+      137.6
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "other",
+       "confidence": 0.21,
+       "probabilities": {
+        "billing": 0.02,
+        "other": 0.4,
+        "sales": 0.19,
+        "technical": 0.39
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.93,
+       "confidence": 0.43,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.22,
+        "1": 0.62,
+        "2": 0.16
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.98
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.03
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.84
+      }
+     },
+     "usage": {
+      "input_tokens": 551,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "other",
+      "urgency": 1,
+      "churn_risk": true,
+      "refund_requested": false,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": false,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 0.4,
+      "urgency": 0.62,
+      "churn_risk": 0.98,
+      "refund_requested": 0.97,
+      "needs_human": 0.84
+     }
     }
    }
   },
@@ -1812,9 +2927,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 932.4,
+     "ms": 925.8,
      "ms_samples": [
-      932.4
+      925.8
      ],
      "answers": {
       "department": {
@@ -1921,6 +3036,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 140.1,
+     "ms_samples": [
+      140.1
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "billing",
+       "confidence": 0.77,
+       "probabilities": {
+        "other": 0.07,
+        "technical": 0.09,
+        "billing": 0.83,
+        "sales": 0.01
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 1.06,
+       "confidence": 0.79,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.04,
+        "1": 0.86,
+        "2": 0.1
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.61
+      }
+     },
+     "usage": {
+      "input_tokens": 553,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "billing",
+      "urgency": 1,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": false
+     },
+     "p_max": {
+      "department": 0.83,
+      "urgency": 0.86,
+      "churn_risk": 0.98,
+      "refund_requested": 0.98,
+      "needs_human": 0.61
+     }
     }
    }
   },
@@ -1944,9 +3131,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 814.5,
+     "ms": 810.8,
      "ms_samples": [
-      814.5
+      810.8
      ],
      "answers": {
       "department": {
@@ -2053,6 +3240,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 132.4,
+     "ms_samples": [
+      132.4
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "technical",
+       "confidence": 0.97,
+       "probabilities": {
+        "other": 0.02,
+        "sales": 0.0,
+        "technical": 0.98,
+        "billing": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.26
+      }
+     },
+     "usage": {
+      "input_tokens": 538,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "technical",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 0.98,
+      "urgency": 1.0,
+      "churn_risk": 0.98,
+      "refund_requested": 0.99,
+      "needs_human": 0.74
+     }
     }
    }
   },
@@ -2076,9 +3335,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 848.7,
+     "ms": 845.6,
      "ms_samples": [
-      848.7
+      845.6
      ],
      "answers": {
       "department": {
@@ -2185,6 +3444,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 127.8,
+     "ms_samples": [
+      127.8
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "billing",
+       "confidence": 1.0,
+       "probabilities": {
+        "billing": 1.0,
+        "sales": 0.0,
+        "technical": 0.0,
+        "other": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 1.02,
+       "confidence": 0.61,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.12,
+        "1": 0.74,
+        "2": 0.14
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.43
+      }
+     },
+     "usage": {
+      "input_tokens": 538,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "billing",
+      "urgency": 1,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 0.74,
+      "churn_risk": 0.98,
+      "refund_requested": 0.99,
+      "needs_human": 0.57
+     }
     }
    }
   },
@@ -2208,9 +3539,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 820.0,
+     "ms": 813.4,
      "ms_samples": [
-      820.0
+      813.4
      ],
      "answers": {
       "department": {
@@ -2317,6 +3648,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 182.4,
+     "ms_samples": [
+      182.4
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "other",
+       "confidence": 0.8,
+       "probabilities": {
+        "billing": 0.0,
+        "other": 0.85,
+        "sales": 0.15,
+        "technical": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.2,
+       "confidence": 0.7,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.8,
+        "1": 0.2,
+        "2": 0.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.29
+      }
+     },
+     "usage": {
+      "input_tokens": 539,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "other",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 0.85,
+      "urgency": 0.8,
+      "churn_risk": 0.99,
+      "refund_requested": 0.99,
+      "needs_human": 0.71
+     }
     }
    }
   },
@@ -2340,9 +3743,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 950.0,
+     "ms": 947.1,
      "ms_samples": [
-      950.0
+      947.1
      ],
      "answers": {
       "department": {
@@ -2449,6 +3852,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 149.1,
+     "ms_samples": [
+      149.1
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "technical",
+       "confidence": 1.0,
+       "probabilities": {
+        "technical": 1.0,
+        "billing": 0.0,
+        "sales": 0.0,
+        "other": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 1.34,
+       "confidence": 0.49,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.66,
+        "2": 0.34
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.05
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.83
+      }
+     },
+     "usage": {
+      "input_tokens": 565,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "technical",
+      "urgency": 1,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": false,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 0.66,
+      "churn_risk": 0.95,
+      "refund_requested": 0.99,
+      "needs_human": 0.83
+     }
     }
    }
   },
@@ -2472,9 +3947,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 866.9,
+     "ms": 866.3,
      "ms_samples": [
-      866.9
+      866.3
      ],
      "answers": {
       "department": {
@@ -2581,6 +4056,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 130.3,
+     "ms_samples": [
+      130.3
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "billing",
+       "confidence": 1.0,
+       "probabilities": {
+        "billing": 1.0,
+        "sales": 0.0,
+        "technical": 0.0,
+        "other": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.95
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.48
+      }
+     },
+     "usage": {
+      "input_tokens": 547,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "billing",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": true,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": false
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 1.0,
+      "churn_risk": 0.98,
+      "refund_requested": 0.95,
+      "needs_human": 0.52
+     }
     }
    }
   },
@@ -2604,9 +4151,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 819.0,
+     "ms": 813.1,
      "ms_samples": [
-      819.0
+      813.1
      ],
      "answers": {
       "department": {
@@ -2713,6 +4260,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 124.9,
+     "ms_samples": [
+      124.9
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "sales",
+       "confidence": 1.0,
+       "probabilities": {
+        "other": 0.0,
+        "technical": 0.0,
+        "billing": 0.0,
+        "sales": 1.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.99,
+       "confidence": 0.84,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.06,
+        "1": 0.89,
+        "2": 0.05
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.03
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.37
+      }
+     },
+     "usage": {
+      "input_tokens": 532,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "sales",
+      "urgency": 1,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 0.89,
+      "churn_risk": 0.97,
+      "refund_requested": 0.99,
+      "needs_human": 0.63
+     }
     }
    }
   },
@@ -2736,9 +4355,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 827.5,
+     "ms": 820.4,
      "ms_samples": [
-      827.5
+      820.4
      ],
      "answers": {
       "department": {
@@ -2845,6 +4464,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 185.9,
+     "ms_samples": [
+      185.9
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "billing",
+       "confidence": 0.96,
+       "probabilities": {
+        "technical": 0.02,
+        "sales": 0.0,
+        "other": 0.01,
+        "billing": 0.97
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 1.11,
+       "confidence": 0.78,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.02,
+        "1": 0.85,
+        "2": 0.13
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.97
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.98
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.85
+      }
+     },
+     "usage": {
+      "input_tokens": 544,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "billing",
+      "urgency": 1,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": false,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 0.97,
+      "urgency": 0.85,
+      "churn_risk": 0.97,
+      "refund_requested": 0.98,
+      "needs_human": 0.85
+     }
     }
    }
   },
@@ -2868,9 +4559,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 909.1,
+     "ms": 907.0,
      "ms_samples": [
-      909.1
+      907.0
      ],
      "answers": {
       "department": {
@@ -2977,6 +4668,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 152.1,
+     "ms_samples": [
+      152.1
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "technical",
+       "confidence": 1.0,
+       "probabilities": {
+        "sales": 0.0,
+        "technical": 1.0,
+        "other": 0.0,
+        "billing": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 1.99,
+       "confidence": 0.99,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.01,
+        "2": 0.99
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.55
+      }
+     },
+     "usage": {
+      "input_tokens": 552,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "technical",
+      "urgency": 2,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": false
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 0.99,
+      "churn_risk": 0.98,
+      "refund_requested": 0.99,
+      "needs_human": 0.55
+     }
     }
    }
   },
@@ -3000,9 +4763,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 853.8,
+     "ms": 847.8,
      "ms_samples": [
-      853.8
+      847.8
      ],
      "answers": {
       "department": {
@@ -3109,6 +4872,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 122.3,
+     "ms_samples": [
+      122.3
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "billing",
+       "confidence": 0.9,
+       "probabilities": {
+        "other": 0.01,
+        "technical": 0.06,
+        "sales": 0.0,
+        "billing": 0.93
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.23,
+       "confidence": 0.66,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.78,
+        "1": 0.22,
+        "2": 0.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.03
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.42
+      }
+     },
+     "usage": {
+      "input_tokens": 545,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "billing",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 0.93,
+      "urgency": 0.78,
+      "churn_risk": 0.99,
+      "refund_requested": 0.97,
+      "needs_human": 0.58
+     }
     }
    }
   },
@@ -3132,9 +4967,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 761.0,
+     "ms": 757.8,
      "ms_samples": [
-      761.0
+      757.8
      ],
      "answers": {
       "department": {
@@ -3241,6 +5076,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 121.8,
+     "ms_samples": [
+      121.8
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "sales",
+       "confidence": 1.0,
+       "probabilities": {
+        "sales": 1.0,
+        "billing": 0.0,
+        "technical": 0.0,
+        "other": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.07,
+       "confidence": 0.89,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.93,
+        "1": 0.07,
+        "2": 0.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.03
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.52
+      }
+     },
+     "usage": {
+      "input_tokens": 528,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "sales",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 0.93,
+      "churn_risk": 0.97,
+      "refund_requested": 0.99,
+      "needs_human": 0.52
+     }
     }
    }
   },
@@ -3264,9 +5171,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 836.6,
+     "ms": 829.0,
      "ms_samples": [
-      836.6
+      829.0
      ],
      "answers": {
       "department": {
@@ -3373,6 +5280,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 197.0,
+     "ms_samples": [
+      197.0
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "technical",
+       "confidence": 1.0,
+       "probabilities": {
+        "sales": 0.0,
+        "billing": 0.0,
+        "technical": 1.0,
+        "other": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 2.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 1.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.04
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.9
+      }
+     },
+     "usage": {
+      "input_tokens": 543,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "technical",
+      "urgency": 2,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 1.0,
+      "churn_risk": 0.96,
+      "refund_requested": 0.99,
+      "needs_human": 0.9
+     }
     }
    }
   },
@@ -3396,9 +5375,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 2328.1,
+     "ms": 2283.1,
      "ms_samples": [
-      2328.1
+      2283.1
      ],
      "answers": {
       "department": {
@@ -3505,6 +5484,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 137.9,
+     "ms_samples": [
+      137.9
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "billing",
+       "confidence": 1.0,
+       "probabilities": {
+        "other": 0.0,
+        "sales": 0.0,
+        "technical": 0.0,
+        "billing": 1.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 1.97,
+       "confidence": 0.96,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.03,
+        "2": 0.97
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.97
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.98
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.62
+      }
+     },
+     "usage": {
+      "input_tokens": 521,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "billing",
+      "urgency": 2,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 0.97,
+      "churn_risk": 0.97,
+      "refund_requested": 0.98,
+      "needs_human": 0.62
+     }
     }
    }
   },
@@ -3528,9 +5579,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 2265.3,
+     "ms": 2244.4,
      "ms_samples": [
-      2265.3
+      2244.4
      ],
      "answers": {
       "department": {
@@ -3637,6 +5688,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 165.2,
+     "ms_samples": [
+      165.2
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "technical",
+       "confidence": 1.0,
+       "probabilities": {
+        "technical": 1.0,
+        "sales": 0.0,
+        "other": 0.0,
+        "billing": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 2.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 1.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.04
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.93
+      }
+     },
+     "usage": {
+      "input_tokens": 524,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "technical",
+      "urgency": 2,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 1.0,
+      "churn_risk": 0.96,
+      "refund_requested": 0.98,
+      "needs_human": 0.93
+     }
     }
    }
   },
@@ -3660,9 +5783,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 2336.2,
+     "ms": 2329.8,
      "ms_samples": [
-      2336.2
+      2329.8
      ],
      "answers": {
       "department": {
@@ -3769,6 +5892,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 132.4,
+     "ms_samples": [
+      132.4
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "sales",
+       "confidence": 1.0,
+       "probabilities": {
+        "billing": 0.0,
+        "sales": 1.0,
+        "technical": 0.0,
+        "other": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.08
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.24
+      }
+     },
+     "usage": {
+      "input_tokens": 523,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "sales",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 1.0,
+      "churn_risk": 0.92,
+      "refund_requested": 0.99,
+      "needs_human": 0.76
+     }
     }
    }
   },
@@ -3792,9 +5987,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 2388.2,
+     "ms": 2359.6,
      "ms_samples": [
-      2388.2
+      2359.6
      ],
      "answers": {
       "department": {
@@ -3901,6 +6096,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 164.9,
+     "ms_samples": [
+      164.9
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "billing",
+       "confidence": 0.73,
+       "probabilities": {
+        "technical": 0.02,
+        "billing": 0.79,
+        "sales": 0.01,
+        "other": 0.18
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 1.1,
+       "confidence": 0.81,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.01,
+        "1": 0.88,
+        "2": 0.11
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.03
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.5
+      }
+     },
+     "usage": {
+      "input_tokens": 526,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "billing",
+      "urgency": 1,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": false
+     },
+     "p_max": {
+      "department": 0.79,
+      "urgency": 0.88,
+      "churn_risk": 0.97,
+      "refund_requested": 0.98,
+      "needs_human": 0.5
+     }
     }
    }
   },
@@ -3924,9 +6191,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 2446.2,
+     "ms": 2413.9,
      "ms_samples": [
-      2446.2
+      2413.9
      ],
      "answers": {
       "department": {
@@ -4033,6 +6300,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 123.9,
+     "ms_samples": [
+      123.9
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "technical",
+       "confidence": 0.84,
+       "probabilities": {
+        "sales": 0.0,
+        "technical": 0.88,
+        "billing": 0.0,
+        "other": 0.12
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.22
+      }
+     },
+     "usage": {
+      "input_tokens": 527,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "technical",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 0.88,
+      "urgency": 1.0,
+      "churn_risk": 0.99,
+      "refund_requested": 0.99,
+      "needs_human": 0.78
+     }
     }
    }
   },
@@ -4056,9 +6395,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 2397.0,
+     "ms": 2354.3,
      "ms_samples": [
-      2397.0
+      2354.3
      ],
      "answers": {
       "department": {
@@ -4165,6 +6504,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 143.7,
+     "ms_samples": [
+      143.7
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "technical",
+       "confidence": 0.35,
+       "probabilities": {
+        "technical": 0.52,
+        "billing": 0.0,
+        "sales": 0.11,
+        "other": 0.37
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.95,
+       "confidence": 0.24,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.28,
+        "1": 0.49,
+        "2": 0.23
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.99
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.95
+      }
+     },
+     "usage": {
+      "input_tokens": 526,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "technical",
+      "urgency": 1,
+      "churn_risk": true,
+      "refund_requested": false,
+      "needs_human": true
+     },
+     "correct": {
+      "department": false,
+      "urgency": false,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 0.52,
+      "urgency": 0.49,
+      "churn_risk": 0.99,
+      "refund_requested": 0.98,
+      "needs_human": 0.95
+     }
     }
    }
   },
@@ -4188,9 +6599,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 2160.7,
+     "ms": 2116.7,
      "ms_samples": [
-      2160.7
+      2116.7
      ],
      "answers": {
       "department": {
@@ -4297,6 +6708,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 153.1,
+     "ms_samples": [
+      153.1
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "other",
+       "confidence": 1.0,
+       "probabilities": {
+        "technical": 0.0,
+        "other": 1.0,
+        "billing": 0.0,
+        "sales": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.11
+      }
+     },
+     "usage": {
+      "input_tokens": 515,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "other",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 1.0,
+      "churn_risk": 0.99,
+      "refund_requested": 0.99,
+      "needs_human": 0.89
+     }
     }
    }
   },
@@ -4320,9 +6803,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 2328.4,
+     "ms": 2296.6,
      "ms_samples": [
-      2328.4
+      2296.6
      ],
      "answers": {
       "department": {
@@ -4429,6 +6912,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 131.2,
+     "ms_samples": [
+      131.2
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "billing",
+       "confidence": 1.0,
+       "probabilities": {
+        "sales": 0.0,
+        "technical": 0.0,
+        "billing": 1.0,
+        "other": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.28,
+       "confidence": 0.58,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.73,
+        "1": 0.26,
+        "2": 0.01
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.31
+      }
+     },
+     "usage": {
+      "input_tokens": 521,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "billing",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": false,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 0.73,
+      "churn_risk": 0.99,
+      "refund_requested": 0.99,
+      "needs_human": 0.69
+     }
     }
    }
   },
@@ -4452,9 +7007,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 2356.9,
+     "ms": 2342.1,
      "ms_samples": [
-      2356.9
+      2342.1
      ],
      "answers": {
       "department": {
@@ -4561,6 +7116,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 143.1,
+     "ms_samples": [
+      143.1
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "billing",
+       "confidence": 1.0,
+       "probabilities": {
+        "sales": 0.0,
+        "other": 0.0,
+        "billing": 1.0,
+        "technical": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.96
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.42
+      }
+     },
+     "usage": {
+      "input_tokens": 525,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "billing",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": true,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": false
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 1.0,
+      "churn_risk": 0.98,
+      "refund_requested": 0.96,
+      "needs_human": 0.58
+     }
     }
    }
   },
@@ -4584,9 +7211,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 2425.4,
+     "ms": 2390.5,
      "ms_samples": [
-      2425.4
+      2390.5
      ],
      "answers": {
       "department": {
@@ -4693,6 +7320,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 159.3,
+     "ms_samples": [
+      159.3
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "billing",
+       "confidence": 1.0,
+       "probabilities": {
+        "sales": 0.0,
+        "technical": 0.0,
+        "billing": 1.0,
+        "other": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.25,
+       "confidence": 0.63,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.75,
+        "1": 0.25,
+        "2": 0.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.03
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.35
+      }
+     },
+     "usage": {
+      "input_tokens": 527,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "billing",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 0.75,
+      "churn_risk": 0.99,
+      "refund_requested": 0.97,
+      "needs_human": 0.65
+     }
     }
    }
   },
@@ -4716,9 +7415,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 2270.3,
+     "ms": 2197.8,
      "ms_samples": [
-      2270.3
+      2197.8
      ],
      "answers": {
       "department": {
@@ -4825,6 +7524,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 137.6,
+     "ms_samples": [
+      137.6
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "technical",
+       "confidence": 1.0,
+       "probabilities": {
+        "sales": 0.0,
+        "other": 0.0,
+        "billing": 0.0,
+        "technical": 1.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 2.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 1.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.03
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.77
+      }
+     },
+     "usage": {
+      "input_tokens": 519,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "technical",
+      "urgency": 2,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": false
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 1.0,
+      "churn_risk": 0.97,
+      "refund_requested": 0.99,
+      "needs_human": 0.77
+     }
     }
    }
   },
@@ -4848,9 +7619,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 2362.7,
+     "ms": 2297.0,
      "ms_samples": [
-      2362.7
+      2297.0
      ],
      "answers": {
       "department": {
@@ -4957,6 +7728,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 200.3,
+     "ms_samples": [
+      200.3
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "billing",
+       "confidence": 0.86,
+       "probabilities": {
+        "billing": 0.89,
+        "sales": 0.0,
+        "technical": 0.1,
+        "other": 0.01
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 1.03,
+       "confidence": 0.9,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.02,
+        "1": 0.93,
+        "2": 0.05
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.97
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.98
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.88
+      }
+     },
+     "usage": {
+      "input_tokens": 523,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "billing",
+      "urgency": 1,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": false,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 0.89,
+      "urgency": 0.93,
+      "churn_risk": 0.97,
+      "refund_requested": 0.98,
+      "needs_human": 0.88
+     }
     }
    }
   },
@@ -4980,9 +7823,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 812.4,
+     "ms": 804.2,
      "ms_samples": [
-      812.4
+      804.2
      ],
      "answers": {
       "department": {
@@ -5089,6 +7932,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 126.2,
+     "ms_samples": [
+      126.2
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "billing",
+       "confidence": 1.0,
+       "probabilities": {
+        "billing": 1.0,
+        "sales": 0.0,
+        "other": 0.0,
+        "technical": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 1.99,
+       "confidence": 0.98,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.01,
+        "2": 0.99
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.97
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.98
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.78
+      }
+     },
+     "usage": {
+      "input_tokens": 536,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "billing",
+      "urgency": 2,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 0.99,
+      "churn_risk": 0.97,
+      "refund_requested": 0.98,
+      "needs_human": 0.78
+     }
     }
    }
   },
@@ -5112,9 +8027,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 767.0,
+     "ms": 758.9,
      "ms_samples": [
-      767.0
+      758.9
      ],
      "answers": {
       "department": {
@@ -5221,6 +8136,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 210.0,
+     "ms_samples": [
+      210.0
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "technical",
+       "confidence": 1.0,
+       "probabilities": {
+        "technical": 1.0,
+        "billing": 0.0,
+        "sales": 0.0,
+        "other": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 2.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 1.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.03
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.89
+      }
+     },
+     "usage": {
+      "input_tokens": 524,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "technical",
+      "urgency": 2,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 1.0,
+      "churn_risk": 0.97,
+      "refund_requested": 0.99,
+      "needs_human": 0.89
+     }
     }
    }
   },
@@ -5244,9 +8231,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 760.4,
+     "ms": 760.6,
      "ms_samples": [
-      760.4
+      760.6
      ],
      "answers": {
       "department": {
@@ -5353,6 +8340,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 167.4,
+     "ms_samples": [
+      167.4
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "sales",
+       "confidence": 1.0,
+       "probabilities": {
+        "technical": 0.0,
+        "other": 0.0,
+        "billing": 0.0,
+        "sales": 1.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.24
+      }
+     },
+     "usage": {
+      "input_tokens": 528,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "sales",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 1.0,
+      "churn_risk": 0.99,
+      "refund_requested": 0.99,
+      "needs_human": 0.76
+     }
     }
    }
   },
@@ -5376,9 +8435,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 813.2,
+     "ms": 810.2,
      "ms_samples": [
-      813.2
+      810.2
      ],
      "answers": {
       "department": {
@@ -5485,6 +8544,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 191.3,
+     "ms_samples": [
+      191.3
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "billing",
+       "confidence": 0.39,
+       "probabilities": {
+        "other": 0.33,
+        "technical": 0.12,
+        "billing": 0.53,
+        "sales": 0.02
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 1.27,
+       "confidence": 0.57,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.01,
+        "1": 0.71,
+        "2": 0.28
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.03
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.61
+      }
+     },
+     "usage": {
+      "input_tokens": 538,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "billing",
+      "urgency": 1,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": false
+     },
+     "p_max": {
+      "department": 0.53,
+      "urgency": 0.71,
+      "churn_risk": 0.97,
+      "refund_requested": 0.98,
+      "needs_human": 0.61
+     }
     }
    }
   },
@@ -5508,9 +8639,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 840.2,
+     "ms": 831.2,
      "ms_samples": [
-      840.2
+      831.2
      ],
      "answers": {
       "department": {
@@ -5617,6 +8748,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 128.7,
+     "ms_samples": [
+      128.7
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "billing",
+       "confidence": 1.0,
+       "probabilities": {
+        "other": 0.0,
+        "sales": 0.0,
+        "technical": 0.0,
+        "billing": 1.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 1.99,
+       "confidence": 0.99,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.01,
+        "2": 0.99
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.97
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.98
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.73
+      }
+     },
+     "usage": {
+      "input_tokens": 540,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "billing",
+      "urgency": 2,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 0.99,
+      "churn_risk": 0.97,
+      "refund_requested": 0.98,
+      "needs_human": 0.73
+     }
     }
    }
   },
@@ -5640,9 +8843,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 755.3,
+     "ms": 745.0,
      "ms_samples": [
-      755.3
+      745.0
      ],
      "answers": {
       "department": {
@@ -5749,6 +8952,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 140.1,
+     "ms_samples": [
+      140.1
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "technical",
+       "confidence": 1.0,
+       "probabilities": {
+        "other": 0.0,
+        "sales": 0.0,
+        "technical": 1.0,
+        "billing": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.34
+      }
+     },
+     "usage": {
+      "input_tokens": 524,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "technical",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 1.0,
+      "churn_risk": 0.98,
+      "refund_requested": 0.99,
+      "needs_human": 0.66
+     }
     }
    }
   },
@@ -5772,9 +9047,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 743.2,
+     "ms": 732.4,
      "ms_samples": [
-      743.2
+      732.4
      ],
      "answers": {
       "department": {
@@ -5881,6 +9156,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 149.4,
+     "ms_samples": [
+      149.4
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "sales",
+       "confidence": 1.0,
+       "probabilities": {
+        "billing": 0.0,
+        "technical": 0.0,
+        "other": 0.0,
+        "sales": 1.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.04,
+       "confidence": 0.94,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.96,
+        "1": 0.04,
+        "2": 0.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.03
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.58
+      }
+     },
+     "usage": {
+      "input_tokens": 522,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "sales",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 0.96,
+      "churn_risk": 0.97,
+      "refund_requested": 0.99,
+      "needs_human": 0.58
+     }
     }
    }
   },
@@ -5904,9 +9251,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 842.2,
+     "ms": 829.8,
      "ms_samples": [
-      842.2
+      829.8
      ],
      "answers": {
       "department": {
@@ -6013,6 +9360,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 150.8,
+     "ms_samples": [
+      150.8
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "technical",
+       "confidence": 1.0,
+       "probabilities": {
+        "billing": 0.0,
+        "sales": 0.0,
+        "other": 0.0,
+        "technical": 1.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 2.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 1.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.04
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.94
+      }
+     },
+     "usage": {
+      "input_tokens": 539,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "technical",
+      "urgency": 2,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 1.0,
+      "churn_risk": 0.96,
+      "refund_requested": 0.98,
+      "needs_human": 0.94
+     }
     }
    }
   },
@@ -6036,9 +9455,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 870.3,
+     "ms": 859.0,
      "ms_samples": [
-      870.3
+      859.0
      ],
      "answers": {
       "department": {
@@ -6145,6 +9564,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 140.2,
+     "ms_samples": [
+      140.2
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "billing",
+       "confidence": 1.0,
+       "probabilities": {
+        "technical": 0.0,
+        "other": 0.0,
+        "billing": 1.0,
+        "sales": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.97
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.49
+      }
+     },
+     "usage": {
+      "input_tokens": 537,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "billing",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": true,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": false
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 1.0,
+      "churn_risk": 0.98,
+      "refund_requested": 0.97,
+      "needs_human": 0.51
+     }
     }
    }
   },
@@ -6168,9 +9659,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 913.3,
+     "ms": 903.2,
      "ms_samples": [
-      913.3
+      903.2
      ],
      "answers": {
       "department": {
@@ -6277,6 +9768,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 130.8,
+     "ms_samples": [
+      130.8
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "billing",
+       "confidence": 1.0,
+       "probabilities": {
+        "billing": 1.0,
+        "sales": 0.0,
+        "other": 0.0,
+        "technical": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 1.95,
+       "confidence": 0.93,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.04,
+        "2": 0.96
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.96
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.97
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.7
+      }
+     },
+     "usage": {
+      "input_tokens": 571,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "billing",
+      "urgency": 2,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 0.96,
+      "churn_risk": 0.96,
+      "refund_requested": 0.97,
+      "needs_human": 0.7
+     }
     }
    }
   },
@@ -6300,9 +9863,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 858.9,
+     "ms": 859.8,
      "ms_samples": [
-      858.9
+      859.8
      ],
      "answers": {
       "department": {
@@ -6409,6 +9972,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 159.9,
+     "ms_samples": [
+      159.9
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "sales",
+       "confidence": 1.0,
+       "probabilities": {
+        "other": 0.0,
+        "billing": 0.0,
+        "sales": 1.0,
+        "technical": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.04
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.4
+      }
+     },
+     "usage": {
+      "input_tokens": 560,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "sales",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 1.0,
+      "churn_risk": 0.96,
+      "refund_requested": 0.99,
+      "needs_human": 0.6
+     }
     }
    }
   },
@@ -6432,9 +10067,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 924.4,
+     "ms": 910.4,
      "ms_samples": [
-      924.4
+      910.4
      ],
      "answers": {
       "department": {
@@ -6542,6 +10177,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 170.7,
+     "ms_samples": [
+      170.7
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "technical",
+       "confidence": 1.0,
+       "probabilities": {
+        "other": 0.0,
+        "billing": 0.0,
+        "technical": 1.0,
+        "sales": 0.0
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 2.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 1.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.04
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.94
+      }
+     },
+     "usage": {
+      "input_tokens": 581,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "technical",
+      "urgency": 2,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": true
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 1.0,
+      "urgency": 1.0,
+      "churn_risk": 0.96,
+      "refund_requested": 0.98,
+      "needs_human": 0.94
+     }
     }
    }
   },
@@ -6565,9 +10272,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 800.2,
+     "ms": 769.9,
      "ms_samples": [
-      800.2
+      769.9
      ],
      "answers": {
       "department": {
@@ -6674,6 +10381,78 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 121.4,
+     "ms_samples": [
+      121.4
+     ],
+     "answers": {
+      "department": {
+       "type": "choice",
+       "choice": "other",
+       "confidence": 0.99,
+       "probabilities": {
+        "sales": 0.0,
+        "billing": 0.0,
+        "other": 0.99,
+        "technical": 0.01
+       }
+      },
+      "urgency": {
+       "type": "score",
+       "score": 0.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "not urgent, can wait days",
+        "1": "soon, within a day",
+        "2": "critical: a deadline today or work is blocked"
+       },
+       "probabilities": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0
+       }
+      },
+      "churn_risk": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "refund_requested": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "needs_human": {
+       "type": "noul",
+       "noul": 0.12
+      }
+     },
+     "usage": {
+      "input_tokens": 535,
+      "output_tokens": 114
+     },
+     "decided": {
+      "department": "other",
+      "urgency": 0,
+      "churn_risk": false,
+      "refund_requested": false,
+      "needs_human": false
+     },
+     "correct": {
+      "department": true,
+      "urgency": true,
+      "churn_risk": true,
+      "refund_requested": true,
+      "needs_human": true
+     },
+     "p_max": {
+      "department": 0.99,
+      "urgency": 1.0,
+      "churn_risk": 0.99,
+      "refund_requested": 0.99,
+      "needs_human": 0.88
+     }
     }
    }
   },
@@ -6697,9 +10476,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 1035.3,
+     "ms": 1014.0,
      "ms_samples": [
-      1035.3
+      1014.0
      ],
      "answers": {
       "action": {
@@ -6793,6 +10572,70 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 126.5,
+     "ms_samples": [
+      126.5
+     ],
+     "answers": {
+      "action": {
+       "type": "choice",
+       "choice": "block",
+       "confidence": 1.0,
+       "probabilities": {
+        "review": 0.0,
+        "allow": 0.0,
+        "block": 1.0
+       }
+      },
+      "is_phishing": {
+       "type": "noul",
+       "noul": 0.98
+      },
+      "is_jailbreak": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "severity": {
+       "type": "score",
+       "score": 2.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "harmless",
+        "1": "mildly suspicious",
+        "2": "clearly malicious"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 1.0
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 578,
+      "output_tokens": 91
+     },
+     "decided": {
+      "action": "block",
+      "is_phishing": true,
+      "is_jailbreak": false,
+      "severity": 2
+     },
+     "correct": {
+      "action": true,
+      "is_phishing": true,
+      "is_jailbreak": true,
+      "severity": true
+     },
+     "p_max": {
+      "action": 1.0,
+      "is_phishing": 0.98,
+      "is_jailbreak": 0.98,
+      "severity": 1.0
+     }
     }
    }
   },
@@ -6816,9 +10659,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 888.4,
+     "ms": 874.7,
      "ms_samples": [
-      888.4
+      874.7
      ],
      "answers": {
       "action": {
@@ -6912,6 +10755,70 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 116.5,
+     "ms_samples": [
+      116.5
+     ],
+     "answers": {
+      "action": {
+       "type": "choice",
+       "choice": "allow",
+       "confidence": 0.99,
+       "probabilities": {
+        "block": 0.0,
+        "review": 0.01,
+        "allow": 0.99
+       }
+      },
+      "is_phishing": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "is_jailbreak": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "severity": {
+       "type": "score",
+       "score": 0.01,
+       "confidence": 0.98,
+       "legend": {
+        "0": "harmless",
+        "1": "mildly suspicious",
+        "2": "clearly malicious"
+       },
+       "probabilities": {
+        "0": 0.99,
+        "1": 0.01,
+        "2": 0.0
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 552,
+      "output_tokens": 91
+     },
+     "decided": {
+      "action": "allow",
+      "is_phishing": false,
+      "is_jailbreak": false,
+      "severity": 0
+     },
+     "correct": {
+      "action": true,
+      "is_phishing": true,
+      "is_jailbreak": true,
+      "severity": true
+     },
+     "p_max": {
+      "action": 0.99,
+      "is_phishing": 0.98,
+      "is_jailbreak": 0.99,
+      "severity": 0.99
+     }
     }
    }
   },
@@ -6933,9 +10840,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 672.1,
+     "ms": 665.8,
      "ms_samples": [
-      672.1
+      665.8
      ],
      "answers": {
       "action": {
@@ -7029,6 +10936,70 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 125.9,
+     "ms_samples": [
+      125.9
+     ],
+     "answers": {
+      "action": {
+       "type": "choice",
+       "choice": "block",
+       "confidence": 0.99,
+       "probabilities": {
+        "block": 1.0,
+        "review": 0.0,
+        "allow": 0.0
+       }
+      },
+      "is_phishing": {
+       "type": "noul",
+       "noul": 0.68
+      },
+      "is_jailbreak": {
+       "type": "noul",
+       "noul": 0.99
+      },
+      "severity": {
+       "type": "score",
+       "score": 2.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "harmless",
+        "1": "mildly suspicious",
+        "2": "clearly malicious"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 1.0
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 516,
+      "output_tokens": 91
+     },
+     "decided": {
+      "action": "block",
+      "is_phishing": true,
+      "is_jailbreak": true,
+      "severity": 2
+     },
+     "correct": {
+      "action": true,
+      "is_phishing": false,
+      "is_jailbreak": true,
+      "severity": true
+     },
+     "p_max": {
+      "action": 1.0,
+      "is_phishing": 0.68,
+      "is_jailbreak": 0.99,
+      "severity": 1.0
+     }
     }
    }
   },
@@ -7050,9 +11021,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 576.6,
+     "ms": 560.4,
      "ms_samples": [
-      576.6
+      560.4
      ],
      "answers": {
       "action": {
@@ -7146,6 +11117,70 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 127.9,
+     "ms_samples": [
+      127.9
+     ],
+     "answers": {
+      "action": {
+       "type": "choice",
+       "choice": "allow",
+       "confidence": 0.94,
+       "probabilities": {
+        "review": 0.04,
+        "allow": 0.96,
+        "block": 0.0
+       }
+      },
+      "is_phishing": {
+       "type": "noul",
+       "noul": 0.04
+      },
+      "is_jailbreak": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "severity": {
+       "type": "score",
+       "score": 0.0,
+       "confidence": 0.99,
+       "legend": {
+        "0": "harmless",
+        "1": "mildly suspicious",
+        "2": "clearly malicious"
+       },
+       "probabilities": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 490,
+      "output_tokens": 91
+     },
+     "decided": {
+      "action": "allow",
+      "is_phishing": false,
+      "is_jailbreak": false,
+      "severity": 0
+     },
+     "correct": {
+      "action": true,
+      "is_phishing": true,
+      "is_jailbreak": true,
+      "severity": true
+     },
+     "p_max": {
+      "action": 0.96,
+      "is_phishing": 0.96,
+      "is_jailbreak": 0.98,
+      "severity": 1.0
+     }
     }
    }
   },
@@ -7169,9 +11204,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 843.5,
+     "ms": 818.8,
      "ms_samples": [
-      843.5
+      818.8
      ],
      "answers": {
       "action": {
@@ -7265,6 +11300,70 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 149.4,
+     "ms_samples": [
+      149.4
+     ],
+     "answers": {
+      "action": {
+       "type": "choice",
+       "choice": "block",
+       "confidence": 0.47,
+       "probabilities": {
+        "block": 0.64,
+        "review": 0.35,
+        "allow": 0.01
+       }
+      },
+      "is_phishing": {
+       "type": "noul",
+       "noul": 0.86
+      },
+      "is_jailbreak": {
+       "type": "noul",
+       "noul": 0.03
+      },
+      "severity": {
+       "type": "score",
+       "score": 1.76,
+       "confidence": 0.63,
+       "legend": {
+        "0": "harmless",
+        "1": "mildly suspicious",
+        "2": "clearly malicious"
+       },
+       "probabilities": {
+        "0": 0.01,
+        "1": 0.22,
+        "2": 0.77
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 543,
+      "output_tokens": 91
+     },
+     "decided": {
+      "action": "block",
+      "is_phishing": true,
+      "is_jailbreak": false,
+      "severity": 2
+     },
+     "correct": {
+      "action": false,
+      "is_phishing": true,
+      "is_jailbreak": true,
+      "severity": false
+     },
+     "p_max": {
+      "action": 0.64,
+      "is_phishing": 0.86,
+      "is_jailbreak": 0.97,
+      "severity": 0.77
+     }
     }
    }
   },
@@ -7288,9 +11387,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 2277.1,
+     "ms": 2238.4,
      "ms_samples": [
-      2277.1
+      2238.4
      ],
      "answers": {
       "action": {
@@ -7384,6 +11483,70 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 146.6,
+     "ms_samples": [
+      146.6
+     ],
+     "answers": {
+      "action": {
+       "type": "choice",
+       "choice": "block",
+       "confidence": 1.0,
+       "probabilities": {
+        "review": 0.0,
+        "block": 1.0,
+        "allow": 0.0
+       }
+      },
+      "is_phishing": {
+       "type": "noul",
+       "noul": 0.99
+      },
+      "is_jailbreak": {
+       "type": "noul",
+       "noul": 0.03
+      },
+      "severity": {
+       "type": "score",
+       "score": 2.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "harmless",
+        "1": "mildly suspicious",
+        "2": "clearly malicious"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 1.0
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 528,
+      "output_tokens": 91
+     },
+     "decided": {
+      "action": "block",
+      "is_phishing": true,
+      "is_jailbreak": false,
+      "severity": 2
+     },
+     "correct": {
+      "action": true,
+      "is_phishing": true,
+      "is_jailbreak": true,
+      "severity": true
+     },
+     "p_max": {
+      "action": 1.0,
+      "is_phishing": 0.99,
+      "is_jailbreak": 0.97,
+      "severity": 1.0
+     }
     }
    }
   },
@@ -7407,9 +11570,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 2102.0,
+     "ms": 2106.3,
      "ms_samples": [
-      2102.0
+      2106.3
      ],
      "answers": {
       "action": {
@@ -7503,6 +11666,70 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 130.1,
+     "ms_samples": [
+      130.1
+     ],
+     "answers": {
+      "action": {
+       "type": "choice",
+       "choice": "allow",
+       "confidence": 0.99,
+       "probabilities": {
+        "block": 0.0,
+        "review": 0.0,
+        "allow": 1.0
+       }
+      },
+      "is_phishing": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "is_jailbreak": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "severity": {
+       "type": "score",
+       "score": 0.01,
+       "confidence": 0.99,
+       "legend": {
+        "0": "harmless",
+        "1": "mildly suspicious",
+        "2": "clearly malicious"
+       },
+       "probabilities": {
+        "0": 0.99,
+        "1": 0.01,
+        "2": 0.0
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 526,
+      "output_tokens": 91
+     },
+     "decided": {
+      "action": "allow",
+      "is_phishing": false,
+      "is_jailbreak": false,
+      "severity": 0
+     },
+     "correct": {
+      "action": true,
+      "is_phishing": true,
+      "is_jailbreak": true,
+      "severity": true
+     },
+     "p_max": {
+      "action": 1.0,
+      "is_phishing": 0.98,
+      "is_jailbreak": 0.99,
+      "severity": 0.99
+     }
     }
    }
   },
@@ -7524,9 +11751,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 1677.8,
+     "ms": 1659.7,
      "ms_samples": [
-      1677.8
+      1659.7
      ],
      "answers": {
       "action": {
@@ -7620,6 +11847,70 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 167.2,
+     "ms_samples": [
+      167.2
+     ],
+     "answers": {
+      "action": {
+       "type": "choice",
+       "choice": "block",
+       "confidence": 0.99,
+       "probabilities": {
+        "block": 1.0,
+        "allow": 0.0,
+        "review": 0.0
+       }
+      },
+      "is_phishing": {
+       "type": "noul",
+       "noul": 0.5
+      },
+      "is_jailbreak": {
+       "type": "noul",
+       "noul": 0.99
+      },
+      "severity": {
+       "type": "score",
+       "score": 1.99,
+       "confidence": 0.98,
+       "legend": {
+        "0": "harmless",
+        "1": "mildly suspicious",
+        "2": "clearly malicious"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.01,
+        "2": 0.99
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 491,
+      "output_tokens": 91
+     },
+     "decided": {
+      "action": "block",
+      "is_phishing": true,
+      "is_jailbreak": true,
+      "severity": 2
+     },
+     "correct": {
+      "action": true,
+      "is_phishing": false,
+      "is_jailbreak": true,
+      "severity": true
+     },
+     "p_max": {
+      "action": 1.0,
+      "is_phishing": 0.5,
+      "is_jailbreak": 0.99,
+      "severity": 0.99
+     }
     }
    }
   },
@@ -7641,9 +11932,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 1472.4,
+     "ms": 1471.9,
      "ms_samples": [
-      1472.4
+      1471.9
      ],
      "answers": {
       "action": {
@@ -7737,6 +12028,70 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 810.3,
+     "ms_samples": [
+      810.3
+     ],
+     "answers": {
+      "action": {
+       "type": "choice",
+       "choice": "allow",
+       "confidence": 0.97,
+       "probabilities": {
+        "review": 0.02,
+        "block": 0.0,
+        "allow": 0.98
+       }
+      },
+      "is_phishing": {
+       "type": "noul",
+       "noul": 0.04
+      },
+      "is_jailbreak": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "severity": {
+       "type": "score",
+       "score": 0.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "harmless",
+        "1": "mildly suspicious",
+        "2": "clearly malicious"
+       },
+       "probabilities": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 480,
+      "output_tokens": 91
+     },
+     "decided": {
+      "action": "allow",
+      "is_phishing": false,
+      "is_jailbreak": false,
+      "severity": 0
+     },
+     "correct": {
+      "action": true,
+      "is_phishing": true,
+      "is_jailbreak": true,
+      "severity": true
+     },
+     "p_max": {
+      "action": 0.98,
+      "is_phishing": 0.96,
+      "is_jailbreak": 0.98,
+      "severity": 1.0
+     }
     }
    }
   },
@@ -7760,9 +12115,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 2185.3,
+     "ms": 2165.9,
      "ms_samples": [
-      2185.3
+      2165.9
      ],
      "answers": {
       "action": {
@@ -7856,6 +12211,70 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 132.3,
+     "ms_samples": [
+      132.3
+     ],
+     "answers": {
+      "action": {
+       "type": "choice",
+       "choice": "block",
+       "confidence": 0.45,
+       "probabilities": {
+        "block": 0.63,
+        "review": 0.37,
+        "allow": 0.0
+       }
+      },
+      "is_phishing": {
+       "type": "noul",
+       "noul": 0.9
+      },
+      "is_jailbreak": {
+       "type": "noul",
+       "noul": 0.05
+      },
+      "severity": {
+       "type": "score",
+       "score": 1.83,
+       "confidence": 0.75,
+       "legend": {
+        "0": "harmless",
+        "1": "mildly suspicious",
+        "2": "clearly malicious"
+       },
+       "probabilities": {
+        "0": 0.01,
+        "1": 0.15,
+        "2": 0.84
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 521,
+      "output_tokens": 91
+     },
+     "decided": {
+      "action": "block",
+      "is_phishing": true,
+      "is_jailbreak": false,
+      "severity": 2
+     },
+     "correct": {
+      "action": false,
+      "is_phishing": true,
+      "is_jailbreak": true,
+      "severity": false
+     },
+     "p_max": {
+      "action": 0.63,
+      "is_phishing": 0.9,
+      "is_jailbreak": 0.95,
+      "severity": 0.84
+     }
     }
    }
   },
@@ -7877,9 +12296,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 1718.8,
+     "ms": 1715.0,
      "ms_samples": [
-      1718.8
+      1715.0
      ],
      "answers": {
       "action": {
@@ -7973,6 +12392,70 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 125.7,
+     "ms_samples": [
+      125.7
+     ],
+     "answers": {
+      "action": {
+       "type": "choice",
+       "choice": "block",
+       "confidence": 0.63,
+       "probabilities": {
+        "allow": 0.1,
+        "review": 0.14,
+        "block": 0.76
+       }
+      },
+      "is_phishing": {
+       "type": "noul",
+       "noul": 0.11
+      },
+      "is_jailbreak": {
+       "type": "noul",
+       "noul": 0.82
+      },
+      "severity": {
+       "type": "score",
+       "score": 1.28,
+       "confidence": 0.35,
+       "legend": {
+        "0": "harmless",
+        "1": "mildly suspicious",
+        "2": "clearly malicious"
+       },
+       "probabilities": {
+        "0": 0.08,
+        "1": 0.56,
+        "2": 0.36
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 494,
+      "output_tokens": 91
+     },
+     "decided": {
+      "action": "block",
+      "is_phishing": false,
+      "is_jailbreak": true,
+      "severity": 1
+     },
+     "correct": {
+      "action": true,
+      "is_phishing": true,
+      "is_jailbreak": true,
+      "severity": false
+     },
+     "p_max": {
+      "action": 0.76,
+      "is_phishing": 0.89,
+      "is_jailbreak": 0.82,
+      "severity": 0.56
+     }
     }
    }
   },
@@ -7996,9 +12479,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 828.0,
+     "ms": 820.7,
      "ms_samples": [
-      828.0
+      820.7
      ],
      "answers": {
       "action": {
@@ -8092,6 +12575,70 @@
       },
       "workflow": null
      }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 139.8,
+     "ms_samples": [
+      139.8
+     ],
+     "answers": {
+      "action": {
+       "type": "choice",
+       "choice": "block",
+       "confidence": 1.0,
+       "probabilities": {
+        "block": 1.0,
+        "allow": 0.0,
+        "review": 0.0
+       }
+      },
+      "is_phishing": {
+       "type": "noul",
+       "noul": 0.98
+      },
+      "is_jailbreak": {
+       "type": "noul",
+       "noul": 0.04
+      },
+      "severity": {
+       "type": "score",
+       "score": 2.0,
+       "confidence": 1.0,
+       "legend": {
+        "0": "harmless",
+        "1": "mildly suspicious",
+        "2": "clearly malicious"
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 1.0
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 536,
+      "output_tokens": 91
+     },
+     "decided": {
+      "action": "block",
+      "is_phishing": true,
+      "is_jailbreak": false,
+      "severity": 2
+     },
+     "correct": {
+      "action": true,
+      "is_phishing": true,
+      "is_jailbreak": true,
+      "severity": true
+     },
+     "p_max": {
+      "action": 1.0,
+      "is_phishing": 0.98,
+      "is_jailbreak": 0.96,
+      "severity": 1.0
+     }
     }
    }
   },
@@ -8113,9 +12660,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 511.9,
+     "ms": 513.6,
      "ms_samples": [
-      511.9
+      513.6
      ],
      "answers": {
       "action": {
@@ -8208,6 +12755,70 @@
        "non_latin_fraction": 0.0
       },
       "workflow": null
+     }
+    },
+    "jev": {
+     "model": "jev-1.13.0",
+     "ms": 118.0,
+     "ms_samples": [
+      118.0
+     ],
+     "answers": {
+      "action": {
+       "type": "choice",
+       "choice": "allow",
+       "confidence": 0.95,
+       "probabilities": {
+        "allow": 0.97,
+        "block": 0.0,
+        "review": 0.03
+       }
+      },
+      "is_phishing": {
+       "type": "noul",
+       "noul": 0.05
+      },
+      "is_jailbreak": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "severity": {
+       "type": "score",
+       "score": 0.0,
+       "confidence": 0.99,
+       "legend": {
+        "0": "harmless",
+        "1": "mildly suspicious",
+        "2": "clearly malicious"
+       },
+       "probabilities": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 484,
+      "output_tokens": 91
+     },
+     "decided": {
+      "action": "allow",
+      "is_phishing": false,
+      "is_jailbreak": false,
+      "severity": 0
+     },
+     "correct": {
+      "action": true,
+      "is_phishing": true,
+      "is_jailbreak": true,
+      "severity": true
+     },
+     "p_max": {
+      "action": 0.97,
+      "is_phishing": 0.95,
+      "is_jailbreak": 0.98,
+      "severity": 1.0
      }
     }
    }
