@@ -9,3 +9,4 @@ Bir satır ekleyip commit'lemek yeter.
 2026-09-25 08:21 UTC — beşinci koşu (secret yeniden kontrol edildi)
 2026-09-25 08:25 UTC — altıncı koşu (github-pages ortamı yoklaması)
 2026-09-25 11:05 UTC — yedinci koşu
+2026-09-25 14:25 UTC — sekizinci koşu (secret adı düzeltildi)
