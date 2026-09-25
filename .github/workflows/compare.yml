@@ -41,9 +41,31 @@ env:
   HF_HUB_DISABLE_PROGRESS_BARS: "1"
 
 jobs:
+  # Secret "Repository secrets" yerine github-pages ortamına eklenmiş olabilir; önce orada yokla.
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: github-pages
+    outputs:
+      env: ${{ steps.p.outputs.env }}
+    steps:
+      - id: p
+        env:
+          K: ${{ secrets.TYPESAFE_API_KEY }}
+        run: |
+          if [ -n "$K" ]; then
+            echo "TYPESAFE_API_KEY github-pages ortamında bulundu (uzunluk ${#K}); karşılaştırma bu ortamda koşacak."
+            echo "env=github-pages" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::TYPESAFE_API_KEY github-pages ortamında da yok."
+            echo "env=compare" >> "$GITHUB_OUTPUT"
+          fi
+
   compare:
+    needs: probe
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    environment: ${{ needs.probe.outputs.env }}
     steps:
       - uses: actions/checkout@v4
         with:
