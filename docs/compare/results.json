@@ -1,6 +1,6 @@
 {
  "meta": {
-  "timestamp": "2026-09-25 07:53 UTC",
+  "timestamp": "2026-09-25 08:04 UTC",
   "backends_run_now": [
    "laya"
   ],
@@ -12,13 +12,13 @@
     "laya": "0.3.20",
     "torch": "2.14.0+cpu",
     "device": "cpu",
-    "threads": 4,
-    "load_s": 126.2
+    "threads": 2,
+    "load_s": 18.8
    }
   },
-  "python": "3.11.15",
+  "python": "3.11.16",
   "machine": "x86_64",
-  "ci": false,
+  "ci": true,
   "n_scenarios": 58,
   "note": "Aynı durumlar ve aynı sorular iki backend'e verildi. Laya zero-shot, yerel CPU; Jev hosted API (gecikmeye ağ dahil). Beklenen etiketler elle yazıldı."
  },
@@ -437,9 +437,9 @@
     }
    },
    "latency_ms": {
-    "p50": 390.2,
-    "p95": 3309.9,
-    "mean": 826.2
+    "p50": 793.2,
+    "p95": 5120.7,
+    "mean": 1416.9
    },
    "mean_p_max_when_correct": 0.8852,
    "mean_p_max_when_wrong": 0.7698,
@@ -486,9 +486,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 3309.9,
+     "ms": 5120.7,
      "ms_samples": [
-      3309.9
+      5120.7
      ],
      "answers": {
       "borçlanma_kapasitesi": {
@@ -637,8 +637,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.0899,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      },
@@ -692,9 +691,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 4535.1,
+     "ms": 5377.0,
      "ms_samples": [
-      4535.1
+      5377.0
      ],
      "answers": {
       "borçlanma_kapasitesi": {
@@ -843,8 +842,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.0703,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      },
@@ -900,9 +898,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 3353.6,
+     "ms": 5703.5,
      "ms_samples": [
-      3353.6
+      5703.5
      ],
      "answers": {
       "borçlanma_kapasitesi": {
@@ -1050,8 +1048,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.0992,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      },
@@ -1104,9 +1101,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 3352.4,
+     "ms": 5403.4,
      "ms_samples": [
-      3352.4
+      5403.4
      ],
      "answers": {
       "borçlanma_kapasitesi": {
@@ -1254,8 +1251,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.0846,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      },
@@ -1288,9 +1284,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 391.1,
+     "ms": 849.8,
      "ms_samples": [
-      391.1
+      849.8
      ],
      "answers": {
       "department": {
@@ -1393,8 +1389,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.0787,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -1421,9 +1416,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 362.8,
+     "ms": 755.5,
      "ms_samples": [
-      362.8
+      755.5
      ],
      "answers": {
       "department": {
@@ -1526,8 +1521,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.1074,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -1554,9 +1548,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 459.0,
+     "ms": 804.9,
      "ms_samples": [
-      459.0
+      804.9
      ],
      "answers": {
       "department": {
@@ -1659,8 +1653,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.1127,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -1687,9 +1680,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 365.1,
+     "ms": 798.1,
      "ms_samples": [
-      365.1
+      798.1
      ],
      "answers": {
       "department": {
@@ -1792,8 +1785,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.1014,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -1820,9 +1812,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 370.0,
+     "ms": 787.8,
      "ms_samples": [
-      370.0
+      787.8
      ],
      "answers": {
       "department": {
@@ -1925,8 +1917,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.085,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -1953,9 +1944,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 379.5,
+     "ms": 692.6,
      "ms_samples": [
-      379.5
+      692.6
      ],
      "answers": {
       "department": {
@@ -2058,8 +2049,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.0442,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -2086,9 +2076,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 371.5,
+     "ms": 714.4,
      "ms_samples": [
-      371.5
+      714.4
      ],
      "answers": {
       "department": {
@@ -2191,8 +2181,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.0526,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -2219,9 +2208,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 379.7,
+     "ms": 688.8,
      "ms_samples": [
-      379.7
+      688.8
      ],
      "answers": {
       "department": {
@@ -2324,8 +2313,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.1111,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -2352,9 +2340,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 389.8,
+     "ms": 801.7,
      "ms_samples": [
-      389.8
+      801.7
      ],
      "answers": {
       "department": {
@@ -2457,8 +2445,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.1136,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -2485,9 +2472,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 351.5,
+     "ms": 767.4,
      "ms_samples": [
-      351.5
+      767.4
      ],
      "answers": {
       "department": {
@@ -2590,8 +2577,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.1024,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -2618,9 +2604,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 365.1,
+     "ms": 762.8,
      "ms_samples": [
-      365.1
+      762.8
      ],
      "answers": {
       "department": {
@@ -2723,8 +2709,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.0776,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -2751,9 +2736,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 408.4,
+     "ms": 788.2,
      "ms_samples": [
-      408.4
+      788.2
      ],
      "answers": {
       "department": {
@@ -2856,8 +2841,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.123,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -2884,9 +2868,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 403.9,
+     "ms": 806.0,
      "ms_samples": [
-      403.9
+      806.0
      ],
      "answers": {
       "department": {
@@ -2989,8 +2973,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.0828,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -3017,9 +3000,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 346.0,
+     "ms": 784.2,
      "ms_samples": [
-      346.0
+      784.2
      ],
      "answers": {
       "department": {
@@ -3122,8 +3105,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.0887,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -3150,9 +3132,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 323.5,
+     "ms": 687.9,
      "ms_samples": [
-      323.5
+      687.9
      ],
      "answers": {
       "department": {
@@ -3255,8 +3237,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.09,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -3283,9 +3264,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 355.8,
+     "ms": 761.3,
      "ms_samples": [
-      355.8
+      761.3
      ],
      "answers": {
       "department": {
@@ -3388,8 +3369,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.1066,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -3416,9 +3396,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 1015.1,
+     "ms": 2116.6,
      "ms_samples": [
-      1015.1
+      2116.6
      ],
      "answers": {
       "department": {
@@ -3521,8 +3501,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -3549,9 +3528,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 967.7,
+     "ms": 2034.5,
      "ms_samples": [
-      967.7
+      2034.5
      ],
      "answers": {
       "department": {
@@ -3654,8 +3633,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -3682,9 +3660,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 1086.1,
+     "ms": 2195.8,
      "ms_samples": [
-      1086.1
+      2195.8
      ],
      "answers": {
       "department": {
@@ -3787,8 +3765,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -3815,9 +3792,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 958.7,
+     "ms": 2145.7,
      "ms_samples": [
-      958.7
+      2145.7
      ],
      "answers": {
       "department": {
@@ -3920,8 +3897,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -3948,9 +3924,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 1211.1,
+     "ms": 2196.1,
      "ms_samples": [
-      1211.1
+      2196.1
      ],
      "answers": {
       "department": {
@@ -4053,8 +4029,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -4081,9 +4056,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 1572.3,
+     "ms": 2202.4,
      "ms_samples": [
-      1572.3
+      2202.4
      ],
      "answers": {
       "department": {
@@ -4186,8 +4161,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -4214,9 +4188,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 1501.0,
+     "ms": 1934.8,
      "ms_samples": [
-      1501.0
+      1934.8
      ],
      "answers": {
       "department": {
@@ -4319,8 +4293,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -4347,9 +4320,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 1493.9,
+     "ms": 2157.7,
      "ms_samples": [
-      1493.9
+      2157.7
      ],
      "answers": {
       "department": {
@@ -4452,8 +4425,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -4480,9 +4452,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 1452.3,
+     "ms": 2091.4,
      "ms_samples": [
-      1452.3
+      2091.4
      ],
      "answers": {
       "department": {
@@ -4585,8 +4557,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -4613,9 +4584,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 2136.0,
+     "ms": 2153.2,
      "ms_samples": [
-      2136.0
+      2153.2
      ],
      "answers": {
       "department": {
@@ -4718,8 +4689,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -4746,9 +4716,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 1443.7,
+     "ms": 2062.2,
      "ms_samples": [
-      1443.7
+      2062.2
      ],
      "answers": {
       "department": {
@@ -4851,8 +4821,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -4879,9 +4848,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 930.1,
+     "ms": 2096.4,
      "ms_samples": [
-      930.1
+      2096.4
      ],
      "answers": {
       "department": {
@@ -4984,8 +4953,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -5012,9 +4980,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 342.1,
+     "ms": 721.4,
      "ms_samples": [
-      342.1
+      721.4
      ],
      "answers": {
       "department": {
@@ -5117,8 +5085,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.0213,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -5145,9 +5112,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 344.9,
+     "ms": 681.7,
      "ms_samples": [
-      344.9
+      681.7
      ],
      "answers": {
       "department": {
@@ -5250,8 +5217,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.0077,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -5278,9 +5244,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 307.7,
+     "ms": 684.6,
      "ms_samples": [
-      307.7
+      684.6
      ],
      "answers": {
       "department": {
@@ -5289,7 +5255,7 @@
        "probabilities": {
         "billing": 0.9949,
         "technical": 0.0,
-        "sales": 0.0051,
+        "sales": 0.005,
         "other": 0.0
        },
        "confidence": 0.9767,
@@ -5383,8 +5349,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.0357,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -5411,9 +5376,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 333.2,
+     "ms": 689.7,
      "ms_samples": [
-      333.2
+      689.7
      ],
      "answers": {
       "department": {
@@ -5516,8 +5481,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.0278,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -5544,9 +5508,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 341.8,
+     "ms": 713.1,
      "ms_samples": [
-      341.8
+      713.1
      ],
      "answers": {
       "department": {
@@ -5649,8 +5613,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.0072,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -5677,9 +5640,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 310.4,
+     "ms": 635.7,
      "ms_samples": [
-      310.4
+      635.7
      ],
      "answers": {
       "department": {
@@ -5782,8 +5745,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.0261,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -5810,9 +5772,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 408.7,
+     "ms": 619.7,
      "ms_samples": [
-      408.7
+      619.7
      ],
      "answers": {
       "department": {
@@ -5915,8 +5877,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.049,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -5943,9 +5904,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 332.7,
+     "ms": 700.4,
      "ms_samples": [
-      332.7
+      700.4
      ],
      "answers": {
       "department": {
@@ -6048,8 +6009,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.0278,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -6076,9 +6036,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 355.7,
+     "ms": 728.8,
      "ms_samples": [
-      355.7
+      728.8
      ],
      "answers": {
       "department": {
@@ -6181,8 +6141,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.0204,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -6209,9 +6168,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 368.3,
+     "ms": 807.2,
      "ms_samples": [
-      368.3
+      807.2
      ],
      "answers": {
       "department": {
@@ -6314,8 +6273,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 1.0,
-       "mixed_segment": null
+       "non_latin_fraction": 1.0
       },
       "workflow": null
      }
@@ -6342,22 +6300,22 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 355.5,
+     "ms": 725.3,
      "ms_samples": [
-      355.5
+      725.3
      ],
      "answers": {
       "department": {
        "type": "choice",
        "choice": "billing",
        "probabilities": {
-        "billing": 0.5902,
+        "billing": 0.5901,
         "technical": 0.0469,
         "sales": 0.269,
         "other": 0.094
        },
        "confidence": 0.2569,
-       "answer_confidence": 0.5902,
+       "answer_confidence": 0.5901,
        "action": {
         "act_probability": 1.0
        }
@@ -6428,7 +6386,7 @@
       "needs_human": true
      },
      "p_max": {
-      "department": 0.5902,
+      "department": 0.5901,
       "urgency": 0.7483,
       "churn_risk": 0.9991,
       "refund_requested": 0.9996,
@@ -6447,8 +6405,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 1.0,
-       "mixed_segment": null
+       "non_latin_fraction": 1.0
       },
       "workflow": null
      }
@@ -6475,9 +6432,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 365.5,
+     "ms": 755.8,
      "ms_samples": [
-      365.5
+      755.8
      ],
      "answers": {
       "department": {
@@ -6581,8 +6538,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.9639,
-       "mixed_segment": null
+       "non_latin_fraction": 0.9639
       },
       "workflow": null
      }
@@ -6609,9 +6565,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 302.7,
+     "ms": 637.3,
      "ms_samples": [
-      302.7
+      637.3
      ],
      "answers": {
       "department": {
@@ -6714,8 +6670,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 1.0,
-       "mixed_segment": null
+       "non_latin_fraction": 1.0
       },
       "workflow": null
      }
@@ -6742,9 +6697,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 413.1,
+     "ms": 855.9,
      "ms_samples": [
-      413.1
+      855.9
      ],
      "answers": {
       "action": {
@@ -6834,8 +6789,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.1012,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -6862,9 +6816,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 390.6,
+     "ms": 722.6,
      "ms_samples": [
-      390.6
+      722.6
      ],
      "answers": {
       "action": {
@@ -6954,8 +6908,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.0542,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -6980,9 +6933,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 283.1,
+     "ms": 552.5,
      "ms_samples": [
-      283.1
+      552.5
      ],
      "answers": {
       "action": {
@@ -7072,8 +7025,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.0822,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -7098,9 +7050,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 275.3,
+     "ms": 494.7,
      "ms_samples": [
-      275.3
+      494.7
      ],
      "answers": {
       "action": {
@@ -7190,8 +7142,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.0615,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -7218,9 +7169,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 377.5,
+     "ms": 677.6,
      "ms_samples": [
-      377.5
+      677.6
      ],
      "answers": {
       "action": {
@@ -7310,8 +7261,7 @@
        "is_english": false,
        "language_undecided": true,
        "diacritic_rate": 0.0578,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -7338,9 +7288,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 931.4,
+     "ms": 1889.9,
      "ms_samples": [
-      931.4
+      1889.9
      ],
      "answers": {
       "action": {
@@ -7430,8 +7380,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -7458,9 +7407,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 1052.5,
+     "ms": 1724.6,
      "ms_samples": [
-      1052.5
+      1724.6
      ],
      "answers": {
       "action": {
@@ -7550,8 +7499,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -7576,9 +7524,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 648.5,
+     "ms": 1348.8,
      "ms_samples": [
-      648.5
+      1348.8
      ],
      "answers": {
       "action": {
@@ -7668,8 +7616,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -7694,9 +7641,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 629.7,
+     "ms": 1224.7,
      "ms_samples": [
-      629.7
+      1224.7
      ],
      "answers": {
       "action": {
@@ -7786,8 +7733,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -7814,9 +7760,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 842.9,
+     "ms": 1801.9,
      "ms_samples": [
-      842.9
+      1801.9
      ],
      "answers": {
       "action": {
@@ -7906,8 +7852,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -7932,9 +7877,9 @@
    "runs": {
     "laya": {
      "model": "laya/english",
-     "ms": 693.9,
+     "ms": 1423.1,
      "ms_samples": [
-      693.9
+      1423.1
      ],
      "answers": {
       "action": {
@@ -8024,8 +7969,7 @@
        "is_english": true,
        "language_undecided": false,
        "diacritic_rate": 0.0,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -8052,9 +7996,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 348.7,
+     "ms": 693.3,
      "ms_samples": [
-      348.7
+      693.3
      ],
      "answers": {
       "action": {
@@ -8144,8 +8088,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.0126,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
@@ -8170,9 +8113,9 @@
    "runs": {
     "laya": {
      "model": "laya/multilingual",
-     "ms": 223.5,
+     "ms": 424.3,
      "ms_samples": [
-      223.5
+      424.3
      ],
      "answers": {
       "action": {
@@ -8262,8 +8205,7 @@
        "is_english": false,
        "language_undecided": false,
        "diacritic_rate": 0.0152,
-       "non_latin_fraction": 0.0,
-       "mixed_segment": null
+       "non_latin_fraction": 0.0
       },
       "workflow": null
      }
