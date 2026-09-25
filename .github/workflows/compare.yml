@@ -65,21 +65,28 @@ jobs:
           pip install torch --index-url https://download.pytorch.org/whl/cpu
           pip install laya typesafe-sdk
 
-      - name: Anahtar var mı?
+      - name: Anahtar var mı? (teşhis: yalnızca adlar yazılır, değerler maskeli)
         id: key
         env:
-          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+          SECRET_NAMES: ${{ toJSON(secrets) }}
+          VAR_NAMES: ${{ toJSON(vars) }}
+          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY || vars.TYPESAFE_API_KEY }}
         run: |
+          echo "Bu iş akışının gördüğü repository/environment secret adları:"
+          echo "$SECRET_NAMES" | python3 -c "import sys,json; print(sorted(json.load(sys.stdin).keys()))"
+          echo "Gördüğü variable adları:"
+          echo "$VAR_NAMES" | python3 -c "import sys,json; print(sorted(json.load(sys.stdin).keys()))"
           if [ -z "$TYPESAFE_API_KEY" ]; then
-            echo "TYPESAFE_API_KEY secret'ı tanımlı değil; yalnızca laya koşulacak" >&2
+            echo "::warning::TYPESAFE_API_KEY bu iş akışına ulaşmadı (secret ya da variable olarak). Yalnızca laya koşulacak."
             echo "backends=laya" >> "$GITHUB_OUTPUT"
           else
+            echo "TYPESAFE_API_KEY bulundu (uzunluk ${#TYPESAFE_API_KEY})."
             echo "backends=${{ github.event.inputs.backends || 'laya,jev' }}" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Karşılaştırmayı koş
         env:
-          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY || vars.TYPESAFE_API_KEY }}
           OMP_NUM_THREADS: "2"
         run: |
           LIMIT="${{ github.event.inputs.limit || '0' }}"
