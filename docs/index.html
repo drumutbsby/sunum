@@ -148,6 +148,7 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; border-to
   <a href="#feishu">Çince diagnostik</a>
   <a href="#simulasyon">Simülasyon</a>
   <a href="#jev">Jev karşılaştırması</a>
+  <a href="#tkm">TKM — kendi modelimiz</a>
   <a href="#testler">Bu oturumdaki testler</a>
   <a href="#repo">Repo yapısı</a>
   <a href="#degerlendirme">Genel değerlendirme</a>
@@ -476,6 +477,53 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; border-to
 </section>
 
 <!-- ============ TESTLER ============ -->
+<!-- ============ TKM ============ -->
+<section class="panel" id="tkm">
+  <style>
+    .tkm-legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-2);margin:4px 0 10px}.tkm-legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:middle}
+    .tkm-row{display:grid;grid-template-columns:200px 1fr;gap:8px;align-items:start;padding:5px 0;border-bottom:1px dashed var(--border)}.tkm-lbl{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tkm-lbl span{color:var(--muted);font-size:11.5px}
+    .tkm-bars{display:flex;flex-direction:column;gap:2px}.tkm-bar{display:grid;grid-template-columns:1fr 54px;gap:6px;align-items:center;height:12px;font-size:11px}.tkm-bar i{display:block;height:9px;border-radius:3px}.tkm-bar b{font-weight:500;color:var(--ink-2)}
+    .tkm-filtre{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.tkm-filtre select{font:inherit;font-size:13px;padding:4px 6px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--ink)}
+    #tkmTablo table td,#tkmTablo table th{padding:4px 8px;white-space:nowrap}tr.tkm-click{cursor:pointer}tr.tkm-click:hover td{background:rgba(42,120,214,.08)}
+    .tkm-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:14px}@media(max-width:900px){.tkm-grid{grid-template-columns:1fr}.tkm-row{grid-template-columns:1fr}}
+    .tkm-state{white-space:pre-wrap;font:12.5px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--page);border:1px solid var(--border);border-radius:8px;padding:10px;max-height:420px;overflow:auto;margin:0}
+    .tkm-soru{font-size:14px;margin:4px 0 6px}.tkm-krit{margin:4px 0 8px 18px;font-size:13px;color:var(--ink-2)}
+    .tkm-sis{margin:8px 0;padding:6px 10px;border:1px solid var(--border);border-radius:8px}.tkm-sis-h{border-left:4px solid;padding-left:8px;margin-bottom:4px;font-size:13.5px}
+    .tkm-p{display:grid;grid-template-columns:150px 1fr 60px;gap:6px;align-items:center;font-size:12px;margin:2px 0}.tkm-p .k{font-family:ui-monospace,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tkm-p .bar{height:9px;background:var(--border);border-radius:4px;overflow:hidden}.tkm-p .bar i{display:block;height:100%;background:var(--s1)}.tkm-p.secim .bar i{background:var(--s3)}.tkm-p.altin .k{font-weight:700}
+    .tkm-cevaplar{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.tkm-cv{border:1px solid;border-radius:999px;padding:2px 10px;font-size:12.5px}
+    #tkmDetay{display:none;margin-top:14px}
+  </style>
+  <h2>TKM — Tipli Karar Motoru: bankanın kendi Jev alternatifi, 112.328 soruda beş sistem</h2>
+  <p class="lead">Bu sekme Laya paneline sonradan eklendi. <b>TKM-27B</b> = Qwen3.8-27B + Kev tarzı LoRA (r16) + işaretçi baş; <b>v1.1</b> yayın modeli (kamu veri + 17 bin satırlık kendi sentez havuzumuz), <b>v1.0</b> yalnız kamu veri. <b>TKM-E</b> = mmBERT + tipli baş (CPU, ~1 ms; Laya'nın yerini alan kendi encoder'ımız). Kıyas: <b>Jev 1.13</b> (TypeSafe API) ve <b>Clef</b> (Cloudflare, Qwen3.8-27B). Üç küme: 100.000 soruluk programatik <b>sentez havuzu</b> (41 karar kalıbı, 24 bankacılık/uyum/operasyon alanı, 23 tuzak türü; altın etiket koddan), <b>GEL</b> (havuzun hiçbir modele öğretilmeyen 10 kalıbı), <b>GEL-2</b> (sonradan üretilen 13 yeni karar kalıbı — en zorlu genelleme sınavı) ve bağımsız bir Claude oturumunun ürettiği <b>arkadaş</b> seti (320 uzun bankacılık dosyası). Jev/Clef çıktıları hiçbir eğitime ya da model seçimine girmedi; farklar aynı sorularda eşli testle (McNemar + ikiz-grubu küme-bootstrap) sınandı. Tüm satırlar aşağıdaki gezginde filtrelenebilir; 1.500 senaryonun tam metni açılır.</p>
+  <div class="tiles" id="tkmTiles"></div>
+  <div class="grid two">
+    <div class="card"><div class="card-head"><div class="t"><h3>Özet: küme × sistem (doğruluk %)</h3><div class="sub">Kalın = kümede en iyi. v1.1 train dilimini eğitimde gördüğü için orada yalnız görmediği 20.000 örnek raporlanır.</div></div></div><div id="tkmOzet"></div></div>
+    <div class="card"><div class="card-head"><div class="t"><h3>Eşli farklar</h3><div class="sub">Aynı sorular; fark puan, GA95 küme-bootstrap, McNemar p</div></div></div><div id="tkmEsli"></div></div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <div class="card-head"><div class="t"><h3>Kırılım: kim nerede kazanıyor?</h3><div class="sub">Küme ve kesit seçin; çubuklar doğruluk %, en zayıf kalıp üstte (n ≥ 20)</div></div>
+      <div class="tkm-filtre"><select id="tkmKume"></select><select id="tkmAlan"><option value="arketip">arketip (karar kalıbı)</option><option value="tuzak">tuzak</option><option value="tip">soru tipi</option><option value="dil">dil</option><option value="bant">uzunluk bandı</option></select></div></div>
+    <div id="tkmKirilim"></div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <div class="card-head"><div class="t"><h3>Senaryo gezgini — tüm 112.328 satır</h3><div class="sub">"Jev doğru, biz yanlış" gibi kesitleri çekin; satıra tıklayınca tam metin (örnek kümesindeyse) açılır. "Biz" = v1.1, train diliminde v1.0.</div></div></div>
+    <div class="tkm-filtre"><select id="tkmFKume"></select><select id="tkmFArketip"></select><select id="tkmFTuzak"></select><select id="tkmFDil"></select><select id="tkmFTip"></select>
+      <select id="tkmFSonuc"><option value="">sonuç: hepsi</option><option value="jev_biz_yanlis">Jev doğru · biz yanlış</option><option value="biz_jev_yanlis">biz doğru · Jev yanlış</option><option value="ikisi_yanlis">ikisi de yanlış</option><option value="ikisi_dogru">ikisi de doğru</option></select></div>
+    <div class="note" id="tkmSayac"></div>
+    <div class="scroll" id="tkmTablo"></div>
+    <div class="note" id="tkmSayfa"></div>
+    <div class="card" id="tkmDetay"></div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <div class="card-head"><div class="t"><h3>Simülasyon: otomatik oynat</h3><div class="sub">Rastgele senaryolar akar; her sistemin cevabı ve canlı doğruluk sayaçları</div></div>
+      <div class="tkm-filtre"><select id="tkmOynaKume"></select><select id="tkmOynaHiz"><option value="2">2 sn</option><option value="4" selected>4 sn</option><option value="8">8 sn</option></select><button type="button" id="tkmOynaBtn">▶ Başlat</button></div></div>
+    <div class="note" id="tkmOynaSayac">—</div>
+    <div id="tkmOynaKart" style="margin-top:8px"></div>
+  </div>
+  <p class="note" id="tkmMeta" style="margin-top:12px"></p>
+  <p class="note">Kaynak: <code>C:\llm\jev_tr</code> deposu (git v0.6.27), KAYIT günlükleri ve <code>araclar/sunum_tkm_veri.py</code>. Gizlilik: banka verisi yok; sentez verisi programatik ve bize ait; arkadaş seti kurgusal; API anahtarı içermez.</p>
+</section>
+
 <section class="panel" id="testler">
   <h2>Bu oturumda koşulan testler</h2>
   <p class="lead">Depo klonlandı, CPU torch ile kuruldu ve CI'ın çalıştırdığı paketler ağ ve ağırlık indirmeden koşuldu. Checkpoint indirilmedi; gerçek çıkarım gerektiren testler bu yüzden burada yok.</p>
@@ -584,6 +632,9 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; border-to
 <script src="data.js"></script>
 <script src="sim_data.js"></script>
 <script src="compare_data.js"></script>
+<script src="tkm_data.js"></script>
+<script src="tkm_index.js"></script>
+<script src="tkm_ornek.js"></script>
 <script>
 (function () {
   const D = window.LAYA_DATA;
@@ -1172,5 +1223,6 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; border-to
   showTab(location.hash);
 })();
 </script>
+<script src="tkm.js"></script>
 </body>
 </html>
