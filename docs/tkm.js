@@ -1,5 +1,6 @@
 /* TKM sekmesi — TKM-27B v1.0/v1.1 · Jev · Clef · TKM-E, 112.328 soru (100k havuz + GEL-2 + arkadaş).
-   Veri: tkm_data.js (özet/kırılım/eşli), tkm_index.js (tüm satırlar, kompakt), tkm_ornek.js (1.500 tam senaryo).
+   Veri: tkm_data.js (özet/kırılım/eşli), tkm_index.js (tüm satırlar, kompakt), tkm_ornek.js (1.500 tam senaryo, anında),
+         tkm_full/<parça>.json (256 parça; TÜM 112.328 satırın tam metni, satıra tıklanınca ilgili parça indirilir ve önbelleğe alınır).
    Bağımsız IIFE: sayfanın sekme mekanizması #tkm bölümünü gösterince render eder. */
 (function () {
   'use strict';
@@ -84,16 +85,34 @@
     let h = '<table><thead><tr><th>küme</th><th>arketip</th><th>tuzak</th><th>dil</th><th>tip</th>' + SK.map((s) => `<th style="color:${RENK[s]}">${esc(AD[s].split(' ')[0])}${s === 'v11' ? ' v1.1' : s === 'v10' ? ' v1.0' : ''}</th>`).join('') + '<th>tam metin</th></tr></thead><tbody>';
     dilim.forEach((r) => {
       const id = r[col.id]; const var_ = !!ORid[id];
-      h += `<tr class="tkm-r${var_ ? ' tkm-click' : ''}" data-id="${esc(id)}"><td>${esc(inv.kume[r[col.kume]])}</td><td>${esc(inv.arketip[r[col.arketip]])}</td><td>${esc(inv.tuzak[r[col.tuzak]])}</td><td>${esc(inv.dil[r[col.dil]])}</td><td>${esc(inv.tip[r[col.tip]])}</td>` +
+      h += `<tr class="tkm-r tkm-click" data-id="${esc(id)}" data-parca="${esc(r[col.parca])}"><td>${esc(inv.kume[r[col.kume]])}</td><td>${esc(inv.arketip[r[col.arketip]])}</td><td>${esc(inv.tuzak[r[col.tuzak]])}</td><td>${esc(inv.dil[r[col.dil]])}</td><td>${esc(inv.tip[r[col.tip]])}</td>` +
         SK.map((s) => { const x = r[col[s]], g = r[col['g_' + s]]; return x < 0 ? '<td style="color:var(--muted)">—</td>' : `<td title="güven ${g == null ? '—' : (100 * g).toFixed(0) + ' %'}">${x ? '<span style="color:var(--good-text)">✓</span>' : '<span style="color:var(--critical)">✗</span>'}<span style="color:var(--muted);font-size:11px"> ${g == null ? '' : Math.round(100 * g)}</span></td>`; }).join('') +
-        `<td>${var_ ? '<span style="color:var(--s1)">aç ▸</span>' : '<span style="color:var(--muted)">örnek kümesinde değil</span>'}</td></tr>`;
+        `<td>${var_ ? '<span style="color:var(--s1)">aç ▸</span>' : '<span style="color:var(--s1)">aç ▸</span><span style="color:var(--muted);font-size:11px" title="Tam metin bu satır için ayrı bir parça dosyasından indirilir (~1 MB, bir kez)"> ⇣</span>'}</td></tr>`;
     });
     h += '</tbody></table>';
     const top = Math.max(1, Math.ceil(n / SAYFA));
     $('tkmTablo').innerHTML = h;
     $('tkmSayfa').innerHTML = `sayfa ${sayfa + 1}/${fi(top)} · <button type="button" id="tkmOnce"${sayfa === 0 ? ' disabled' : ''}>◀</button> <button type="button" id="tkmSonra"${sayfa + 1 >= top ? ' disabled' : ''}>▶</button>`;
     $('tkmOnce').onclick = () => { sayfa--; cizTablo(); }; $('tkmSonra').onclick = () => { sayfa++; cizTablo(); };
-    document.querySelectorAll('#tkmTablo tr.tkm-click').forEach((tr) => tr.addEventListener('click', () => detay(ORid[tr.getAttribute('data-id')])));
+    document.querySelectorAll('#tkmTablo tr.tkm-click').forEach((tr) => tr.addEventListener('click', () => acSatir(tr.getAttribute('data-id'), tr.getAttribute('data-parca'), tr)));
+  }
+  // ---------- tam metin: örnek kümesinde yoksa parça dosyasından (tkm_full/<parca>.json) getir
+  const PARCA = {};                                             // parca -> Promise<json>
+  function parcaGetir(pc) {
+    if (!PARCA[pc]) PARCA[pc] = fetch('tkm_full/' + pc + '.json', { cache: 'force-cache' }).then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).catch((e) => { delete PARCA[pc]; throw e; });
+    return PARCA[pc];
+  }
+  function parcadanDetay(id, P) {
+    const r = P.rows[id]; if (!r) return null;
+    const sistem = {}; Object.keys(r.s).forEach((s) => { sistem[s] = { dogru: r.s[s].d, cevap: r.s[s].c, olasilik: r.s[s].p }; });
+    return { id, kume: r.m[0], arketip: r.m[1], tuzak: r.m[2], dil: r.m[3], bant: r.m[4], tip: r.m[5], state: P.states[r.st] || '', soru: r.q, altin: r.a, sistem };
+  }
+  function acSatir(id, pc, tr) {
+    if (ORid[id]) { detay(ORid[id]); return; }
+    const hucre = tr && tr.lastElementChild; const eski = hucre ? hucre.innerHTML : '';
+    if (hucre) hucre.innerHTML = '<span style="color:var(--muted)">indiriliyor…</span>';
+    parcaGetir(pc).then((P) => { const o = parcadanDetay(id, P); if (hucre) hucre.innerHTML = eski; if (o) detay(o); else alert('Bu satırın tam metni parça dosyasında bulunamadı: ' + id); })
+      .catch((e) => { if (hucre) hucre.innerHTML = eski; alert('Tam metin indirilemedi (' + e.message + '). Sayfa GitHub Pages üzerinden açıksa biraz sonra yeniden deneyin.'); });
   }
   function olasilikBar(ol, cevap, altin) {
     return Object.keys(ol).sort((a, b) => ol[b] - ol[a]).map((k) => `<div class="tkm-p${k === altin ? ' altin' : ''}${k === cevap ? ' secim' : ''}"><span class="k">${esc(k)}${k === altin ? ' ★' : ''}</span><span class="bar"><i style="width:${(100 * ol[k]).toFixed(1)}%"></i></span><span class="v">${(100 * ol[k]).toFixed(1).replace('.', ',')} %</span></div>`).join('');
@@ -137,7 +156,7 @@
     $('tkmFKume').value = 'gel2'; $('tkmFSonuc').value = 'jev_biz_yanlis'; filtrele();
     $('tkmOynaKume').innerHTML = '<option value="">hepsi</option>' + KUMELER.map((k) => `<option value="${k}">${esc(KISA[k])}</option>`).join('');
     $('tkmOynaBtn').onclick = oynatBaslat;
-    $('tkmMeta').textContent = `Veri üretimi ${D.meta.uretim} · ${fi(IX.length)} satır indeks · ${fi(OR.length)} tam senaryo · ${D.meta.not}`;
+    $('tkmMeta').textContent = `Veri üretimi ${D.meta.uretim} · ${fi(IX.length)} satır indeks · tam metin: TÜM satırlar (${fi(OR.length)} örnek sayfayla gelir, kalanı tıklanınca 256 parçadan indirilir) · ${D.meta.not}`;
   }
   function gorunur() { return $('tkm').classList.contains('on'); }
   if (gorunur()) render();
