@@ -1,4 +1,4 @@
-/* TKM sekmesi — TKM-27B v1.0/v1.1 · Jev · Clef · TKM-E, 112.328 soru (100k havuz + GEL-2 + arkadaş).
+/* TKM sekmesi — Algebra V1.1 (iç kod TKM-27B v1.1) / TKM-27B v1.0 · Jev · Clef · TKM-E, 112.328 soru (100k havuz + GEL-2 + arkadaş).
    Veri: tkm_data.js (özet/kırılım/eşli), tkm_index.js (tüm satırlar, kompakt), tkm_ornek.js (1.500 tam senaryo, anında),
          tkm_full/<parça>.json (256 parça; TÜM 112.328 satırın tam metni, satıra tıklanınca ilgili parça indirilir ve önbelleğe alınır).
    Bağımsız IIFE: sayfanın sekme mekanizması #tkm bölümünü gösterince render eder. */
@@ -38,10 +38,10 @@
   function tiles() {
     const g2 = D.ozet.gel2, g = D.ozet.gel, tr = D.ozet.train, ak = D.ozet.arkadas;
     const t = (l, v, d) => `<div class="tile"><div class="l">${l}</div><div class="v">${v}</div><div class="d">${d}</div></div>`;
-    return t('GEL-2 — 13 hiç görülmemiş karar kalıbı (10.000)', pct(...g2.v11) + ' %', `TKM-27B v1.1 · Jev ${pct(...g2.jev)} · Clef ${pct(...g2.clef)} · v1.0 ${pct(...g2.v10)} · eşli v1.1−Jev +1,35 (p 0,002)`)
-      + t('GEL — görülmemiş arketipler (5.435)', pct(...g.v11) + ' %', `TKM-27B v1.1 · Jev ${pct(...g.jev)} · Clef ${pct(...g.clef)} · v1.0 ${pct(...g.v10)} · TKM-E ${pct(...g.tkme)}`)
-      + t('100k havuz — eğitim dilimi, sıfır-atış (84.300)', pct(...tr.jev) + ' %', `Jev · TKM-27B v1.0 ${pct(...tr.v10)} · Clef ${pct(...tr.clef)} · (v1.1 görmediği 20k: ${pct(...tr.v11)})`)
-      + t('Arkadaş — bağımsız bankacılık dosyaları (2.328)', pct(...ak.v11) + ' %', `TKM-27B v1.1 · Jev ${pct(...ak.jev)} (p 0,52) · v1.0 ${pct(...ak.v10)} · tarih+sayı gerçekleriyle v1.1 95,19`);
+    return t('GEL-2 — 13 hiç görülmemiş karar kalıbı (10.000)', pct(...g2.v11) + ' %', `Algebra V1.1 · Jev ${pct(...g2.jev)} · Clef ${pct(...g2.clef)} · v1.0 ${pct(...g2.v10)} · eşli v1.1−Jev +1,35 (p 0,002)`)
+      + t('GEL — görülmemiş arketipler (5.435)', pct(...g.v11) + ' %', `Algebra V1.1 · Jev ${pct(...g.jev)} · Clef ${pct(...g.clef)} · v1.0 ${pct(...g.v10)} · TKM-E ${pct(...g.tkme)}`)
+      + t('100k havuz — eğitim dilimi, sıfır-atış (84.300)', pct(...tr.jev) + ' %', `Jev · TKM-27B v1.0 ${pct(...tr.v10)} · Clef ${pct(...tr.clef)} · (Algebra V1.1 görmediği 20k: ${pct(...tr.v11)})`)
+      + t('Arkadaş — bağımsız bankacılık dosyaları (2.328)', pct(...ak.v11) + ' %', `Algebra V1.1 · Jev ${pct(...ak.jev)} (p 0,52) · v1.0 ${pct(...ak.v10)} · tarih+sayı gerçekleriyle Algebra V1.1 95,19`);
   }
 
   // ---------- kırılım çubukları
@@ -82,7 +82,7 @@
     SK.forEach((s) => { let d = 0, m = 0; sonFiltre.forEach((r) => { const x = r[col[s]]; if (x >= 0) { m++; d += x; } }); say[s] = [d, m]; });
     $('tkmSayac').innerHTML = `<b>${fi(n)}</b> soru · ` + SK.filter((s) => say[s][1]).map((s) => `<span style="color:${RENK[s]}">${esc(AD[s])}</span> ${pct(say[s][0], say[s][1])} % (n ${fi(say[s][1])})`).join(' · ');
     const dilim = sonFiltre.slice(sayfa * SAYFA, (sayfa + 1) * SAYFA);
-    let h = '<table><thead><tr><th>küme</th><th>arketip</th><th>tuzak</th><th>dil</th><th>tip</th>' + SK.map((s) => `<th style="color:${RENK[s]}">${esc(AD[s].split(' ')[0])}${s === 'v11' ? ' v1.1' : s === 'v10' ? ' v1.0' : ''}</th>`).join('') + '<th>tam metin</th></tr></thead><tbody>';
+    let h = '<table><thead><tr><th>küme</th><th>arketip</th><th>tuzak</th><th>dil</th><th>tip</th>' + SK.map((s) => `<th style="color:${RENK[s]}">${esc(AD[s].split(' ')[0])}${s === 'v11' ? ' V1.1' : s === 'v10' ? ' v1.0' : ''}</th>`).join('') + '<th>tam metin</th></tr></thead><tbody>';
     dilim.forEach((r) => {
       const id = r[col.id]; const var_ = !!ORid[id];
       h += `<tr class="tkm-r tkm-click" data-id="${esc(id)}" data-parca="${esc(r[col.parca])}"><td>${esc(inv.kume[r[col.kume]])}</td><td>${esc(inv.arketip[r[col.arketip]])}</td><td>${esc(inv.tuzak[r[col.tuzak]])}</td><td>${esc(inv.dil[r[col.dil]])}</td><td>${esc(inv.tip[r[col.tip]])}</td>` +
@@ -140,7 +140,7 @@
     $('tkmOynaSayac').innerHTML = `<b>${gosterilen}</b> senaryo · ` + SK.filter((s) => sayac[s]).map((s) => `<span style="color:${RENK[s]}">${esc(AD[s])}</span> ${pct(sayac[s][0], sayac[s][1])} %`).join(' · ');
     const q = o.soru;
     $('tkmOynaKart').innerHTML = `<div class="sub">${esc(o.kume)} · ${esc(o.arketip)} · tuzak: ${esc(o.tuzak)} · ${esc(o.dil)}</div><pre class="tkm-state" style="max-height:180px">${esc(o.state.slice(0, 900))}${o.state.length > 900 ? ' …' : ''}</pre><div class="tkm-soru"><b>${esc(q.type)}:</b> ${esc(q.instructions)}</div><div class="tkm-cevaplar">` +
-      SK.filter((s) => o.sistem[s]).map((s) => `<span class="tkm-cv" style="border-color:${RENK[s]}">${esc(AD[s].split(' ')[0])}${s === 'v11' ? ' v1.1' : s === 'v10' ? ' v1.0' : ''}: <code>${esc(o.sistem[s].cevap)}</code> ${o.sistem[s].dogru ? '✓' : '✗'}</span>`).join('') + `<span class="tkm-cv" style="border-color:var(--ink)">altın: <code>${esc(o.altin)}</code></span></div>`;
+      SK.filter((s) => o.sistem[s]).map((s) => `<span class="tkm-cv" style="border-color:${RENK[s]}">${esc(AD[s].split(' ')[0])}${s === 'v11' ? ' V1.1' : s === 'v10' ? ' v1.0' : ''}: <code>${esc(o.sistem[s].cevap)}</code> ${o.sistem[s].dogru ? '✓' : '✗'}</span>`).join('') + `<span class="tkm-cv" style="border-color:var(--ink)">altın: <code>${esc(o.altin)}</code></span></div>`;
   }
   function oynatBaslat() {
     if (oynat) { clearInterval(oynat); oynat = null; $('tkmOynaBtn').textContent = '▶ Başlat'; return; }
